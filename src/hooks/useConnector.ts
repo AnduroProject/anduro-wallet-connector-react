@@ -171,7 +171,7 @@ export const useConnector = (props: Props) => {
     walletInformation.accountPublicKey = params.accountPublicKey;
     walletInformation.connectionState = params.connectionState;
   }
-  const connect = (params: connectParams) => {
+  const connect = async (params: connectParams) => {
     return new Promise((resolve, reject) => {
       const url = `${props.walletUrl}?requestType=connect`;
       let childWindow = window.open(url,"_blank",windowFeatures);
@@ -183,9 +183,11 @@ export const useConnector = (props: Props) => {
         onComplete: params.onComplete,
       })
       console.log("datares1", params)
-      walletEvent.on("connectionresponse", (data)=>{
+      walletEvent.on("connectionresponse", async (data) =>{
         console.log("datares", data)
-        resolve(data)
+        let response = await data;
+        console.log("datares111", response)
+        resolve(response)
       })
     })  
   }
