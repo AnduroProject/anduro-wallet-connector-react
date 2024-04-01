@@ -313,7 +313,9 @@ var useConnector = function(props) {
                 setNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
-                walletEvent.emit("connectionresponse", event.data);
+                process.nextTick(function() {
+                    walletEvent.emit("connectionresponse", event.data);
+                });
             } else {
                 requestData.onComplete(event.data);
             }
@@ -330,6 +332,9 @@ var useConnector = function(props) {
                     });
                     console.log("test1");
                     walletEvent.emit("connectionresponse", event.data);
+                    process.nextTick(function() {
+                        walletEvent.emit("connectionresponse", event.data);
+                    });
                 } else if (requestType === "networkinfo") {
                     sendMessageToChildWindow({
                         requestType: requestType,
