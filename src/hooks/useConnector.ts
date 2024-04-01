@@ -180,13 +180,13 @@ export const useConnector = (props: Props) => {
         onComplete: params.onComplete,
       })
       console.log("datares1", params)
-      walletEvent.addListener("createresponse", (data)=>{
+      walletEvent.on("createresponse", (data)=>{
         console.log("datares", data)
         resolve(data)
       })
     })  
   }
-  
+
   const disconnect = () => {
     const url = `${props.walletUrl}?requestType=disconnect`;
     let childWindow = window.open(url,"_blank",windowFeatures);
