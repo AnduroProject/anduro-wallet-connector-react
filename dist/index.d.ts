@@ -43,7 +43,7 @@ interface WalletInfo {
     connectionState: string;
 }
 declare const useConnector: (props: Props) => {
-    connect: (params: connectParams) => void;
+    connect: (params: connectParams) => Promise<unknown>;
     getNetworkInformation: () => NetworkInfo;
     send: (params: createTransactionParams) => void;
     createasset: (params: CreateassetParams) => void;

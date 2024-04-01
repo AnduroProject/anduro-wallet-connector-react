@@ -113,6 +113,7 @@ __export(src_exports, {
 module.exports = __toCommonJS(src_exports);
 // src/hooks/useConnector.ts
 var import_react = __toESM(require("react"));
+var import_events = require("events");
 var walletInformation = {
     accountPublicKey: "",
     connectionState: "disconnected"
@@ -122,6 +123,7 @@ var networkInformation = {
     networkType: ""
 };
 var useConnector = function(props) {
+    var walletEvent = new import_events.EventEmitter();
     var _ref = _sliced_to_array((0, import_react.useState)(null), 2), childWindow = _ref[0], setChildWindow = _ref[1];
     var _ref1 = _sliced_to_array((0, import_react.useState)(""), 2), requestType = _ref1[0], setRequestType = _ref1[1];
     var _ref2 = _sliced_to_array((0, import_react.useState)({
@@ -156,16 +158,6 @@ var useConnector = function(props) {
     }), 2), transferAssetData = _import_react_default_useState2[0], setTransferAssetData = _import_react_default_useState2[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     (0, import_react.useEffect)(function() {
-        if (childWindow) {
-            window.addEventListener("message", handleMessage);
-            return function() {
-                window.removeEventListener("message", handleMessage);
-            };
-        }
-    }, [
-        childWindow
-    ]);
-    (0, import_react.useEffect)(function() {
         if (networkInformation.chainId === null && childWindow === null) {
             var url = "".concat(props.walletUrl, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
@@ -175,6 +167,16 @@ var useConnector = function(props) {
     }, [
         networkInformation
     ]);
+    (0, import_react.useEffect)(function() {
+        if (childWindow != null) {
+            window.addEventListener("message", handleMessage);
+            return function() {
+                window.removeEventListener("message", handleMessage);
+            };
+        }
+    }, [
+        childWindow
+    ]);
     var handleMessage = function(event) {
         console.log("Message Received", event.data);
         if (event.data.type === "connection-response") {
@@ -182,6 +184,7 @@ var useConnector = function(props) {
                 childWindow.close();
                 setNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
+                walletEvent.emit("connectionresponse", event.data);
             } else {
                 requestData.onComplete(event.data);
             }
@@ -257,6 +260,7 @@ var useConnector = function(props) {
             if (createAssetData.onComplete) {
                 createAssetData.onComplete(event.data);
             }
+            walletEvent.emit("assetresponse", event.data);
         } else if (event.data.type === "disconnect-response") {
             childWindow.close();
         }
@@ -271,13 +275,21 @@ var useConnector = function(props) {
         walletInformation.connectionState = params.connectionState;
     };
     var connect = function(params) {
-        var url = "".concat(props.walletUrl, "?requestType=connect");
-        var childWindow2 = window.open(url, "_blank", windowFeatures);
-        setRequestType("connect");
-        setChildWindow(childWindow2);
-        setRequestData({
-            chainId: params.chainId,
-            onComplete: params.onComplete
+        return new Promise(function(resolve, reject) {
+            var url = "".concat(props.walletUrl, "?requestType=connect");
+            var childWindow2 = window.open(url, "_blank", windowFeatures);
+            setRequestType("connect");
+            setChildWindow(childWindow2);
+            console.log("datares4", params);
+            setRequestData({
+                chainId: params.chainId,
+                onComplete: params.onComplete
+            });
+            console.log("datares1", params);
+            walletEvent.addListener("createresponse", function(data) {
+                console.log("datares", data);
+                resolve(data);
+            });
         });
     };
     var disconnect = function() {
