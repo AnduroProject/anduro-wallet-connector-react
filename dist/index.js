@@ -238,6 +238,7 @@ module.exports = __toCommonJS(src_exports);
 // src/hooks/useConnector.ts
 var import_react = __toESM(require("react"));
 var import_events = require("events");
+var import_wait_for_event = require("wait-for-event");
 var walletInformation = {
     accountPublicKey: "",
     connectionState: "disconnected"
@@ -414,7 +415,7 @@ var useConnector = function(props) {
                             onComplete: params.onComplete
                         });
                         console.log("datares1", params);
-                        walletEvent.on("connectionresponse", function() {
+                        (0, import_wait_for_event.waitFor)("connectionresponse", walletEvent, function() {
                             var _ref = _async_to_generator(function(data) {
                                 var response;
                                 return _ts_generator(this, function(_state) {
