@@ -220,7 +220,7 @@ var useConnector = function(props) {
                 onComplete: params.onComplete
             });
             console.log("datares1", params);
-            walletEvent.on("createresponse", function(data) {
+            walletEvent.on("connectionresponse", function(data) {
                 console.log("datares", data);
                 resolve(data);
             });
