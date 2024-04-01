@@ -10,7 +10,7 @@
     "@types/node": "^16.18.91",
     "@types/react": "^18.2.71",
     "@types/react-dom": "^18.2.22",
-    "anduro-wallet-connecter": "https://github.com/balajimara/anduro-wallet-connecter",
+    "anduro-wallet-connecter": "github:balajimara/anduro-wallet-connecter",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
