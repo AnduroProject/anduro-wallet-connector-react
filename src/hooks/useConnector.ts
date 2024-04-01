@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { EventEmitter } from "events";
+import {waitFor} from 'wait-for-event';
+
 
 type Props = {
   walletUrl: string;
@@ -183,12 +185,19 @@ export const useConnector = (props: Props) => {
         onComplete: params.onComplete,
       })
       console.log("datares1", params)
-      walletEvent.on("connectionresponse", async (data) =>{
-        console.log("datares", data)
-        let response = await data;
-        console.log("datares111", response)
-        resolve(response)
-      })
+      // walletEvent.on("connectionresponse", async (data) =>{
+      //   console.log("datares", data)
+      //   let response = await data;
+      //   console.log("datares111", response)
+      //   resolve(response)
+      // })
+      waitFor('connectionresponse', walletEvent, async (data) =>{
+          console.log("datares", data)
+          let response = await data;
+          console.log("datares111", response)
+          resolve(response)
+        
+      });
     })  
   }
 

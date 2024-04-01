@@ -171,6 +171,7 @@ function _ts_generator(thisArg, body) {
 }
 import React, { useEffect, useState } from "react";
 import { EventEmitter } from "events";
+import { waitFor } from "wait-for-event";
 var walletInformation = {
     accountPublicKey: "",
     connectionState: "disconnected"
@@ -350,7 +351,7 @@ var useConnector = function(props) {
                             onComplete: params.onComplete
                         });
                         console.log("datares1", params);
-                        walletEvent.on("connectionresponse", function() {
+                        waitFor("connectionresponse", walletEvent, function() {
                             var _ref = _async_to_generator(function(data) {
                                 var response;
                                 return _ts_generator(this, function(_state) {
