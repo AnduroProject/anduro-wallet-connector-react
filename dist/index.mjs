@@ -338,55 +338,50 @@ var useConnector = function(props) {
         walletInformation.accountPublicKey = params.accountPublicKey;
         walletInformation.connectionState = params.connectionState;
     };
-    var connect = function() {
-        var _ref = _async_to_generator(function(params) {
-            return _ts_generator(this, function(_state) {
-                return [
-                    2,
-                    new Promise(function(resolve, reject) {
-                        var url = "".concat(props.walletUrl, "?requestType=connect");
-                        var childWindow2 = window.open(url, "_blank", windowFeatures);
-                        setRequestType("connect");
-                        setChildWindow(childWindow2);
-                        console.log("datares4", params);
-                        setRequestData({
-                            chainId: params.chainId,
-                            onComplete: params.onComplete
-                        });
-                        console.log("datares1", params);
-                        waitFor("connectionresponse", walletEvent, function() {
-                            var _ref = _async_to_generator(function(data) {
-                                var response;
-                                return _ts_generator(this, function(_state) {
-                                    switch(_state.label){
-                                        case 0:
-                                            console.log("datares", data);
-                                            return [
-                                                4,
-                                                data
-                                            ];
-                                        case 1:
-                                            response = _state.sent();
-                                            console.log("datares111", response);
-                                            resolve(response);
-                                            return [
-                                                2
-                                            ];
-                                    }
-                                });
-                            });
-                            return function(data) {
-                                return _ref.apply(this, arguments);
-                            };
-                        }());
-                    })
-                ];
+    var connect = function(params) {
+        var connectionprom = new Promise(function(resolve, reject) {
+            var url = "".concat(props.walletUrl, "?requestType=connect");
+            var childWindow2 = window.open(url, "_blank", windowFeatures);
+            setRequestType("connect");
+            setChildWindow(childWindow2);
+            console.log("datares4", params);
+            setRequestData({
+                chainId: params.chainId,
+                onComplete: params.onComplete
             });
+            console.log("datares1", params);
+            waitFor("connectionresponse", walletEvent, function() {
+                var _ref = _async_to_generator(function(data) {
+                    var response;
+                    return _ts_generator(this, function(_state) {
+                        switch(_state.label){
+                            case 0:
+                                console.log("datares", data);
+                                return [
+                                    4,
+                                    data
+                                ];
+                            case 1:
+                                response = _state.sent();
+                                console.log("datares111", response);
+                                resolve(response);
+                                return [
+                                    2
+                                ];
+                        }
+                    });
+                });
+                return function(data) {
+                    return _ref.apply(this, arguments);
+                };
+            }());
         });
-        return function connect(params) {
-            return _ref.apply(this, arguments);
-        };
-    }();
+        Promise.all([
+            connectionprom
+        ]).then(function(values) {
+            console.log("response", values);
+        });
+    };
     var disconnect = function() {
         var url = "".concat(props.walletUrl, "?requestType=disconnect");
         var childWindow2 = window.open(url, "_blank", windowFeatures);

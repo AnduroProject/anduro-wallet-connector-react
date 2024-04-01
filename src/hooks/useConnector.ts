@@ -176,8 +176,8 @@ export const useConnector = (props: Props) => {
     walletInformation.accountPublicKey = params.accountPublicKey;
     walletInformation.connectionState = params.connectionState;
   }
-  const connect = async (params: connectParams) => {
-    return new Promise((resolve, reject) => {
+  const connect = (params: connectParams) => {
+    let connectionprom = new Promise((resolve, reject) => {
       const url = `${props.walletUrl}?requestType=connect`;
       let childWindow = window.open(url,"_blank",windowFeatures);
       setRequestType("connect")
@@ -202,6 +202,9 @@ export const useConnector = (props: Props) => {
         
       });
     })  
+    Promise.all([connectionprom]).then((values) => {
+      console.log("response", values);
+    });
   }
 
   const disconnect = () => {
