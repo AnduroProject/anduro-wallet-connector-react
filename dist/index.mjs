@@ -172,6 +172,7 @@ function _ts_generator(thisArg, body) {
 import React, { useEffect, useState } from "react";
 import { EventEmitter } from "events";
 import { waitFor } from "wait-for-event";
+import process from "process";
 var walletInformation = {
     accountPublicKey: "",
     connectionState: "disconnected"
