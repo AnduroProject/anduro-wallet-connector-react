@@ -184,6 +184,7 @@ var useConnector = function(props) {
                 childWindow.close();
                 setNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
+                console.log("test22222");
                 walletEvent.emit("connectionresponse", event.data);
             } else {
                 requestData.onComplete(event.data);
@@ -199,6 +200,7 @@ var useConnector = function(props) {
                         siteurl: window.location.origin,
                         chainId: requestData.chainId
                     });
+                    console.log("test1");
                     walletEvent.emit("connectionresponse", event.data);
                 } else if (requestType === "networkinfo") {
                     sendMessageToChildWindow({

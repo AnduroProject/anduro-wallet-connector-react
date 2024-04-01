@@ -111,6 +111,7 @@ export const useConnector = (props: Props) => {
         childWindow.close();
         setNetworkInformation(event.data.result)
         requestData.onComplete(event.data);
+        console.log("test22222")
         walletEvent.emit("connectionresponse", event.data);   
       } else {
         requestData.onComplete(event.data)
@@ -122,6 +123,7 @@ export const useConnector = (props: Props) => {
       if (event.data.status) {
         if (requestType === "connect" || requestType === "disconnect") {
           sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId});
+          console.log("test1")
           walletEvent.emit("connectionresponse", event.data);   
         } else if (requestType === "networkinfo") {
           sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
