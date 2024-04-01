@@ -1,4 +1,4 @@
-// src/hooks/useConnector.ts
+// src/hooks/useConnector.tsx
 function _array_like_to_array(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
@@ -169,19 +169,10 @@ function _ts_generator(thisArg, body) {
         };
     }
 }
-import React, { useEffect, useState } from "react";
-import { EventEmitter } from "events";
-import { waitFor } from "wait-for-event";
-var walletInformation = {
-    accountPublicKey: "",
-    connectionState: "disconnected"
-};
-var networkInformation = {
-    chainId: null,
-    networkType: ""
-};
-var useConnector = function(props) {
-    var walletEvent = new EventEmitter();
+import React, { useState, useEffect } from "react";
+import { jsx } from "react/jsx-runtime";
+var useConnector = React.createContext(null);
+var UseConnectorProvider = function(props) {
     var _useState = _sliced_to_array(useState(null), 2), childWindow = _useState[0], setChildWindow = _useState[1];
     var _useState1 = _sliced_to_array(useState(""), 2), requestType = _useState1[0], setRequestType = _useState1[1];
     var _useState2 = _sliced_to_array(useState({
@@ -214,6 +205,14 @@ var useConnector = function(props) {
         supply: 0,
         onComplete: null
     }), 2), transferAssetData = _React_useState2[0], setTransferAssetData = _React_useState2[1];
+    var _React_useState3 = _sliced_to_array(React.useState({
+        chainId: null,
+        networkType: ""
+    }), 2), networkInformation = _React_useState3[0], setNetworkInformation = _React_useState3[1];
+    var _React_useState4 = _sliced_to_array(React.useState({
+        accountPublicKey: "",
+        connectionState: "disconnected"
+    }), 2), walletInformation = _React_useState4[0], setWalletInformation = _React_useState4[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
         if (networkInformation.chainId === null && childWindow === null) {
@@ -243,10 +242,9 @@ var useConnector = function(props) {
         if (event.data.type === "connection-response") {
             if (event.data.status) {
                 childWindow.close();
-                setNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
-                walletEvent.emit("connectionresponse", event.data);
             } else {
                 requestData.onComplete(event.data);
             }
@@ -262,7 +260,6 @@ var useConnector = function(props) {
                         chainId: requestData.chainId
                     });
                     console.log("test1");
-                    walletEvent.emit("connectionresponse", event.data);
                 } else if (requestType === "networkinfo") {
                     sendMessageToChildWindow({
                         requestType: requestType,
@@ -312,7 +309,7 @@ var useConnector = function(props) {
         } else if (event.data.type === "networkinfo-response") {
             childWindow.close();
             if (event.data.status) {
-                setNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result);
             }
         } else if (event.data.type === "send-response" || event.data.type === "create-asset-response" || event.data.type === "disconnect-response") {
             childWindow.close();
@@ -326,11 +323,15 @@ var useConnector = function(props) {
     var sendMessageToChildWindow = function(data) {
         childWindow.postMessage(data, "*");
     };
-    var setNetworkInformation = function(params) {
-        networkInformation.chainId = params.chainId;
-        networkInformation.networkType = params.networkType;
-        walletInformation.accountPublicKey = params.accountPublicKey;
-        walletInformation.connectionState = params.connectionState;
+    var updateNetworkInformation = function(params) {
+        setNetworkInformation({
+            chainId: params.chainId,
+            networkType: params.networkType
+        });
+        setWalletInformation({
+            accountPublicKey: params.accountPublicKey,
+            connectionState: params.connectionState
+        });
     };
     var connect = function() {
         var _ref = _async_to_generator(function(params) {
@@ -348,31 +349,6 @@ var useConnector = function(props) {
                             onComplete: params.onComplete
                         });
                         console.log("datares1", params);
-                        waitFor("connectionresponse", walletEvent, function() {
-                            var _ref = _async_to_generator(function(data) {
-                                var response;
-                                return _ts_generator(this, function(_state) {
-                                    switch(_state.label){
-                                        case 0:
-                                            console.log("datares", data);
-                                            return [
-                                                4,
-                                                data
-                                            ];
-                                        case 1:
-                                            response = _state.sent();
-                                            console.log("datares111", response);
-                                            resolve(response);
-                                            return [
-                                                2
-                                            ];
-                                    }
-                                });
-                            });
-                            return function(data) {
-                                return _ref.apply(this, arguments);
-                            };
-                        }());
                     })
                 ];
             });
@@ -459,15 +435,19 @@ var useConnector = function(props) {
             setTransferAssetData(params);
         }
     };
-    return {
-        connect: connect,
-        getNetworkInformation: getNetworkInformation,
-        send: send,
-        createasset: createasset,
-        transferasset: transferasset,
-        disconnect: disconnect,
-        getWalletInformation: getWalletInformation
-    };
+    var children = props.children;
+    return /* @__PURE__ */ jsx(useConnector.Provider, {
+        value: {
+            getNetworkInformation: getNetworkInformation,
+            getWalletInformation: getWalletInformation,
+            connect: connect,
+            disconnect: disconnect,
+            send: send,
+            createasset: createasset,
+            transferasset: transferasset
+        },
+        children: children
+    });
 };
-export { useConnector };
+export { UseConnectorProvider, useConnector };
 //# sourceMappingURL=index.mjs.map

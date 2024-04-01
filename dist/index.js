@@ -230,25 +230,19 @@ var __toCommonJS = function(mod) {
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+    UseConnectorProvider: function() {
+        return UseConnectorProvider;
+    },
     useConnector: function() {
         return useConnector;
     }
 });
 module.exports = __toCommonJS(src_exports);
-// src/hooks/useConnector.ts
+// src/hooks/useConnector.tsx
 var import_react = __toESM(require("react"));
-var import_events = require("events");
-var import_wait_for_event = require("wait-for-event");
-var walletInformation = {
-    accountPublicKey: "",
-    connectionState: "disconnected"
-};
-var networkInformation = {
-    chainId: null,
-    networkType: ""
-};
-var useConnector = function(props) {
-    var walletEvent = new import_events.EventEmitter();
+var import_jsx_runtime = require("react/jsx-runtime");
+var useConnector = import_react.default.createContext(null);
+var UseConnectorProvider = function(props) {
     var _ref = _sliced_to_array((0, import_react.useState)(null), 2), childWindow = _ref[0], setChildWindow = _ref[1];
     var _ref1 = _sliced_to_array((0, import_react.useState)(""), 2), requestType = _ref1[0], setRequestType = _ref1[1];
     var _ref2 = _sliced_to_array((0, import_react.useState)({
@@ -281,6 +275,14 @@ var useConnector = function(props) {
         supply: 0,
         onComplete: null
     }), 2), transferAssetData = _import_react_default_useState2[0], setTransferAssetData = _import_react_default_useState2[1];
+    var _import_react_default_useState3 = _sliced_to_array(import_react.default.useState({
+        chainId: null,
+        networkType: ""
+    }), 2), networkInformation = _import_react_default_useState3[0], setNetworkInformation = _import_react_default_useState3[1];
+    var _import_react_default_useState4 = _sliced_to_array(import_react.default.useState({
+        accountPublicKey: "",
+        connectionState: "disconnected"
+    }), 2), walletInformation = _import_react_default_useState4[0], setWalletInformation = _import_react_default_useState4[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     (0, import_react.useEffect)(function() {
         if (networkInformation.chainId === null && childWindow === null) {
@@ -310,10 +312,9 @@ var useConnector = function(props) {
         if (event.data.type === "connection-response") {
             if (event.data.status) {
                 childWindow.close();
-                setNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
-                walletEvent.emit("connectionresponse", event.data);
             } else {
                 requestData.onComplete(event.data);
             }
@@ -329,7 +330,6 @@ var useConnector = function(props) {
                         chainId: requestData.chainId
                     });
                     console.log("test1");
-                    walletEvent.emit("connectionresponse", event.data);
                 } else if (requestType === "networkinfo") {
                     sendMessageToChildWindow({
                         requestType: requestType,
@@ -379,7 +379,7 @@ var useConnector = function(props) {
         } else if (event.data.type === "networkinfo-response") {
             childWindow.close();
             if (event.data.status) {
-                setNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result);
             }
         } else if (event.data.type === "send-response" || event.data.type === "create-asset-response" || event.data.type === "disconnect-response") {
             childWindow.close();
@@ -393,11 +393,15 @@ var useConnector = function(props) {
     var sendMessageToChildWindow = function(data) {
         childWindow.postMessage(data, "*");
     };
-    var setNetworkInformation = function(params) {
-        networkInformation.chainId = params.chainId;
-        networkInformation.networkType = params.networkType;
-        walletInformation.accountPublicKey = params.accountPublicKey;
-        walletInformation.connectionState = params.connectionState;
+    var updateNetworkInformation = function(params) {
+        setNetworkInformation({
+            chainId: params.chainId,
+            networkType: params.networkType
+        });
+        setWalletInformation({
+            accountPublicKey: params.accountPublicKey,
+            connectionState: params.connectionState
+        });
     };
     var connect = function() {
         var _ref = _async_to_generator(function(params) {
@@ -415,31 +419,6 @@ var useConnector = function(props) {
                             onComplete: params.onComplete
                         });
                         console.log("datares1", params);
-                        (0, import_wait_for_event.waitFor)("connectionresponse", walletEvent, function() {
-                            var _ref = _async_to_generator(function(data) {
-                                var response;
-                                return _ts_generator(this, function(_state) {
-                                    switch(_state.label){
-                                        case 0:
-                                            console.log("datares", data);
-                                            return [
-                                                4,
-                                                data
-                                            ];
-                                        case 1:
-                                            response = _state.sent();
-                                            console.log("datares111", response);
-                                            resolve(response);
-                                            return [
-                                                2
-                                            ];
-                                    }
-                                });
-                            });
-                            return function(data) {
-                                return _ref.apply(this, arguments);
-                            };
-                        }());
                     })
                 ];
             });
@@ -526,18 +505,23 @@ var useConnector = function(props) {
             setTransferAssetData(params);
         }
     };
-    return {
-        connect: connect,
-        getNetworkInformation: getNetworkInformation,
-        send: send,
-        createasset: createasset,
-        transferasset: transferasset,
-        disconnect: disconnect,
-        getWalletInformation: getWalletInformation
-    };
+    var children = props.children;
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(useConnector.Provider, {
+        value: {
+            getNetworkInformation: getNetworkInformation,
+            getWalletInformation: getWalletInformation,
+            connect: connect,
+            disconnect: disconnect,
+            send: send,
+            createasset: createasset,
+            transferasset: transferasset
+        },
+        children: children
+    });
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+    UseConnectorProvider: UseConnectorProvider,
     useConnector: useConnector
 });
 //# sourceMappingURL=index.js.map

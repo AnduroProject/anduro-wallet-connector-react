@@ -1,1 +1,1 @@
-export { useConnector } from "./hooks/useConnector"; 
+export { useConnector, UseConnectorProvider } from "./hooks/useConnector"; 
