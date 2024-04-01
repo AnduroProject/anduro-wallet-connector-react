@@ -1,1 +1,1 @@
-export const WALLETURL = "http://localhost:5002"
+export const WALLETURL = "http://localhost:3000"
