@@ -181,7 +181,7 @@ export const useConnector = (props: Props) => {
         onComplete: params.onComplete,
       })
       console.log("datares1", params)
-      walletEvent.on("createresponse", (data)=>{
+      walletEvent.on("connectionresponse", (data)=>{
         console.log("datares", data)
         resolve(data)
       })
