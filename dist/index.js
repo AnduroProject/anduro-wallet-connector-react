@@ -239,6 +239,7 @@ module.exports = __toCommonJS(src_exports);
 var import_react = __toESM(require("react"));
 var import_events = require("events");
 var import_wait_for_event = require("wait-for-event");
+var import_node_process = __toESM(require("process"));
 var walletInformation = {
     accountPublicKey: "",
     connectionState: "disconnected"
@@ -313,7 +314,7 @@ var useConnector = function(props) {
                 setNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
-                process.nextTick(function() {
+                import_node_process.default.nextTick(function() {
                     walletEvent.emit("connectionresponse", event.data);
                 });
             } else {
@@ -332,7 +333,7 @@ var useConnector = function(props) {
                     });
                     console.log("test1");
                     walletEvent.emit("connectionresponse", event.data);
-                    process.nextTick(function() {
+                    import_node_process.default.nextTick(function() {
                         walletEvent.emit("connectionresponse", event.data);
                     });
                 } else if (requestType === "networkinfo") {
