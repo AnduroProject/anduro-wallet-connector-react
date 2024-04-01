@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useWallet } from './useWallet';
+import { EventEmitter } from "events";
 
 type Props = {
   walletUrl: string;
@@ -41,13 +41,21 @@ interface TransferAssetParams {
   supply: number;
   onComplete: any;
 }
+interface WalletInfo {
+  accountPublicKey: string; // wallet account public key
+  connectionState: string; // connection state
+};
+const walletInformation: WalletInfo = {
+    accountPublicKey: "",
+    connectionState: "disconnected",
+}
 
 const networkInformation: NetworkInfo = {
   chainId: null,
   networkType: "",
 }
 export const useConnector = (props: Props) => {
-  const {setWalletInfo} = useWallet();
+  const walletEvent = new EventEmitter()
   const [childWindow, setChildWindow] = useState<any>(null);
   const [requestType, setRequestType] = useState("");
   const [transactionData, setTransactionData] = useState<createTransactionParams>({
@@ -76,15 +84,7 @@ export const useConnector = (props: Props) => {
     onComplete: null,
   });
   const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
-  useEffect(() => {
-    if (childWindow) {
-      window.addEventListener('message', handleMessage);
-      return () => {
-        window.removeEventListener('message', handleMessage);
-      };
-    }
-  }, [childWindow]);
-
+  
   useEffect(() => {
     if (networkInformation.chainId === null && childWindow === null) {
       const url = `${props.walletUrl}?requestType=networkinfo`;
@@ -93,6 +93,16 @@ export const useConnector = (props: Props) => {
       setRequestType("networkinfo")
     }
   }, [networkInformation]);
+  
+  useEffect(() => {
+    if (childWindow != null) {
+      window.addEventListener('message', handleMessage);
+      return () => {
+        window.removeEventListener('message', handleMessage);
+      };
+    }
+  }, [childWindow]);
+
 
   const handleMessage = (event: any) => {
     console.log("Message Received", event.data)
@@ -101,6 +111,7 @@ export const useConnector = (props: Props) => {
         childWindow.close();
         setNetworkInformation(event.data.result)
         requestData.onComplete(event.data);
+        walletEvent.emit("connectionresponse", event.data);   
       } else {
         requestData.onComplete(event.data)
       }
@@ -143,6 +154,7 @@ export const useConnector = (props: Props) => {
       if (createAssetData.onComplete) {
         createAssetData.onComplete(event.data)
       }
+      walletEvent.emit("assetresponse", event.data);   
     } else if (event.data.type === "disconnect-response") {
       childWindow.close()
     }
@@ -151,23 +163,30 @@ export const useConnector = (props: Props) => {
     childWindow.postMessage(data, "*");
   }
   const setNetworkInformation = (params: any) => {
-    networkInformation.chainId = params.chainId
-    networkInformation.networkType = params.networkType
-    setWalletInfo({
-      accountPublicKey: params.accountPublicKey,
-      connectionState: params.connectionState,
-    })
+    networkInformation.chainId = params.chainId;
+    networkInformation.networkType = params.networkType;
+    walletInformation.accountPublicKey = params.accountPublicKey;
+    walletInformation.connectionState = params.connectionState;
   }
   const connect = (params: connectParams) => {
-    const url = `${props.walletUrl}?requestType=connect`;
-    let childWindow = window.open(url,"_blank",windowFeatures);
-    setRequestType("connect")
-    setChildWindow(childWindow)
-    setRequestData({
-      chainId: params.chainId,
-      onComplete: params.onComplete,
-    })
+    return new Promise((resolve, reject) => {
+      const url = `${props.walletUrl}?requestType=connect`;
+      let childWindow = window.open(url,"_blank",windowFeatures);
+      setRequestType("connect")
+      setChildWindow(childWindow)
+      console.log("datares4", params)
+      setRequestData({
+        chainId: params.chainId,
+        onComplete: params.onComplete,
+      })
+      console.log("datares1", params)
+      walletEvent.addListener("createresponse", (data)=>{
+        console.log("datares", data)
+        resolve(data)
+      })
+    })  
   }
+  
   const disconnect = () => {
     const url = `${props.walletUrl}?requestType=disconnect`;
     let childWindow = window.open(url,"_blank",windowFeatures);
@@ -176,6 +195,9 @@ export const useConnector = (props: Props) => {
   }
   const getNetworkInformation = () => {
     return networkInformation;
+  }
+  const getWalletInformation = () => {
+    return walletInformation;
   }
   const send = (params: createTransactionParams) => {
     if (checkWalletConnection(params.onComplete, "")) {
@@ -244,5 +266,5 @@ export const useConnector = (props: Props) => {
     }
   }
 
-  return {connect, getNetworkInformation, send, createasset, transferasset, disconnect}
+  return {connect, getNetworkInformation, send, createasset, transferasset, disconnect, getWalletInformation}
 }
