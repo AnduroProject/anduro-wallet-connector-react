@@ -227,6 +227,9 @@ var useConnector = function(props) {
     ]);
     useEffect(function() {
         if (childWindow != null) {
+            window.addEventListener("close", function(event) {
+                alert("Window closed");
+            });
             window.addEventListener("message", handleMessage);
             return function() {
                 window.removeEventListener("message", handleMessage);
@@ -311,19 +314,13 @@ var useConnector = function(props) {
             if (event.data.status) {
                 setNetworkInformation(event.data.result);
             }
-        } else if (event.data.type === "send-response") {
+        } else if (event.data.type === "send-response" || event.data.type === "create-asset-response" || event.data.type === "disconnect-response") {
             childWindow.close();
             if (transactionData.onComplete) {
                 transactionData.onComplete(event.data);
-            }
-        } else if (event.data.type === "create-asset-response") {
-            childWindow.close();
-            if (createAssetData.onComplete) {
+            } else if (createAssetData.onComplete) {
                 createAssetData.onComplete(event.data);
             }
-            walletEvent.emit("assetresponse", event.data);
-        } else if (event.data.type === "disconnect-response") {
-            childWindow.close();
         }
     };
     var sendMessageToChildWindow = function(data) {

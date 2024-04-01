@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { useConnector } from 'anduro-wallet-connecter/dist'
+import { WALLETURL } from './config/walletApi';
 function App() {
   // for send
   const [amount, setAmount] = React.useState<any>("")
@@ -18,7 +19,7 @@ function App() {
   const [assetId, setAssetId] = React.useState<number>(0)
 
 
-  const {connect, disconnect, getNetworkInformation, send, createasset, transferasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
+  const {connect, disconnect, getNetworkInformation, send, createasset, transferasset, getWalletInformation} = useConnector({walletUrl: WALLETURL})
   const handleSendFormSubmit = (event: any) => {
     event.preventDefault()
     console.log("-transactionType", sendType)
