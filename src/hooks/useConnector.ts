@@ -177,7 +177,7 @@ export const useConnector = (props: Props) => {
     walletInformation.connectionState = params.connectionState;
   }
   const connect = (params: connectParams) => {
-    let connectionprom = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const url = `${props.walletUrl}?requestType=connect`;
       let childWindow = window.open(url,"_blank",windowFeatures);
       setRequestType("connect")
@@ -188,23 +188,24 @@ export const useConnector = (props: Props) => {
         onComplete: params.onComplete,
       })
       console.log("datares1", params)
-      // walletEvent.on("connectionresponse", async (data) =>{
-      //   console.log("datares", data)
-      //   let response = await data;
-      //   console.log("datares111", response)
-      //   resolve(response)
-      // })
-      waitFor('connectionresponse', walletEvent, async (data) =>{
-          console.log("datares", data)
-          let response = await data;
-          console.log("datares111", response)
-          resolve(response)
+      setTimeout(function() {
+        console.log("kkkk")
+       walletEvent.on("connectionresponse", async (data) =>{
+        console.log("datares", data)
+        let response = await data;
+        console.log("datares111", response)
+        resolve(response)
+      })
+      }, 5000)
+      // waitFor('connectionresponse', walletEvent, async (data) =>{
+      //     console.log("datares", data)
+      //     let response = await data;
+      //     console.log("datares111", response)
+      //     resolve(response)
         
-      });
+      // });
     })  
-    Promise.all([connectionprom]).then((values) => {
-      console.log("response", values);
-    });
+   
   }
 
   const disconnect = () => {

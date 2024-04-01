@@ -171,7 +171,6 @@ function _ts_generator(thisArg, body) {
 }
 import React, { useEffect, useState } from "react";
 import { EventEmitter } from "events";
-import { waitFor } from "wait-for-event";
 import process from "process";
 var walletInformation = {
     accountPublicKey: "",
@@ -339,7 +338,7 @@ var useConnector = function(props) {
         walletInformation.connectionState = params.connectionState;
     };
     var connect = function(params) {
-        var connectionprom = new Promise(function(resolve, reject) {
+        return new Promise(function(resolve, reject) {
             var url = "".concat(props.walletUrl, "?requestType=connect");
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("connect");
@@ -350,36 +349,34 @@ var useConnector = function(props) {
                 onComplete: params.onComplete
             });
             console.log("datares1", params);
-            waitFor("connectionresponse", walletEvent, function() {
-                var _ref = _async_to_generator(function(data) {
-                    var response;
-                    return _ts_generator(this, function(_state) {
-                        switch(_state.label){
-                            case 0:
-                                console.log("datares", data);
-                                return [
-                                    4,
-                                    data
-                                ];
-                            case 1:
-                                response = _state.sent();
-                                console.log("datares111", response);
-                                resolve(response);
-                                return [
-                                    2
-                                ];
-                        }
+            setTimeout(function() {
+                console.log("kkkk");
+                walletEvent.on("connectionresponse", function() {
+                    var _ref = _async_to_generator(function(data) {
+                        var response;
+                        return _ts_generator(this, function(_state) {
+                            switch(_state.label){
+                                case 0:
+                                    console.log("datares", data);
+                                    return [
+                                        4,
+                                        data
+                                    ];
+                                case 1:
+                                    response = _state.sent();
+                                    console.log("datares111", response);
+                                    resolve(response);
+                                    return [
+                                        2
+                                    ];
+                            }
+                        });
                     });
-                });
-                return function(data) {
-                    return _ref.apply(this, arguments);
-                };
-            }());
-        });
-        Promise.all([
-            connectionprom
-        ]).then(function(values) {
-            console.log("response", values);
+                    return function(data) {
+                        return _ref.apply(this, arguments);
+                    };
+                }());
+            }, 5e3);
         });
     };
     var disconnect = function() {
