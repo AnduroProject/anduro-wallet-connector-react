@@ -45,49 +45,27 @@ function _unsupported_iterable_to_array(o, minLen) {
     if (n === "Map" || n === "Set") return Array.from(n);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
 }
-import React2, { useEffect, useState as useState2 } from "react";
-// src/hooks/useWallet.ts
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 var walletInformation = {
     accountPublicKey: "",
     connectionState: "disconnected"
 };
-var useWallet = function() {
-    var _useState = _sliced_to_array(useState(walletInformation), 2), walletInfo = _useState[0], setWalletInfo = _useState[1];
-    React.useEffect(function() {
-        if (walletInfo.accountPublicKey) {
-            walletInformation.accountPublicKey = walletInfo.accountPublicKey;
-            walletInformation.connectionState = walletInfo.connectionState;
-        }
-    }, [
-        walletInfo
-    ]);
-    var getWalletInformation = function() {
-        return walletInformation;
-    };
-    return {
-        setWalletInfo: setWalletInfo,
-        getWalletInformation: getWalletInformation
-    };
-};
-// src/hooks/useConnector.ts
 var networkInformation = {
     chainId: null,
     networkType: ""
 };
 var useConnector = function(props) {
-    var setWalletInfo = useWallet().setWalletInfo;
-    var _useState2 = _sliced_to_array(useState2(null), 2), childWindow = _useState2[0], setChildWindow = _useState2[1];
-    var _useState21 = _sliced_to_array(useState2(""), 2), requestType = _useState21[0], setRequestType = _useState21[1];
-    var _useState22 = _sliced_to_array(useState2({
+    var _useState = _sliced_to_array(useState(null), 2), childWindow = _useState[0], setChildWindow = _useState[1];
+    var _useState1 = _sliced_to_array(useState(""), 2), requestType = _useState1[0], setRequestType = _useState1[1];
+    var _useState2 = _sliced_to_array(useState({
         transactionType: "",
         amount: 0,
         receiverAddress: "",
         feeRate: 1,
         onComplete: null
-    }), 2), transactionData = _useState22[0], setTransactionData = _useState22[1];
-    var _React2_useState = _sliced_to_array(React2.useState(null), 2), requestData = _React2_useState[0], setRequestData = _React2_useState[1];
-    var _React2_useState1 = _sliced_to_array(React2.useState({
+    }), 2), transactionData = _useState2[0], setTransactionData = _useState2[1];
+    var _React_useState = _sliced_to_array(React.useState(null), 2), requestData = _React_useState[0], setRequestData = _React_useState[1];
+    var _React_useState1 = _sliced_to_array(React.useState({
         name: "",
         symbol: "",
         imageUrl: "",
@@ -102,13 +80,13 @@ var useConnector = function(props) {
         transactionType: "",
         receiverAddress: "",
         onComplete: null
-    }), 2), createAssetData = _React2_useState1[0], setCreateAssetData = _React2_useState1[1];
-    var _React2_useState2 = _sliced_to_array(React2.useState({
+    }), 2), createAssetData = _React_useState1[0], setCreateAssetData = _React_useState1[1];
+    var _React_useState2 = _sliced_to_array(React.useState({
         assetId: 0,
         receiverAddress: "",
         supply: 0,
         onComplete: null
-    }), 2), transferAssetData = _React2_useState2[0], setTransferAssetData = _React2_useState2[1];
+    }), 2), transferAssetData = _React_useState2[0], setTransferAssetData = _React_useState2[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
         if (childWindow) {
@@ -222,10 +200,8 @@ var useConnector = function(props) {
     var setNetworkInformation = function(params) {
         networkInformation.chainId = params.chainId;
         networkInformation.networkType = params.networkType;
-        setWalletInfo({
-            accountPublicKey: params.accountPublicKey,
-            connectionState: params.connectionState
-        });
+        walletInformation.accountPublicKey = params.accountPublicKey;
+        walletInformation.connectionState = params.connectionState;
     };
     var connect = function(params) {
         var url = "".concat(props.walletUrl, "?requestType=connect");
@@ -245,6 +221,9 @@ var useConnector = function(props) {
     };
     var getNetworkInformation = function() {
         return networkInformation;
+    };
+    var getWalletInformation = function() {
+        return walletInformation;
     };
     var send = function(params) {
         if (checkWalletConnection(params.onComplete, "")) {
@@ -318,8 +297,9 @@ var useConnector = function(props) {
         send: send,
         createasset: createasset,
         transferasset: transferasset,
-        disconnect: disconnect
+        disconnect: disconnect,
+        getWalletInformation: getWalletInformation
     };
 };
-export { useConnector, useWallet };
+export { useConnector };
 //# sourceMappingURL=index.mjs.map

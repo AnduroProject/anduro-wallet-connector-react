@@ -1,5 +1,3 @@
-import React from 'react';
-
 type Props = {
     walletUrl: string;
 };
@@ -40,6 +38,10 @@ interface TransferAssetParams {
     supply: number;
     onComplete: any;
 }
+interface WalletInfo {
+    accountPublicKey: string;
+    connectionState: string;
+}
 declare const useConnector: (props: Props) => {
     connect: (params: connectParams) => void;
     getNetworkInformation: () => NetworkInfo;
@@ -47,15 +49,7 @@ declare const useConnector: (props: Props) => {
     createasset: (params: CreateassetParams) => void;
     transferasset: (params: TransferAssetParams) => void;
     disconnect: () => void;
-};
-
-interface WalletInfo {
-    accountPublicKey: string;
-    connectionState: string;
-}
-declare const useWallet: () => {
-    setWalletInfo: React.Dispatch<React.SetStateAction<WalletInfo>>;
     getWalletInformation: () => WalletInfo;
 };
 
-export { useConnector, useWallet };
+export { useConnector };

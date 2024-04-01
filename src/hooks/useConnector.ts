@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useWallet } from './useWallet';
 
 type Props = {
   walletUrl: string;
@@ -41,13 +40,20 @@ interface TransferAssetParams {
   supply: number;
   onComplete: any;
 }
+interface WalletInfo {
+  accountPublicKey: string; // wallet account public key
+  connectionState: string; // connection state
+};
+const walletInformation: WalletInfo = {
+    accountPublicKey: "",
+    connectionState: "disconnected",
+}
 
 const networkInformation: NetworkInfo = {
   chainId: null,
   networkType: "",
 }
 export const useConnector = (props: Props) => {
-  const {setWalletInfo} = useWallet();
   const [childWindow, setChildWindow] = useState<any>(null);
   const [requestType, setRequestType] = useState("");
   const [transactionData, setTransactionData] = useState<createTransactionParams>({
@@ -151,12 +157,10 @@ export const useConnector = (props: Props) => {
     childWindow.postMessage(data, "*");
   }
   const setNetworkInformation = (params: any) => {
-    networkInformation.chainId = params.chainId
-    networkInformation.networkType = params.networkType
-    setWalletInfo({
-      accountPublicKey: params.accountPublicKey,
-      connectionState: params.connectionState,
-    })
+    networkInformation.chainId = params.chainId;
+    networkInformation.networkType = params.networkType;
+    walletInformation.accountPublicKey = params.accountPublicKey;
+    walletInformation.connectionState = params.connectionState;
   }
   const connect = (params: connectParams) => {
     const url = `${props.walletUrl}?requestType=connect`;
@@ -176,6 +180,9 @@ export const useConnector = (props: Props) => {
   }
   const getNetworkInformation = () => {
     return networkInformation;
+  }
+  const getWalletInformation = () => {
+    return walletInformation;
   }
   const send = (params: createTransactionParams) => {
     if (checkWalletConnection(params.onComplete, "")) {
@@ -244,5 +251,5 @@ export const useConnector = (props: Props) => {
     }
   }
 
-  return {connect, getNetworkInformation, send, createasset, transferasset, disconnect}
+  return {connect, getNetworkInformation, send, createasset, transferasset, disconnect, getWalletInformation}
 }
