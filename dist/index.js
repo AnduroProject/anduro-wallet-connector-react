@@ -199,6 +199,7 @@ var useConnector = function(props) {
                         siteurl: window.location.origin,
                         chainId: requestData.chainId
                     });
+                    walletEvent.emit("connectionresponse", event.data);
                 } else if (requestType === "networkinfo") {
                     sendMessageToChildWindow({
                         requestType: requestType,
