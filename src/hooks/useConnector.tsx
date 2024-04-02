@@ -149,7 +149,7 @@ export const UseConnectorProvider = (props: any) => {
     // }, [childWindow]);
 
     const handleEvents = (resolve: any, reject: any, childWindows: any) => {
-      alert("handleEvents")
+      console.log("Inside handleEvents")
       if (childWindows != null) {
         window.addEventListener('message', (event: any) => {
           handleMessage(event, resolve, reject)
@@ -162,6 +162,7 @@ export const UseConnectorProvider = (props: any) => {
   
   
     const handleMessage = (event: any, resolve: any, reject: any) => {
+      console.log("Inside handleMessage")
       console.log("Handle Message Event", event)
       console.log("Handle Message Resolve", resolve)
       console.log("Handle Message Reject", reject)
@@ -173,12 +174,7 @@ export const UseConnectorProvider = (props: any) => {
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);
           console.log("Connection Response received", event.data)
-          if (resolve !== null) {
-            console.log("resolve", resolve)
-            alert("check")
-            alert(JSON.stringify(resolve))
-            resolve(true)
-          }
+          resolve({status: true, result: event.data})
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
         } else {
           requestData.onComplete(event.data)

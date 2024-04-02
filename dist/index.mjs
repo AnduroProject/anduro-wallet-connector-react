@@ -245,7 +245,7 @@ var UseConnectorProvider = function(props) {
         networkInformation
     ]);
     var handleEvents = function(resolve2, reject2, childWindows) {
-        alert("handleEvents");
+        console.log("Inside handleEvents");
         if (childWindows != null) {
             window.addEventListener("message", function(event) {
                 handleMessage(event, resolve2, reject2);
@@ -253,6 +253,7 @@ var UseConnectorProvider = function(props) {
         }
     };
     var handleMessage = function(event, resolve2, reject2) {
+        console.log("Inside handleMessage");
         console.log("Handle Message Event", event);
         console.log("Handle Message Resolve", resolve2);
         console.log("Handle Message Reject", reject2);
@@ -264,12 +265,10 @@ var UseConnectorProvider = function(props) {
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("Connection Response received", event.data);
-                if (resolve2 !== null) {
-                    console.log("resolve", resolve2);
-                    alert("check");
-                    alert(JSON.stringify(resolve2));
-                    resolve2(true);
-                }
+                resolve2({
+                    status: true,
+                    result: event.data
+                });
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
                 requestData.onComplete(event.data);
