@@ -3,7 +3,7 @@ import { ConnectorVW } from '../../UI/connectorVW';
 import { useConnector } from "anduro-wallet-connector"
 import { Link } from 'react-router-dom';
 export const ConnectorVC = () => {
-  const {getNetworkInformation, getWalletInformation, connect, disconnect, send, createasset, transferasset} = React.useContext<any>(useConnector)
+  const {getNetworkInformation, walletState, connect, disconnect, send, createasset, transferasset} = React.useContext<any>(useConnector)
   // const {connect, disconnect, getNetworkInformation, send, createasset, transferasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
   const handleConnectionAction = () => {
     connect({
