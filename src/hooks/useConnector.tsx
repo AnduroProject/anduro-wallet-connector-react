@@ -111,8 +111,21 @@ export const UseConnectorProvider = (props: any) => {
     });
     const [networkInformation, setNetworkInformation] = React.useState<NetworkInfo>({chainId: null, networkType: ""})
     const [walletInformation, setWalletInformation] = React.useState<WalletInfo>({accountPublicKey: "", connectionState: "disconnected"})
+    const [resolve, setResolve] = useState<any>(null);
+    const [reject, setReject] = useState<any>(null);
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
-    
+
+    useEffect(() => {
+      if (resolve) {
+        console.log("resolve function", resolve)
+      }
+    }, [resolve]);
+    useEffect(() => {
+      if (reject) {
+        console.log("reject function", reject)
+      }
+    }, [reject]);
+
     useEffect(() => {
       if (networkInformation.chainId === null && childWindow === null) {
         const url = `${WALLETURL}?requestType=networkinfo`;
@@ -144,7 +157,13 @@ export const UseConnectorProvider = (props: any) => {
           setIsConnected(true);
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);
-          console.log("test22222")
+          console.log("Connection Response received", event.data)
+          if (resolve !== null) {
+            console.log("resolve", resolve)
+            alert("check")
+            alert(JSON.stringify(resolve))
+            resolve(true)
+          }
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
         } else {
           requestData.onComplete(event.data)
@@ -207,7 +226,7 @@ export const UseConnectorProvider = (props: any) => {
         connectionState: connectionState,
       })
     }
-    const connect = (params: connectParams) => {
+    const connect = async (params: connectParams) => {
       return new Promise((resolve, reject) => {
         const url = `${WALLETURL}?requestType=connect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
@@ -221,15 +240,17 @@ export const UseConnectorProvider = (props: any) => {
         updateWalletInformation("connecting", "")
         console.log("datares1", params)
         console.log('isconnected', isConnected)
-        while (1 > 0) {
-          console.log('isconnected1111', isConnected)
-          if (isConnected) {
-            break;
-          } else {
-            continue;
-          }
-        }
-        resolve(true)
+        setResolve(resolve)
+        setReject(reject)
+        // while (1 > 0) {
+        //   console.log('isconnected1111', isConnected)
+        //   if (isConnected) {
+        //     break;
+        //   } else {
+        //     continue;
+        //   }
+        // }
+        // resolve(true)
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
         //   let response = await data;
