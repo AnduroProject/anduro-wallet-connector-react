@@ -228,6 +228,12 @@ var UseConnectorProvider = function(props) {
         networkInformation
     ]);
     useEffect(function() {
+        console.log("Package walletInformation", walletInformation);
+    }, [
+        walletInformation.connectionState,
+        walletInformation.accountPublicKey
+    ]);
+    useEffect(function() {
         if (childWindow != null) {
             window.addEventListener("close", function(event) {
                 alert("Window closed");
@@ -248,6 +254,7 @@ var UseConnectorProvider = function(props) {
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
+                updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
                 requestData.onComplete(event.data);
             }
@@ -321,6 +328,9 @@ var UseConnectorProvider = function(props) {
             } else if (createAssetData.onComplete) {
                 createAssetData.onComplete(event.data);
             }
+            if (event.data.type === "disconnect-response") {
+                updateWalletInformation("disconnected", "");
+            }
         }
     };
     var sendMessageToChildWindow = function(data) {
@@ -331,9 +341,13 @@ var UseConnectorProvider = function(props) {
             chainId: params.chainId,
             networkType: params.networkType
         });
+    };
+    var updateWalletInformation = function(connectionState, accountPublicKey) {
+        console.log("updateWalletInformation connectionState", connectionState);
+        console.log("updateWalletInformation accountPublicKey", accountPublicKey);
         setWalletInformation({
-            accountPublicKey: params.accountPublicKey,
-            connectionState: params.connectionState
+            accountPublicKey: accountPublicKey,
+            connectionState: connectionState
         });
     };
     var connect = function() {
@@ -351,6 +365,7 @@ var UseConnectorProvider = function(props) {
                             chainId: params.chainId,
                             onComplete: params.onComplete
                         });
+                        updateWalletInformation("connecting", "");
                         console.log("datares1", params);
                     })
                 ];
@@ -365,6 +380,7 @@ var UseConnectorProvider = function(props) {
         var childWindow2 = window.open(url, "_blank", windowFeatures);
         setRequestType("disconnect");
         setChildWindow(childWindow2);
+        updateWalletInformation("disconnecting", "");
     };
     var getNetworkInformation = function() {
         return networkInformation;
