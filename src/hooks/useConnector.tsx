@@ -232,14 +232,14 @@ export const UseConnectorProvider = (props: any) => {
         updateWalletInformation("connecting", "")
         console.log("datares1", params)
         console.log('isconnected', isConnected)
-        // while (1 > 0) {
-        //   console.log('isconnected1111', isConnected)
-        //   if (isConnected) {
-        //     break;
-        //   } else {
-        //     continue;
-        //   }
-        // }
+        while (1 > 0) {
+          console.log('isconnected1111ggggg', isConnected)
+          if (isConnected) {
+            break;
+          } else {
+            continue;
+          }
+        }
         resolve(true)
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
