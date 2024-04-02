@@ -83,6 +83,7 @@ export const useConnector = React.createContext<UseConnectorContextContextType |
 export const UseConnectorProvider = (props: any) => {
     const [childWindow, setChildWindow] = useState<any>(null);
     const [requestType, setRequestType] = useState("");
+    const [isConnected, setIsConnected] = useState<boolean>(false);
     const [transactionData, setTransactionData] = useState<createTransactionParams>({
       transactionType: "",
       amount: 0,
@@ -142,6 +143,7 @@ export const UseConnectorProvider = (props: any) => {
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);
           console.log("test22222")
+          updateWalletInformation("connected", event.data.result.accountPublicKey)
         } else {
           requestData.onComplete(event.data)
         }
@@ -183,6 +185,9 @@ export const UseConnectorProvider = (props: any) => {
         } else if (createAssetData.onComplete) {
           createAssetData.onComplete(event.data)
         }
+        if (event.data.type === "disconnect-response") {
+          updateWalletInformation("disconnected", "")
+        }
       }
     }
     const sendMessageToChildWindow = (data: any) => {
@@ -193,12 +198,14 @@ export const UseConnectorProvider = (props: any) => {
             chainId: params.chainId,
             networkType: params.networkType,
         });
-        setWalletInformation({
-            accountPublicKey: params.accountPublicKey,
-            connectionState: params.connectionState,
-        })
     }
-    const connect = async (params: connectParams) => {
+    const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
+      setWalletInformation({
+        accountPublicKey: accountPublicKey,
+        connectionState: connectionState,
+      })
+    }
+    const connect = (params: connectParams) => {
       return new Promise((resolve, reject) => {
         const url = `${WALLETURL}?requestType=connect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
@@ -209,7 +216,18 @@ export const UseConnectorProvider = (props: any) => {
           chainId: params.chainId,
           onComplete: params.onComplete,
         })
+        updateWalletInformation("connecting", "")
         console.log("datares1", params)
+        console.log('isconnected', isConnected)
+        resolve(true)
+        // while (1 > 0) {
+        //   console.log('isconnected', isConnected)
+        //   if (isConnected) {
+        //     break;
+        //   } else {
+        //     continue;
+        //   }
+        // }
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
         //   let response = await data;
@@ -224,6 +242,7 @@ export const UseConnectorProvider = (props: any) => {
       let childWindow = window.open(url,"_blank",windowFeatures);
       setRequestType("disconnect")
       setChildWindow(childWindow)
+      updateWalletInformation("disconnecting", "")
     }
     const getNetworkInformation = () => {
       return networkInformation;
