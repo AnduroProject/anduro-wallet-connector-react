@@ -155,6 +155,7 @@ export const UseConnectorProvider = (props: any) => {
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);
           console.log("test22222")
+          console.log('isconnected22221111', isConnected)
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
         } else {
           requestData.onComplete(event.data)
