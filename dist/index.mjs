@@ -47,7 +47,7 @@ function _unsupported_iterable_to_array(o, minLen) {
 }
 import React, { useState, useEffect } from "react";
 // src/config/WalletConfig.ts
-var WALLETURL = "http://localhost:5002";
+var WALLETURL = "http://localhost:3000";
 // src/hooks/useConnector.tsx
 import { jsx } from "react/jsx-runtime";
 var useConnector = React.createContext(null);
@@ -124,6 +124,7 @@ var UseConnectorProvider = function(props) {
             if (event.data.status) {
                 childWindow.close();
                 setIsConnected(true);
+                console.log("isconnected2222", isConnected);
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
@@ -235,14 +236,6 @@ var UseConnectorProvider = function(props) {
             updateWalletInformation("connecting", "");
             console.log("datares1", params);
             console.log("isconnected", isConnected);
-            while(1 > 0){
-                console.log("isconnected1111", isConnected);
-                if (isConnected) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
             resolve(true);
         });
     };
