@@ -8,14 +8,15 @@ export const TransferAssetVC = () => {
 
 
   // const {getNetworkInformation, transferasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
-  const handleCreateAssetFormSubmit = (event: any) => {
+  const handleCreateAssetFormSubmit = async (event: any) => {
     event.preventDefault()
-    transferasset({
+    const result = await transferasset({
         assetId,
         receiverAddress,
         supply,
         onComplete: handleTransferAssetCallback,
     })
+    console.log("*******Transfer Asset Result", result)
   }
   React.useEffect(() => {
     console.log("Transfer Network Information", getNetworkInformation())

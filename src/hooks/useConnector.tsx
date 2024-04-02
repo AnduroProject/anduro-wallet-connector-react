@@ -49,7 +49,7 @@ interface WalletInfo {
 };
 enum requestTypes {
   connect = 'connect',
-  disconnected = 'disconnected',
+  disconnected = 'disconnect',
   connectionResponse = 'connection-response',
   accountNotCreated = 'account-not-created',
   walletLoaded = 'wallet-loaded',

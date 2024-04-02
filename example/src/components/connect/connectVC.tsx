@@ -12,6 +12,10 @@ export const ConnectorVC = () => {
     })
     console.log("*******Connect Result", result)
   }
+  const handleDisconnectionAction = async () => {
+    const result = await disconnect()
+    console.log("*******Disconnect Result", result)
+  }
   React.useEffect(() => {
     console.log("Connector Network Information", getNetworkInformation())
     console.log("Connector Wallet Information", getWalletInformation())
@@ -31,7 +35,7 @@ export const ConnectorVC = () => {
         <Link to="/transfer">Transfer</Link>
       </div>
         <ConnectorVW title="Connect wallet" buttonName="Connect" handleClickAction={handleConnectionAction} />
-        <ConnectorVW title="Disconnect Wallet" buttonName="Disconnect" handleClickAction={disconnect} />
+        <ConnectorVW title="Disconnect Wallet" buttonName="Disconnect" handleClickAction={handleDisconnectionAction} />
     </div>
   );
 }
