@@ -123,10 +123,11 @@ export const UseConnectorProvider = (props: any) => {
     }, [networkInformation]);
     
     useEffect(() => {
+      const handleWindowClose = () => {
+        alert("Window closed");
+      };
       if (childWindow != null) {
-        window.addEventListener("close", (event) => {
-          alert("Window closed")
-        });
+        childWindow.addEventListener("close", handleWindowClose);
         window.addEventListener('message', handleMessage);
         return () => {
           window.removeEventListener('message', handleMessage);

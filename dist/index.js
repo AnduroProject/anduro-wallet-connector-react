@@ -175,10 +175,11 @@ var UseConnectorProvider = function(props) {
         networkInformation
     ]);
     (0, import_react.useEffect)(function() {
+        var handleWindowClose = function() {
+            alert("Window closed");
+        };
         if (childWindow != null) {
-            window.addEventListener("close", function(event) {
-                alert("Window closed");
-            });
+            childWindow.addEventListener("close", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
                 window.removeEventListener("message", handleMessage);
