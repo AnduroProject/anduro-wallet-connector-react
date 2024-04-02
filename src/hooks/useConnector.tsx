@@ -47,6 +47,26 @@ interface WalletInfo {
     accountPublicKey: string; // wallet account public key
     connectionState: string; // connection state
 };
+enum requestTypes {
+  connect = 'connect',
+  disconnected = 'disconnected',
+  connectionResponse = 'connection-response',
+  accountNotCreated = 'account-not-created',
+  walletLoaded = 'wallet-loaded',
+  networkinfo = 'networkinfo',
+  send = 'send',
+  createAsset = 'create-asset',
+  transferAsset = 'transfer-asset',
+  networkinfoResponse = 'networkinfo-response',
+  sendResponse = 'send-response',
+  createAssetResponse = 'create-asset-response',
+  disconnectResponse = 'disconnect-response',
+  bitcoin = 'bitcoin',
+  sidechain = 'sidechain',
+  normal = 'normal',
+  pegin = 'pegin',
+  pegout = 'pegout'
+};
 
 type UseConnectorContextContextType = {
   getNetworkInformation: any;
@@ -63,6 +83,7 @@ export const useConnector = React.createContext<UseConnectorContextContextType |
 export const UseConnectorProvider = (props: any) => {
     const [childWindow, setChildWindow] = useState<any>(null);
     const [requestType, setRequestType] = useState("");
+    const [isConnected, setIsConnected] = useState<boolean>(false);
     const [transactionData, setTransactionData] = useState<createTransactionParams>({
       transactionType: "",
       amount: 0,
@@ -116,7 +137,7 @@ export const UseConnectorProvider = (props: any) => {
   
     const handleMessage = (event: any) => {
       console.log("Message Received", event.data)
-      if (event.data.type === "connection-response") {
+      if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
           updateNetworkInformation(event.data.result)
@@ -126,19 +147,19 @@ export const UseConnectorProvider = (props: any) => {
         } else {
           requestData.onComplete(event.data)
         }
-      } else if (event.data.type === "account-not-created") {
+      } else if (event.data.type === requestTypes.accountNotCreated) {
         childWindow.close()
         requestData.onComplete(event.data)
-      } else if (event.data.type === "wallet-loaded") {
+      } else if (event.data.type === requestTypes.walletLoaded) {
         if (event.data.status) {
-          if (requestType === "connect" || requestType === "disconnect") {
+          if (requestType === requestTypes.connect || requestType === requestTypes.disconnected) {
             sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId});
             console.log("test1")
-          } else if (requestType === "networkinfo") {
+          } else if (requestType === requestTypes.networkinfo) {
             sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
-          } else if (requestType === "send") {
+          } else if (requestType === requestTypes.send) {
             sendMessageToChildWindow({requestType: requestType, transactionType: transactionData.transactionType, amount: transactionData.amount, receiverAddress: transactionData.receiverAddress, feerate: transactionData.feeRate, chainId: networkInformation.chainId })
-          } else if (requestType === "create-asset") {
+          } else if (requestType === requestTypes.createAsset) {
             const formValues = {
               headline: createAssetData.name,
               imageUrl: createAssetData.imageUrl,
@@ -147,17 +168,17 @@ export const UseConnectorProvider = (props: any) => {
               symbol: createAssetData.symbol,
             }
             sendMessageToChildWindow({requestType: requestType, transactionType: createAssetData.transactionType, formValues, assetType: createAssetData.assetType, properties: createAssetData.properties, chainId: networkInformation.chainId, supply: createAssetData.supply, receiverAddress: createAssetData.receiverAddress, assetId: createAssetData.assetId })
-          } else if (requestType === "transfer-asset") {
+          } else if (requestType === requestTypes.transferAsset) {
             sendMessageToChildWindow({requestType: requestType, chainId: networkInformation.chainId, supply: transferAssetData.supply, receiverAddress: transferAssetData.receiverAddress, assetId: transferAssetData.assetId })
           }
         }
-      } else if (event.data.type === "networkinfo-response") {
+      } else if (event.data.type === requestTypes.networkinfoResponse) {
         childWindow.close()
         if (event.data.status) {
             updateNetworkInformation(event.data.result)
         }
       } 
-      else if (event.data.type === "send-response" || event.data.type === "create-asset-response" || event.data.type === "disconnect-response") {
+      else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse || event.data.type === requestTypes.disconnectResponse) {
         childWindow.close()
         if (transactionData.onComplete) {
           transactionData.onComplete(event.data)
@@ -184,7 +205,7 @@ export const UseConnectorProvider = (props: any) => {
         connectionState: connectionState,
       })
     }
-    const connect = async (params: connectParams) => {
+    const connect = (params: connectParams) => {
       return new Promise((resolve, reject) => {
         const url = `${WALLETURL}?requestType=connect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
@@ -197,6 +218,16 @@ export const UseConnectorProvider = (props: any) => {
         })
         updateWalletInformation("connecting", "")
         console.log("datares1", params)
+        console.log('isconnected', isConnected)
+        resolve(true)
+        // while (1 > 0) {
+        //   console.log('isconnected', isConnected)
+        //   if (isConnected) {
+        //     break;
+        //   } else {
+        //     continue;
+        //   }
+        // }
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
         //   let response = await data;
@@ -243,7 +274,7 @@ export const UseConnectorProvider = (props: any) => {
       if (networkInformation.chainId === null || networkInformation.networkType === "") {
         status = false
         error = "The wallet is not connected."
-      } else if (transactionType && networkInformation.networkType === "bitcoin") {
+      } else if (transactionType && networkInformation.networkType === requestTypes.bitcoin) {
         status = false
         error = "can't process your request, Invalid transaction type."
       }
@@ -258,12 +289,12 @@ export const UseConnectorProvider = (props: any) => {
     }
     const validateSendTransactionType = (transactionType: string) => {
       let status: boolean = false
-      if (transactionType === "normal") {
+      if (transactionType === requestTypes.normal) {
         status = true
-      } else if (transactionType === "pegin") {
-        status = networkInformation.networkType === "bitcoin"
-      } else if (transactionType === "pegout") {
-        status = networkInformation.networkType === "sidechain"
+      } else if (transactionType === requestTypes.pegin) {
+        status = networkInformation.networkType === requestTypes.bitcoin
+      } else if (transactionType === requestTypes.pegout) {
+        status = networkInformation.networkType === requestTypes.sidechain
       }
       return status
     }
