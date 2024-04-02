@@ -135,21 +135,36 @@ export const UseConnectorProvider = (props: any) => {
       }
     }, [networkInformation]);
     
-    useEffect(() => {
-      const handleWindowClose = () => {
-        alert("Window closed");
-      };
-      if (childWindow != null) {
-        childWindow.addEventListener("close", handleWindowClose);
-        window.addEventListener('message', handleMessage);
-        return () => {
-          window.removeEventListener('message', handleMessage);
-        };
+    // useEffect(() => {
+    //   const handleWindowClose = () => {
+    //     alert("Window closed");
+    //   };
+    //   if (childWindow != null) {
+    //     childWindow.addEventListener("close", handleWindowClose);
+    //     window.addEventListener('message', handleMessage);
+    //     return () => {
+    //       window.removeEventListener('message', handleMessage);
+    //     };
+    //   }
+    // }, [childWindow]);
+
+    const handleEvents = (resolve: any, reject: any, childWindows: any) => {
+      alert("handleEvents")
+      if (childWindows != null) {
+        window.addEventListener('message', (event: any) => {
+          handleMessage(event, resolve, reject)
+        });
+        // return () => {
+        //   window.removeEventListener('message', handleMessage);
+        // };
       }
-    }, [childWindow]);
+    }
   
   
-    const handleMessage = (event: any) => {
+    const handleMessage = (event: any, resolve: any, reject: any) => {
+      console.log("Handle Message Event", event)
+      console.log("Handle Message Resolve", resolve)
+      console.log("Handle Message Reject", reject)
       console.log("Message Received", event.data)
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
@@ -240,6 +255,11 @@ export const UseConnectorProvider = (props: any) => {
         updateWalletInformation("connecting", "")
         console.log("datares1", params)
         console.log('isconnected', isConnected)
+        console.log("resolve check.0")
+        console.log("reject check.0")
+        console.log("resolve check", resolve)
+        console.log("reject check", reject)
+        handleEvents(resolve, reject, childWindow)
         setResolve(resolve)
         setReject(reject)
         // while (1 > 0) {

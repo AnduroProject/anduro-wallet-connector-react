@@ -244,21 +244,18 @@ var UseConnectorProvider = function(props) {
     }, [
         networkInformation
     ]);
-    useEffect(function() {
-        var handleWindowClose = function() {
-            alert("Window closed");
-        };
-        if (childWindow != null) {
-            childWindow.addEventListener("close", handleWindowClose);
-            window.addEventListener("message", handleMessage);
-            return function() {
-                window.removeEventListener("message", handleMessage);
-            };
+    var handleEvents = function(resolve2, reject2, childWindows) {
+        alert("handleEvents");
+        if (childWindows != null) {
+            window.addEventListener("message", function(event) {
+                handleMessage(event, resolve2, reject2);
+            });
         }
-    }, [
-        childWindow
-    ]);
-    var handleMessage = function(event) {
+    };
+    var handleMessage = function(event, resolve2, reject2) {
+        console.log("Handle Message Event", event);
+        console.log("Handle Message Resolve", resolve2);
+        console.log("Handle Message Reject", reject2);
         console.log("Message Received", event.data);
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
@@ -267,11 +264,11 @@ var UseConnectorProvider = function(props) {
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("Connection Response received", event.data);
-                if (resolve !== null) {
-                    console.log("resolve", resolve);
+                if (resolve2 !== null) {
+                    console.log("resolve", resolve2);
                     alert("check");
-                    alert(JSON.stringify(resolve));
-                    resolve(true);
+                    alert(JSON.stringify(resolve2));
+                    resolve2(true);
                 }
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
@@ -385,6 +382,11 @@ var UseConnectorProvider = function(props) {
                         updateWalletInformation("connecting", "");
                         console.log("datares1", params);
                         console.log("isconnected", isConnected);
+                        console.log("resolve check.0");
+                        console.log("reject check.0");
+                        console.log("resolve check", resolve2);
+                        console.log("reject check", reject2);
+                        handleEvents(resolve2, reject2, childWindow2);
                         setResolve(resolve2);
                         setReject(reject2);
                     })
