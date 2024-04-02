@@ -76,7 +76,7 @@ type UseConnectorContextContextType = {
   send: any;
   createasset: any;
   transferasset: any;
-  isConnectedVal: boolean;
+  isConnected: boolean;
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(
     null,
@@ -147,12 +147,14 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
-          isConnectedVal = true         
-          console.log('isconnected2222', isConnectedVal)
+          setTimeout(() => {
+            setIsConnected(true);
+          })          
+          console.log('isconnected2222', isConnected)
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);
           console.log("test22222")
-          console.log('isconnected22221111', isConnectedVal)
+          console.log('isconnected22221111', isConnected)
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
         } else {
           requestData.onComplete(event.data)
@@ -215,7 +217,6 @@ export const UseConnectorProvider = (props: any) => {
         connectionState: connectionState,
       })
     }
-    let isConnectedVal = false;
     const connect = (params: connectParams) => {
       return new Promise((resolve, reject) => {
         const url = `${WALLETURL}?requestType=connect`;
@@ -229,15 +230,15 @@ export const UseConnectorProvider = (props: any) => {
         })
         updateWalletInformation("connecting", "")
         console.log("datares1", params)
-        console.log('isconnected', isConnectedVal)
-        while (1 > 0) {
-          console.log('isconnected1111ggggg', isConnectedVal)
-          if (isConnectedVal) {
-            break;
-          } else {
-            continue;
-          }
-        }
+        console.log('isconnected', isConnected)
+        // while (1 > 0) {
+        //   console.log('isconnected1111ggggg', isConnected)
+        //   if (isConnected) {
+        //     break;
+        //   } else {
+        //     continue;
+        //   }
+        // }
         resolve(true)
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
@@ -339,7 +340,7 @@ export const UseConnectorProvider = (props: any) => {
         send,
         createasset,
         transferasset,
-        isConnectedVal,
+        isConnected,
       }}
     >
       {children}
