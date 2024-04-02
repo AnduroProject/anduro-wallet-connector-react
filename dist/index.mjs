@@ -175,6 +175,7 @@ var WALLETURL = "http://localhost:5002";
 // src/hooks/useConnector.tsx
 import { jsx } from "react/jsx-runtime";
 var useConnector = React.createContext(null);
+var resolvePromise = null;
 var UseConnectorProvider = function(props) {
     var _useState = _sliced_to_array(useState(null), 2), childWindow = _useState[0], setChildWindow = _useState[1];
     var _useState1 = _sliced_to_array(useState(""), 2), requestType = _useState1[0], setRequestType = _useState1[1];
@@ -244,20 +245,21 @@ var UseConnectorProvider = function(props) {
     }, [
         networkInformation
     ]);
-    var handleEvents = function(resolve2, reject2, childWindows) {
-        console.log("Inside handleEvents");
-        if (childWindows != null) {
-            window.addEventListener("message", function(event) {
-                handleMessage(event, resolve2, reject2);
-            });
+    useEffect(function() {
+        var handleWindowClose = function() {
+            alert("Window closed");
+        };
+        if (childWindow != null) {
+            childWindow.addEventListener("close", handleWindowClose);
+            window.addEventListener("message", handleMessage);
+            return function() {
+                window.removeEventListener("message", handleMessage);
+            };
         }
-    };
-    var handleMessage = function(event, resolve2, reject2) {
-        console.log("Inside handleMessage");
-        console.log("Handle Message Event", event);
-        console.log("Handle Message Resolve", resolve2);
-        console.log("Handle Message Reject", reject2);
-        console.log("Message Received", event.data);
+    }, [
+        childWindow
+    ]);
+    var handleMessage = function(event) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
@@ -265,17 +267,25 @@ var UseConnectorProvider = function(props) {
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("Connection Response received", event.data);
-                resolve2({
+                resolvePromise({
                     status: true,
                     result: event.data
                 });
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
+                resolvePromise({
+                    status: false,
+                    result: event.data
+                });
                 requestData.onComplete(event.data);
             }
         } else if (event.data.type === "account-not-created" /* accountNotCreated */ ) {
             childWindow.close();
             requestData.onComplete(event.data);
+            resolvePromise({
+                status: false,
+                result: event.data
+            });
         } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
             if (event.data.status) {
                 if (requestType === "connect" /* connect */  || requestType === "disconnected" /* disconnected */ ) {
@@ -284,7 +294,6 @@ var UseConnectorProvider = function(props) {
                         siteurl: window.location.origin,
                         chainId: requestData.chainId
                     });
-                    console.log("test1");
                 } else if (requestType === "networkinfo" /* networkinfo */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
@@ -346,6 +355,10 @@ var UseConnectorProvider = function(props) {
             if (event.data.type === "disconnect-response") {
                 updateWalletInformation("disconnected", "");
             }
+            resolvePromise({
+                status: true,
+                result: event.data
+            });
         }
     };
     var sendMessageToChildWindow = function(data) {
@@ -366,25 +379,20 @@ var UseConnectorProvider = function(props) {
     var connect = function() {
         var _ref = _async_to_generator(function(params) {
             return _ts_generator(this, function(_state) {
-                new Promise(function(resolve2, reject2) {
-                    var url = "".concat(WALLETURL, "?requestType=connect");
-                    var childWindow2 = window.open(url, "_blank", windowFeatures);
-                    setRequestType("connect");
-                    setChildWindow(childWindow2);
-                    console.log("datares4", params);
-                    setRequestData({
-                        chainId: params.chainId,
-                        onComplete: params.onComplete
-                    });
-                    updateWalletInformation("connecting", "");
-                    console.log("datares1", params);
-                    console.log("isconnected", isConnected);
-                    console.log("resolve check.0");
-                    console.log("reject check.0");
-                    handleEvents(resolve2, reject2, childWindow2);
-                });
                 return [
-                    2
+                    2,
+                    new Promise(function(resolve2, reject2) {
+                        var url = "".concat(WALLETURL, "?requestType=connect");
+                        var childWindow2 = window.open(url, "_blank", windowFeatures);
+                        setRequestType("connect");
+                        setChildWindow(childWindow2);
+                        setRequestData({
+                            chainId: params.chainId,
+                            onComplete: params.onComplete
+                        });
+                        updateWalletInformation("connecting", "");
+                        resolvePromise = resolve2;
+                    })
                 ];
             });
         });
@@ -393,11 +401,14 @@ var UseConnectorProvider = function(props) {
         };
     }();
     var disconnect = function() {
-        var url = "".concat(WALLETURL, "?requestType=disconnect");
-        var childWindow2 = window.open(url, "_blank", windowFeatures);
-        setRequestType("disconnect");
-        setChildWindow(childWindow2);
-        updateWalletInformation("disconnecting", "");
+        return new Promise(function(resolve2, reject2) {
+            var url = "".concat(WALLETURL, "?requestType=disconnect");
+            var childWindow2 = window.open(url, "_blank", windowFeatures);
+            setRequestType("disconnect");
+            setChildWindow(childWindow2);
+            updateWalletInformation("disconnecting", "");
+            resolvePromise = resolve2;
+        });
     };
     var getNetworkInformation = function() {
         return networkInformation;
@@ -406,22 +417,25 @@ var UseConnectorProvider = function(props) {
         return walletInformation;
     };
     var send = function(params) {
-        if (checkWalletConnection(params.onComplete, "")) {
-            var validateTransactionTypeResult = validateSendTransactionType(params.transactionType);
-            if (!validateTransactionTypeResult) {
-                params.onComplete({
-                    status: false,
-                    error: "can't process your request, Invalid transaction type",
-                    result: null
-                });
-                return;
+        return new Promise(function(resolve2, reject2) {
+            if (checkWalletConnection(params.onComplete, "")) {
+                var validateTransactionTypeResult = validateSendTransactionType(params.transactionType);
+                if (!validateTransactionTypeResult) {
+                    params.onComplete({
+                        status: false,
+                        error: "can't process your request, Invalid transaction type",
+                        result: null
+                    });
+                    return;
+                }
+                var url = "".concat(WALLETURL, "?requestType=send");
+                var childWindow2 = window.open(url, "_blank", windowFeatures);
+                setRequestType("send");
+                setChildWindow(childWindow2);
+                setTransactionData(params);
+                resolvePromise = resolve2;
             }
-            var url = "".concat(WALLETURL, "?requestType=send");
-            var childWindow2 = window.open(url, "_blank", windowFeatures);
-            setRequestType("send");
-            setChildWindow(childWindow2);
-            setTransactionData(params);
-        }
+        });
     };
     var checkWalletConnection = function(onError, transactionType) {
         var status = true;
@@ -454,22 +468,28 @@ var UseConnectorProvider = function(props) {
         return status;
     };
     var createasset = function(params) {
-        if (checkWalletConnection(params.onComplete, params.transactionType)) {
-            var url = "".concat(WALLETURL, "?requestType=create-asset");
-            var childWindow2 = window.open(url, "_blank", windowFeatures);
-            setRequestType("create-asset");
-            setChildWindow(childWindow2);
-            setCreateAssetData(params);
-        }
+        return new Promise(function(resolve2, reject2) {
+            if (checkWalletConnection(params.onComplete, params.transactionType)) {
+                var url = "".concat(WALLETURL, "?requestType=create-asset");
+                var childWindow2 = window.open(url, "_blank", windowFeatures);
+                setRequestType("create-asset");
+                setChildWindow(childWindow2);
+                setCreateAssetData(params);
+                resolvePromise = resolve2;
+            }
+        });
     };
     var transferasset = function(params) {
-        if (checkWalletConnection(params.onComplete, "transfer")) {
-            var url = "".concat(WALLETURL, "?requestType=transfer-asset");
-            var childWindow2 = window.open(url, "_blank", windowFeatures);
-            setRequestType("transfer-asset");
-            setChildWindow(childWindow2);
-            setTransferAssetData(params);
-        }
+        return new Promise(function(resolve2, reject2) {
+            if (checkWalletConnection(params.onComplete, "transfer")) {
+                var url = "".concat(WALLETURL, "?requestType=transfer-asset");
+                var childWindow2 = window.open(url, "_blank", windowFeatures);
+                setRequestType("transfer-asset");
+                setChildWindow(childWindow2);
+                setTransferAssetData(params);
+                resolvePromise = resolve2;
+            }
+        });
     };
     var children = props.children;
     return /* @__PURE__ */ jsx(useConnector.Provider, {
