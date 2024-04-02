@@ -98,6 +98,9 @@ var UseConnectorProvider = function(props) {
         if (networkState.chainId === null && childWindow === null && !isConnected) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
+            if (targetWindow.closed) {
+                alert("Window closed!");
+            }
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
         }
@@ -107,13 +110,11 @@ var UseConnectorProvider = function(props) {
     ]);
     useEffect(function() {
         console.log("isConnectedeeeee1111", isConnected);
+        childWindow.addEventListener("close", handleWindowClose);
         if (childWindow != null) {
             console.log("close");
-            childWindow.addEventListener("beforeunload", handleWindowClose);
-            window.addEventListener("beforeunload", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
-                childWindow.removeEventListener("beforeunload", handleWindowClose);
                 window.removeEventListener("message", handleMessage);
             };
         }
