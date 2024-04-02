@@ -436,29 +436,25 @@ var UseConnectorProvider = function(props) {
     var connect = function() {
         var _ref = _async_to_generator(function(params) {
             return _ts_generator(this, function(_state) {
+                new Promise(function(resolve2, reject2) {
+                    var url = "".concat(WALLETURL, "?requestType=connect");
+                    var childWindow2 = window.open(url, "_blank", windowFeatures);
+                    setRequestType("connect");
+                    setChildWindow(childWindow2);
+                    console.log("datares4", params);
+                    setRequestData({
+                        chainId: params.chainId,
+                        onComplete: params.onComplete
+                    });
+                    updateWalletInformation("connecting", "");
+                    console.log("datares1", params);
+                    console.log("isconnected", isConnected);
+                    console.log("resolve check.0");
+                    console.log("reject check.0");
+                    handleEvents(resolve2, reject2, childWindow2);
+                });
                 return [
-                    2,
-                    new Promise(function(resolve2, reject2) {
-                        var url = "".concat(WALLETURL, "?requestType=connect");
-                        var childWindow2 = window.open(url, "_blank", windowFeatures);
-                        setRequestType("connect");
-                        setChildWindow(childWindow2);
-                        console.log("datares4", params);
-                        setRequestData({
-                            chainId: params.chainId,
-                            onComplete: params.onComplete
-                        });
-                        updateWalletInformation("connecting", "");
-                        console.log("datares1", params);
-                        console.log("isconnected", isConnected);
-                        console.log("resolve check.0");
-                        console.log("reject check.0");
-                        console.log("resolve check", resolve2);
-                        console.log("reject check", reject2);
-                        handleEvents(resolve2, reject2, childWindow2);
-                        setResolve(resolve2);
-                        setReject(reject2);
-                    })
+                    2
                 ];
             });
         });

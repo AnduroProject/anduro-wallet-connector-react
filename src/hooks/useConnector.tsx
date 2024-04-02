@@ -238,7 +238,7 @@ export const UseConnectorProvider = (props: any) => {
       })
     }
     const connect = async (params: connectParams) => {
-      return new Promise((resolve, reject) => {
+      new Promise((resolve, reject) => {
         const url = `${WALLETURL}?requestType=connect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
         setRequestType("connect")
@@ -253,11 +253,11 @@ export const UseConnectorProvider = (props: any) => {
         console.log('isconnected', isConnected)
         console.log("resolve check.0")
         console.log("reject check.0")
-        console.log("resolve check", resolve)
-        console.log("reject check", reject)
+        // console.log("resolve check", resolve)
+        // console.log("reject check", reject)
         handleEvents(resolve, reject, childWindow)
-        setResolve(resolve)
-        setReject(reject)
+        // setResolve(resolve)
+        // setReject(reject)
         // while (1 > 0) {
         //   console.log('isconnected1111', isConnected)
         //   if (isConnected) {
