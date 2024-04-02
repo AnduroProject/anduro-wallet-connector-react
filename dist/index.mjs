@@ -102,10 +102,12 @@ var useConnector = function(props) {
         networkInformation
     ]);
     useEffect(function() {
+        var handleWindowClose = function() {
+            alert("Window closed");
+        };
         if (childWindow != null) {
-            window.addEventListener("close", function(event) {
-                alert("Window closed");
-            });
+            console.log("closed");
+            childWindow.addEventListener("close", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
                 window.removeEventListener("message", handleMessage);
@@ -216,14 +218,6 @@ var useConnector = function(props) {
                 chainId: params.chainId,
                 onComplete: params.onComplete
             });
-            while(1 > 0){
-                console.log("isConnected", isConnected);
-                if (isConnected) {
-                    resolve(true);
-                } else {
-                    continue;
-                }
-            }
         });
     };
     var disconnect = function() {

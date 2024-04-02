@@ -98,10 +98,12 @@ export const useConnector = (props: Props) => {
   }, [networkInformation]);
   
   useEffect(() => {
+    const handleWindowClose = () => {
+      alert("Window closed");
+    };
     if (childWindow != null) {
-      window.addEventListener("close", (event) => {
-        alert("Window closed")
-      });
+      console.log("closed")
+      childWindow.addEventListener("close", handleWindowClose);
       window.addEventListener('message', handleMessage);
       return () => {
         window.removeEventListener('message', handleMessage);
@@ -182,14 +184,14 @@ export const useConnector = (props: Props) => {
         chainId: params.chainId,
         onComplete: params.onComplete,
       })
-      while (1 > 0) {
-        console.log("isConnected", isConnected)
-        if (isConnected) {
-           resolve(true)
-        } else {
-          continue;
-        }
-      }
+      // while (1 > 0) {
+      //   console.log("isConnected", isConnected)
+      //   if (isConnected) {
+      //      resolve(true)
+      //   } else {
+      //     continue;
+      //   }
+      // }
     })  
    
   }
