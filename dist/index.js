@@ -117,7 +117,7 @@ module.exports = __toCommonJS(src_exports);
 // src/hooks/useConnector.tsx
 var import_react = __toESM(require("react"));
 // src/config/WalletConfig.ts
-var WALLETURL = "http://localhost:5002";
+var WALLETURL = "http://localhost:3000";
 // src/hooks/useConnector.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var useConnector = import_react.default.createContext(null);
@@ -192,6 +192,7 @@ var UseConnectorProvider = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
+                setIsConnected(true);
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
@@ -303,6 +304,14 @@ var UseConnectorProvider = function(props) {
             updateWalletInformation("connecting", "");
             console.log("datares1", params);
             console.log("isconnected", isConnected);
+            while(1 > 0){
+                console.log("isconnected1111", isConnected);
+                if (isConnected) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
             resolve(true);
         });
     };
