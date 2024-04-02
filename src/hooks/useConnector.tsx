@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { WALLETURL } from "../config/WalletConfig";
 
 interface WalletState {
     accountPublicKey: string; // wallet account public key
@@ -11,15 +10,14 @@ interface NetworkState {
 };
 
 interface connectParams {
-    chainId: number;
-    onComplete: any;
+  chainId: number;
+  walletURL: string;
 };
 interface createTransactionParams {
     transactionType: string;
     amount: number;
     receiverAddress?: string | undefined;
     feeRate?: number | undefined;
-    onComplete: any;
 };
 interface PropertiesType {
     type: string;
@@ -34,14 +32,12 @@ interface CreateassetParams {
     assetType: number;
     transactionType: string;
     receiverAddress: string;
-    onComplete: any;
     assetId?: number;
 }
 interface TransferAssetParams {
     assetId: number;
     receiverAddress: string;
     supply: number;
-    onComplete: any;
 }
 enum requestTypes {
   connect = 'connect',
@@ -87,7 +83,6 @@ export const UseConnectorProvider = (props: any) => {
       amount: 0,
       receiverAddress: "",
       feeRate: 1,
-      onComplete: null
     });
     const [requestData, setRequestData] = React.useState<any>(null);
     const [createAssetData, setCreateAssetData] = React.useState<CreateassetParams>({
@@ -99,22 +94,21 @@ export const UseConnectorProvider = (props: any) => {
       assetType: 0,
       transactionType: "",
       receiverAddress: "",
-      onComplete: null,
     });
     const [transferAssetData, setTransferAssetData] = React.useState<TransferAssetParams>({
       assetId: 0,
       receiverAddress: "",
       supply: 0,
-      onComplete: null,
     });
     const [networkState, setNetworkState] = React.useState<NetworkState>({chainId: null, networkType: ""})
     const [walletState, setWalletState] = React.useState<WalletState>({accountPublicKey: "", connectionState: "disconnected"})
+    const [walletURL, setWalletURL] = useState(localStorage.getItem("walletURL") || "");
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
 
     useEffect(() => {
      
       if (networkState.chainId === null && childWindow === null && !isConnected) {
-        const url = `${WALLETURL}?requestType=networkinfo`;
+        const url = `${walletURL}?requestType=networkinfo`;
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
@@ -122,7 +116,6 @@ export const UseConnectorProvider = (props: any) => {
     }, [networkState,isConnected]);
     
     useEffect(() => {
-      console.log('isConnectedeeeee1111', isConnected)
       const onUnload = (e: any) => {
         e.preventDefault()
         return (e.returnValue = "Are you sure you want to close?")
@@ -152,19 +145,14 @@ export const UseConnectorProvider = (props: any) => {
           setTimeout(() => {
             setIsConnected(true);
           })          
-          console.log('isconnected2222', isConnected)
           updateNetworkInformation(event.data.result)
-          requestData.onComplete(event.data);
-          console.log("Connection Response received", event.data)
           resolvePromise({status: true, result: event.data})
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
         } else {
           resolvePromise({status: false, result: event.data})
-          requestData.onComplete(event.data)
         }
       } else if (event.data.type === requestTypes.accountNotCreated) {
         childWindow.close()
-        requestData.onComplete(event.data)
         resolvePromise({status: false, result: event.data})
       } else if (event.data.type === requestTypes.walletLoaded) {
         if (event.data.status) {
@@ -192,15 +180,12 @@ export const UseConnectorProvider = (props: any) => {
         if (event.data.status) {
             updateNetworkInformation(event.data.result)
         }
-      } 
-      else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse || event.data.type === requestTypes.disconnectResponse) {
+      } else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse) {
         childWindow.close()
-        if (transactionData.onComplete || createAssetData.onComplete) {
-          resolvePromise({status: true, result: event.data})
-        }
-        if (event.data.type === "disconnect-response") {
-          updateWalletInformation("disconnected", "")
-        }
+        resolvePromise({status: true, result: event.data})
+      } else if (event.data.type === requestTypes.disconnectResponse) {
+        childWindow.close()
+        updateWalletInformation("disconnected", "")
       }
     }
     const sendMessageToChildWindow = (data: any) => {
@@ -220,13 +205,14 @@ export const UseConnectorProvider = (props: any) => {
     }
     const connect = async (params: connectParams) => {
       return new Promise((resolve, reject) => {
-        const url = `${WALLETURL}?requestType=connect`;
+        const url = `${params.walletURL}?requestType=connect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
+        localStorage.setItem("walletURL", params.walletURL)
+        setWalletURL(params.walletURL)
         setRequestType("connect")
         setChildWindow(childWindow)
         setRequestData({
           chainId: params.chainId,
-          onComplete: params.onComplete,
         })
         updateWalletInformation("connecting", "")
         resolvePromise = resolve;
@@ -235,7 +221,7 @@ export const UseConnectorProvider = (props: any) => {
   
     const disconnect = () => {
       return new Promise((resolve, reject) => {
-        const url = `${WALLETURL}?requestType=disconnect`;
+        const url = `${walletURL}?requestType=disconnect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
         setRequestType("disconnect")
         setChildWindow(childWindow)
@@ -243,25 +229,19 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise = resolve;
       })
     }
-    const getNetworkInformation = () => {
-      return networkState;
-    }
-    const getWalletInformation = () => {
-      return walletState;
-    }
     const send = (params: createTransactionParams) => {
       return new Promise((resolve, reject) => {
-        if (checkWalletConnection(params.onComplete, "")) {
+        if (checkWalletConnection(resolve, "")) {
           const validateTransactionTypeResult = validateSendTransactionType(params.transactionType)
           if (!validateTransactionTypeResult) {
-            params.onComplete({
+            resolve({
               status: false,
               error: "can't process your request, Invalid transaction type",
               result: null,
             })
             return;
           }
-          const url = `${WALLETURL}?requestType=send`;
+          const url = `${walletURL}?requestType=send`;
           let childWindow = window.open(url,"_blank",windowFeatures);
           setRequestType("send")
           setChildWindow(childWindow)
@@ -302,8 +282,8 @@ export const UseConnectorProvider = (props: any) => {
     }
     const createasset = (params: CreateassetParams) => {
       return new Promise((resolve, reject) => {
-        if (checkWalletConnection(params.onComplete, params.transactionType)) {
-          const url = `${WALLETURL}?requestType=create-asset`;
+        if (checkWalletConnection(resolve, params.transactionType)) {
+          const url = `${walletURL}?requestType=create-asset`;
           let childWindow = window.open(url,"_blank",windowFeatures);
           setRequestType("create-asset")
           setChildWindow(childWindow)
@@ -314,8 +294,8 @@ export const UseConnectorProvider = (props: any) => {
     }
     const transferasset = (params: TransferAssetParams) => {
       return new Promise((resolve, reject) => {
-        if (checkWalletConnection(params.onComplete, "transfer")) {
-          const url = `${WALLETURL}?requestType=transfer-asset`;
+        if (checkWalletConnection(resolve, "transfer")) {
+          const url = `${walletURL}?requestType=transfer-asset`;
           let childWindow = window.open(url,"_blank",windowFeatures);
           setRequestType("transfer-asset")
           setChildWindow(childWindow)

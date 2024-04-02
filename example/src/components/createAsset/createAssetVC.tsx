@@ -1,7 +1,7 @@
 import React from 'react';
 import { useConnector } from 'anduro-wallet-connector'
 export const CreateAssetVC = () => {
-  const {getNetworkInformation, getWalletInformation, createasset} = React.useContext<any>(useConnector)
+  const {networkState, walletState, createasset} = React.useContext<any>(useConnector)
   const [receiverAddress, setReceiverAddress] = React.useState<any>("")
   // for asset
   const [name, setName] = React.useState<string>("")
@@ -25,19 +25,15 @@ export const CreateAssetVC = () => {
         properties,
         assetType,
         transactionType: createAssetTransactionType,
-        onComplete: handleCreateAssetCallback,
         receiverAddress,
         assetId,
     })
     console.log("*******Create and Mint asset Result", result)
   }
   React.useEffect(() => {
-    console.log("Create And Mint Network Information", getNetworkInformation())
-    console.log("Create And Mint Wallet Information", getWalletInformation())
+    console.log("Create And Mint Network Information", networkState)
+    console.log("Create And Mint Wallet Information", walletState)
   }, [])
-  const handleCreateAssetCallback = (event: any) => {
-    // console.log("Create Asset Event", event)
-  }
   return (
     <div>
       <div className="widset_parent">

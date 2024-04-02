@@ -8,7 +8,6 @@ export const ConnectorVC = () => {
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 2,
-      onComplete: handleConnectionCallback,
     })
     console.log("*******Connect Result", result)
   }
@@ -16,13 +15,14 @@ export const ConnectorVC = () => {
     const result = await disconnect()
     console.log("*******Disconnect Result", result)
   }
+  // React.useEffect(() => {
+  //   console.log("Connector Network Information", networkState)
+  //   console.log("Connector Wallet Information", walletState)
+  // }, [])
   React.useEffect(() => {
     console.log("Connector Network Information", networkState)
     console.log("Connector Wallet Information", walletState)
-  }, [])
-  const handleConnectionCallback = (event: any) => {
-    // console.log("Connection Callback", event)
-  }
+  }, [walletState, networkState])
   return (
     <div>
       {walletState.accountPublicKey === "" && (
@@ -39,7 +39,7 @@ export const ConnectorVC = () => {
           <div className='display-flex'>
             <Link to="/transfer">Transfer</Link>
           </div>
-          <ConnectorVW title="Disconnect Wallet" buttonName="Disconnect" handleClickAction={disconnect} />
+          <ConnectorVW title="Disconnect Wallet" buttonName="Disconnect" handleClickAction={handleDisconnectionAction} />
         </div>
       )}
     </div>
