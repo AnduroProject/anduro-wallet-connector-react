@@ -8,7 +8,6 @@ export const ConnectorVC = () => {
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 2,
-      onComplete: handleConnectionCallback,
     })
     console.log("*******Connect Result", result)
   }
@@ -20,9 +19,6 @@ export const ConnectorVC = () => {
     console.log("Connector Network Information", getNetworkInformation())
     console.log("Connector Wallet Information", getWalletInformation())
   }, [])
-  const handleConnectionCallback = (event: any) => {
-    // console.log("Connection Callback", event)
-  }
   return (
     <div>
       <div className='display-flex'>

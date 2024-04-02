@@ -16,7 +16,6 @@ export const SendVC = () => {
       amount: amount,
       receiverAddress: receiverAddress,
       feeRate: feerate,
-      onComplete: handleTransferCallback,
     }
     const result = await send(params)
     console.log("*******Send Transaction Result", result)
@@ -25,9 +24,6 @@ export const SendVC = () => {
     console.log("SEND Network Information", getNetworkInformation())
     console.log("SEND Wallet Information", getWalletInformation())
   }, [])
-  const handleTransferCallback = (event: any) => {
-    // console.log("Tranfer Event", event)
-  }
   return (
     <div>
       <div className="widset_parent">

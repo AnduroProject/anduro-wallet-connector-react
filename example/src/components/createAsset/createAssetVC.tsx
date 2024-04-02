@@ -25,7 +25,6 @@ export const CreateAssetVC = () => {
         properties,
         assetType,
         transactionType: createAssetTransactionType,
-        onComplete: handleCreateAssetCallback,
         receiverAddress,
         assetId,
     })
@@ -35,9 +34,6 @@ export const CreateAssetVC = () => {
     console.log("Create And Mint Network Information", getNetworkInformation())
     console.log("Create And Mint Wallet Information", getWalletInformation())
   }, [])
-  const handleCreateAssetCallback = (event: any) => {
-    // console.log("Create Asset Event", event)
-  }
   return (
     <div>
       <div className="widset_parent">

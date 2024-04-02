@@ -14,7 +14,6 @@ export const TransferAssetVC = () => {
         assetId,
         receiverAddress,
         supply,
-        onComplete: handleTransferAssetCallback,
     })
     console.log("*******Transfer Asset Result", result)
   }
@@ -22,9 +21,6 @@ export const TransferAssetVC = () => {
     console.log("Transfer Network Information", getNetworkInformation())
     console.log("Transfer Wallet Information", getWalletInformation())
   }, [])
-  const handleTransferAssetCallback = (event: any) => {
-    // console.log("Transfer Asset Event", event)
-  }
   return (
     <div>
       <div className="widset_parent">
