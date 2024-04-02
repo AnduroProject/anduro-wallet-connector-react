@@ -238,7 +238,7 @@ module.exports = __toCommonJS(src_exports);
 // src/hooks/useConnector.ts
 var import_react = __toESM(require("react"));
 var import_events = require("events");
-var import_wait_for_event = require("wait-for-event");
+var import_node_process = __toESM(require("process"));
 var walletInformation = {
     accountPublicKey: "",
     connectionState: "disconnected"
@@ -313,7 +313,9 @@ var useConnector = function(props) {
                 setNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
-                walletEvent.emit("connectionresponse", event.data);
+                import_node_process.default.nextTick(function() {
+                    walletEvent.emit("connectionresponse", event.data);
+                });
             } else {
                 requestData.onComplete(event.data);
             }
@@ -330,6 +332,9 @@ var useConnector = function(props) {
                     });
                     console.log("test1");
                     walletEvent.emit("connectionresponse", event.data);
+                    import_node_process.default.nextTick(function() {
+                        walletEvent.emit("connectionresponse", event.data);
+                    });
                 } else if (requestType === "networkinfo") {
                     sendMessageToChildWindow({
                         requestType: requestType,
@@ -399,55 +404,48 @@ var useConnector = function(props) {
         walletInformation.accountPublicKey = params.accountPublicKey;
         walletInformation.connectionState = params.connectionState;
     };
-    var connect = function() {
-        var _ref = _async_to_generator(function(params) {
-            return _ts_generator(this, function(_state) {
-                return [
-                    2,
-                    new Promise(function(resolve, reject) {
-                        var url = "".concat(props.walletUrl, "?requestType=connect");
-                        var childWindow2 = window.open(url, "_blank", windowFeatures);
-                        setRequestType("connect");
-                        setChildWindow(childWindow2);
-                        console.log("datares4", params);
-                        setRequestData({
-                            chainId: params.chainId,
-                            onComplete: params.onComplete
-                        });
-                        console.log("datares1", params);
-                        (0, import_wait_for_event.waitFor)("connectionresponse", walletEvent, function() {
-                            var _ref = _async_to_generator(function(data) {
-                                var response;
-                                return _ts_generator(this, function(_state) {
-                                    switch(_state.label){
-                                        case 0:
-                                            console.log("datares", data);
-                                            return [
-                                                4,
-                                                data
-                                            ];
-                                        case 1:
-                                            response = _state.sent();
-                                            console.log("datares111", response);
-                                            resolve(response);
-                                            return [
-                                                2
-                                            ];
-                                    }
-                                });
-                            });
-                            return function(data) {
-                                return _ref.apply(this, arguments);
-                            };
-                        }());
-                    })
-                ];
+    var connect = function(params) {
+        return new Promise(function(resolve, reject) {
+            var url = "".concat(props.walletUrl, "?requestType=connect");
+            var childWindow2 = window.open(url, "_blank", windowFeatures);
+            setRequestType("connect");
+            setChildWindow(childWindow2);
+            console.log("datares4", params);
+            setRequestData({
+                chainId: params.chainId,
+                onComplete: params.onComplete
             });
+            console.log("datares1", params);
+            setTimeout(function() {
+                console.log("kkkk");
+                walletEvent.on("connectionresponse", function() {
+                    var _ref = _async_to_generator(function(data) {
+                        var response;
+                        return _ts_generator(this, function(_state) {
+                            switch(_state.label){
+                                case 0:
+                                    console.log("datares", data);
+                                    return [
+                                        4,
+                                        data
+                                    ];
+                                case 1:
+                                    response = _state.sent();
+                                    console.log("datares111", response);
+                                    resolve(response);
+                                    return [
+                                        2
+                                    ];
+                            }
+                        });
+                    });
+                    return function(data) {
+                        return _ref.apply(this, arguments);
+                    };
+                }());
+            }, 5e3);
         });
-        return function connect(params) {
-            return _ref.apply(this, arguments);
-        };
-    }();
+    };
     var disconnect = function() {
         var url = "".concat(props.walletUrl, "?requestType=disconnect");
         var childWindow2 = window.open(url, "_blank", windowFeatures);
