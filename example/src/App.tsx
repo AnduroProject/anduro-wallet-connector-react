@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from './route/route';
-import { UseConnectorProvider } from 'anduro-wallet-connecter/dist';
+import { UseConnectorProvider } from 'anduro-wallet-connector';
 
 function App() {
   return (
