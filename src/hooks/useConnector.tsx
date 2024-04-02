@@ -63,6 +63,7 @@ export const useConnector = React.createContext<UseConnectorContextContextType |
 export const UseConnectorProvider = (props: any) => {
     const [childWindow, setChildWindow] = useState<any>(null);
     const [requestType, setRequestType] = useState("");
+    const [isConnected, setIsConnected] = useState<boolean>(false);
     const [transactionData, setTransactionData] = useState<createTransactionParams>({
       transactionType: "",
       amount: 0,
@@ -133,6 +134,7 @@ export const UseConnectorProvider = (props: any) => {
           if (requestType === "connect" || requestType === "disconnect") {
             sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId});
             console.log("test1")
+            setIsConnected(true)
           } else if (requestType === "networkinfo") {
             sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
           } else if (requestType === "send") {
@@ -178,7 +180,7 @@ export const UseConnectorProvider = (props: any) => {
             connectionState: params.connectionState,
         })
     }
-    const connect = async (params: connectParams) => {
+    const connect = (params: connectParams) => {
       return new Promise((resolve, reject) => {
         const url = `${WALLETURL}?requestType=connect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
@@ -190,6 +192,16 @@ export const UseConnectorProvider = (props: any) => {
           onComplete: params.onComplete,
         })
         console.log("datares1", params)
+        console.log('isconnected', isConnected)
+        resolve(true)
+        // while (1 > 0) {
+        //   console.log('isconnected', isConnected)
+        //   if (isConnected) {
+        //     break;
+        //   } else {
+        //     continue;
+        //   }
+        // }
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
         //   let response = await data;
