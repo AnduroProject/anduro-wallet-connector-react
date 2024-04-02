@@ -119,7 +119,7 @@ export const useConnector = (props: Props) => {
   useEffect(() => {
     if (childWindow != null) {
       window.addEventListener("close", (event) => {
-        alert("Window closed")
+        alert("Window closed succesfully ")
       });
       window.addEventListener('message', handleMessage);
       return () => {

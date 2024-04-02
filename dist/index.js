@@ -295,7 +295,7 @@ var useConnector = function(props) {
     (0, import_react.useEffect)(function() {
         if (childWindow != null) {
             window.addEventListener("close", function(event) {
-                alert("Window closed");
+                alert("Window closed succesfully ");
             });
             window.addEventListener("message", handleMessage);
             return function() {
