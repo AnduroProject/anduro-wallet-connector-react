@@ -117,7 +117,7 @@ module.exports = __toCommonJS(src_exports);
 // src/hooks/useConnector.tsx
 var import_react = __toESM(require("react"));
 // src/config/WalletConfig.ts
-var WALLETURL = "http://localhost:3000";
+var WALLETURL = "http://localhost:5002";
 // src/hooks/useConnector.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var useConnector = import_react.default.createContext(null);
@@ -176,12 +176,15 @@ var UseConnectorProvider = function(props) {
     ]);
     (0, import_react.useEffect)(function() {
         var handleWindowClose = function() {
-            alert("Window closed");
+            console.log("close came");
         };
         if (childWindow != null) {
-            childWindow.addEventListener("close", handleWindowClose);
+            console.log("close");
+            childWindow.addEventListener("beforeunload", handleWindowClose);
+            window.addEventListener("beforeunload", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
+                childWindow.removeEventListener("beforeunload", handleWindowClose);
                 window.removeEventListener("message", handleMessage);
             };
         }

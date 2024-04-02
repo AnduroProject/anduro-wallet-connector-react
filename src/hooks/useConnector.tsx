@@ -124,12 +124,15 @@ export const UseConnectorProvider = (props: any) => {
     
     useEffect(() => {
       const handleWindowClose = () => {
-        alert("Window closed");
+        console.log("close came")
       };
       if (childWindow != null) {
-        childWindow.addEventListener("close", handleWindowClose);
+        console.log("close")
+        childWindow.addEventListener("beforeunload", handleWindowClose);
+        window.addEventListener("beforeunload", handleWindowClose);
         window.addEventListener('message', handleMessage);
         return () => {
+          childWindow.removeEventListener("beforeunload", handleWindowClose);
           window.removeEventListener('message', handleMessage);
         };
       }

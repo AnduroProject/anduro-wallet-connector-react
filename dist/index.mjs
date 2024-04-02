@@ -47,7 +47,7 @@ function _unsupported_iterable_to_array(o, minLen) {
 }
 import React, { useState, useEffect } from "react";
 // src/config/WalletConfig.ts
-var WALLETURL = "http://localhost:3000";
+var WALLETURL = "http://localhost:5002";
 // src/hooks/useConnector.tsx
 import { jsx } from "react/jsx-runtime";
 var useConnector = React.createContext(null);
@@ -106,12 +106,15 @@ var UseConnectorProvider = function(props) {
     ]);
     useEffect(function() {
         var handleWindowClose = function() {
-            alert("Window closed");
+            console.log("close came");
         };
         if (childWindow != null) {
-            childWindow.addEventListener("close", handleWindowClose);
+            console.log("close");
+            childWindow.addEventListener("beforeunload", handleWindowClose);
+            window.addEventListener("beforeunload", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
+                childWindow.removeEventListener("beforeunload", handleWindowClose);
                 window.removeEventListener("message", handleMessage);
             };
         }
