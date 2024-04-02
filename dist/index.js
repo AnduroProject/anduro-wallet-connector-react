@@ -199,12 +199,14 @@ var UseConnectorProvider = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
-                isConnectedVal = true;
-                console.log("isconnected2222", isConnectedVal);
+                setTimeout(function() {
+                    setIsConnected(true);
+                });
+                console.log("isconnected2222", isConnected);
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
-                console.log("isconnected22221111", isConnectedVal);
+                console.log("isconnected22221111", isConnected);
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
                 requestData.onComplete(event.data);
@@ -299,7 +301,6 @@ var UseConnectorProvider = function(props) {
             connectionState: connectionState
         });
     };
-    var isConnectedVal = false;
     var connect = function(params) {
         return new Promise(function(resolve, reject) {
             var url = "".concat(WALLETURL, "?requestType=connect");
@@ -313,15 +314,7 @@ var UseConnectorProvider = function(props) {
             });
             updateWalletInformation("connecting", "");
             console.log("datares1", params);
-            console.log("isconnected", isConnectedVal);
-            while(1 > 0){
-                console.log("isconnected1111ggggg", isConnectedVal);
-                if (isConnectedVal) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
+            console.log("isconnected", isConnected);
             resolve(true);
         });
     };
@@ -414,7 +407,7 @@ var UseConnectorProvider = function(props) {
             send: send,
             createasset: createasset,
             transferasset: transferasset,
-            isConnectedVal: isConnectedVal
+            isConnected: isConnected
         },
         children: children
     });
