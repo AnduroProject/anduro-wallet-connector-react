@@ -143,7 +143,9 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
-          setIsConnected(true);
+          setTimeout(() => {
+            setIsConnected(true);
+          })          
           console.log('isconnected2222', isConnected)
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);

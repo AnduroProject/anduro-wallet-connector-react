@@ -195,7 +195,9 @@ var UseConnectorProvider = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
-                setIsConnected(true);
+                setTimeout(function() {
+                    setIsConnected(true);
+                });
                 console.log("isconnected2222", isConnected);
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
