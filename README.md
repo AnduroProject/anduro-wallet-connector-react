@@ -36,3 +36,72 @@ function App () {
 
 we will use the <UseConnectorProvider /> component to connect anduro wallet extension.
 
+## 1. Connect Anduro Wallet 
+
+Connect Anduro wallet using connect function 
+
+```bash 
+import React from 'react';
+const {connect} = React.useContext<any>(useConnector);
+
+const handleConnectResponse = async () => {
+  const result = await connect({
+   chainId
+  })
+}
+```
+
+## 2. Disconnect Anduro Wallet 
+
+Disconnect Anduro wallet using disconnect function 
+
+
+```bash 
+import React from 'react';
+const {disconnect} = React.useContext<any>(useConnector);
+
+const handleConnectResponse = async () => {
+  const result = await disconnect()
+}
+```
+
+## 3. Create Asset Transfer 
+
+Create Asset Transfer in  Anduro wallet using create asset function.
+
+```bash  
+import { useConnector } from 'anduro-wallet-connector';
+import React from 'react';
+
+const {createasset} = React.useContext<any>(useConnector);
+
+const handleCreateAssetAction = async () => {
+  const result = await createasset({
+    name,
+    symbol,
+    imageUrl,
+    supply,
+    properties,
+    assetType,
+    transactionType: createAssetTransactionType,
+    receiverAddress,
+    assetId,
+  })
+}
+```
+
+## 4.Transfer Asset
+```bash 
+import { useConnector } from 'anduro-wallet-connector';
+import React from 'react';
+
+const { transferasset } = React.useContext<any>(useConnector);
+
+const exampleFunction = async () => {
+  const result = await transferasset({
+    assetId: 1,
+    receiverAddress: "ccrt1qy6302x6qm8084tfwuf2hagfe8ndvpevg3u5n2j",
+    supply: 10,
+  })
+}
+```
