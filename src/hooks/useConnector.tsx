@@ -137,7 +137,7 @@ export const UseConnectorProvider = (props: any) => {
           window.removeEventListener('message', handleMessage);
         };
       }
-    }, [childWindow]);
+    }, [childWindow,isConnected]);
     
     const handleWindowClose = () => {
       alert("Window closed");

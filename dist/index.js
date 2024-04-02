@@ -191,7 +191,8 @@ var UseConnectorProvider = function(props) {
             };
         }
     }, [
-        childWindow
+        childWindow,
+        isConnected
     ]);
     var handleWindowClose = function() {
         alert("Window closed");
