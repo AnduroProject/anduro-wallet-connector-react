@@ -15,9 +15,9 @@ export const CreateAssetVC = () => {
 
 
   // const {getNetworkInformation, createasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
-  const handleCreateAssetFormSubmit = (event: any) => {
+  const handleCreateAssetFormSubmit = async (event: any) => {
     event.preventDefault()
-    createasset({
+    const result = await createasset({
         name,
         symbol,
         imageUrl,
@@ -29,6 +29,7 @@ export const CreateAssetVC = () => {
         receiverAddress,
         assetId,
     })
+    console.log("*******Create and Mint asset Result", result)
   }
   React.useEffect(() => {
     console.log("Create And Mint Network Information", getNetworkInformation())

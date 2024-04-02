@@ -5,11 +5,16 @@ import { Link } from 'react-router-dom';
 export const ConnectorVC = () => {
   const {networkState, walletState, connect, disconnect, send, createasset, transferasset} = React.useContext<any>(useConnector)
   // const {connect, disconnect, getNetworkInformation, send, createasset, transferasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
-  const handleConnectionAction = () => {
-    connect({
+  const handleConnectionAction = async () => {
+    const result = await connect({
       chainId: 2,
       onComplete: handleConnectionCallback,
     })
+    console.log("*******Connect Result", result)
+  }
+  const handleDisconnectionAction = async () => {
+    const result = await disconnect()
+    console.log("*******Disconnect Result", result)
   }
   React.useEffect(() => {
     console.log("Connector Network Information", networkState)

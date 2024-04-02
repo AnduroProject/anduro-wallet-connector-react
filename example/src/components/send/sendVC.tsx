@@ -9,9 +9,8 @@ export const SendVC = () => {
 
 
   // const {getNetworkInformation, send, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
-  const handleSendFormSubmit = (event: any) => {
+  const handleSendFormSubmit = async (event: any) => {
     event.preventDefault()
-    console.log("-transactionType", sendType)
     let params = {
       transactionType: sendType,
       amount: amount,
@@ -19,7 +18,8 @@ export const SendVC = () => {
       feeRate: feerate,
       onComplete: handleTransferCallback,
     }
-    send(params)
+    const result = await send(params)
+    console.log("*******Send Transaction Result", result)
   }
   React.useEffect(() => {
     console.log("SEND Network Information", getNetworkInformation())
