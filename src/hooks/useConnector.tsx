@@ -43,10 +43,6 @@ interface TransferAssetParams {
     supply: number;
     onComplete: any;
 }
-interface WalletInfo {
-    accountPublicKey: string; // wallet account public key
-    connectionState: string; // connection state
-};
 enum requestTypes {
   connect = 'connect',
   disconnected = 'disconnect',
