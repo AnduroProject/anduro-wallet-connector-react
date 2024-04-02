@@ -165,19 +165,18 @@ var UseConnectorProvider = function(props) {
     }), 2), walletInformation = _import_react_default_useState4[0], setWalletInformation = _import_react_default_useState4[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     (0, import_react.useEffect)(function() {
-        if (networkInformation.chainId === null && childWindow === null) {
+        console.log("isConnectedeeeee", isConnected);
+        if (networkInformation.chainId === null && childWindow === null && !isConnected) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
         }
     }, [
-        networkInformation
+        networkInformation,
+        isConnected
     ]);
     (0, import_react.useEffect)(function() {
-        var handleWindowClose = function() {
-            alert("Window closed");
-        };
         if (childWindow != null) {
             childWindow.addEventListener("close", handleWindowClose);
             window.addEventListener("message", handleMessage);
@@ -186,9 +185,11 @@ var UseConnectorProvider = function(props) {
             };
         }
     }, [
-        childWindow,
-        isConnected
+        childWindow
     ]);
+    var handleWindowClose = function() {
+        alert("Window closed");
+    };
     var handleMessage = function(event) {
         console.log("Message Received", event.data);
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
