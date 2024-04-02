@@ -1,14 +1,14 @@
 import React from 'react';
 import { useConnector } from 'anduro-wallet-connecter/dist'
 export const SendVC = () => {
-  // for send
+  const {getNetworkInformation, getWalletInformation, send} = React.useContext<any>(useConnector)
   const [amount, setAmount] = React.useState<any>("")
   const [receiverAddress, setReceiverAddress] = React.useState<any>("")
   const [feerate, setFeerate] = React.useState<any>("")
   const [sendType, setSendType] = React.useState<any>("normal")
 
 
-  const {getNetworkInformation, send, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
+  // const {getNetworkInformation, send, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
   const handleSendFormSubmit = (event: any) => {
     event.preventDefault()
     console.log("-transactionType", sendType)
@@ -21,10 +21,12 @@ export const SendVC = () => {
     }
     send(params)
   }
-  const handleTransferCallback = (event: any) => {
-    // console.log("Tranfer Event", event)
+  React.useEffect(() => {
     console.log("SEND Network Information", getNetworkInformation())
     console.log("SEND Wallet Information", getWalletInformation())
+  }, [])
+  const handleTransferCallback = (event: any) => {
+    // console.log("Tranfer Event", event)
   }
   return (
     <div>

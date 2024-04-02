@@ -11,10 +11,12 @@ export const ConnectorVC = () => {
       onComplete: handleConnectionCallback,
     })
   }
-  const handleConnectionCallback = (event: any) => {
-    // console.log("Connection Callback", event)
+  React.useEffect(() => {
     console.log("Connector Network Information", getNetworkInformation())
     console.log("Connector Wallet Information", getWalletInformation())
+  }, [])
+  const handleConnectionCallback = (event: any) => {
+    // console.log("Connection Callback", event)
   }
   return (
     <div>

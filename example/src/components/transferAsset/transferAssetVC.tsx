@@ -1,12 +1,13 @@
 import React from 'react';
 import { useConnector } from 'anduro-wallet-connecter/dist'
 export const TransferAssetVC = () => {
+  const {getNetworkInformation, getWalletInformation, transferasset} = React.useContext<any>(useConnector)
   const [supply, setSupply] = React.useState<any>("")
   const [assetId, setAssetId] = React.useState<number>(0)
   const [receiverAddress, setReceiverAddress] = React.useState("")
 
 
-  const {getNetworkInformation, transferasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
+  // const {getNetworkInformation, transferasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
   const handleCreateAssetFormSubmit = (event: any) => {
     event.preventDefault()
     transferasset({
@@ -16,10 +17,12 @@ export const TransferAssetVC = () => {
         onComplete: handleTransferAssetCallback,
     })
   }
-  const handleTransferAssetCallback = (event: any) => {
-    // console.log("Transfer Asset Event", event)
+  React.useEffect(() => {
     console.log("Transfer Network Information", getNetworkInformation())
     console.log("Transfer Wallet Information", getWalletInformation())
+  }, [])
+  const handleTransferAssetCallback = (event: any) => {
+    // console.log("Transfer Asset Event", event)
   }
   return (
     <div>

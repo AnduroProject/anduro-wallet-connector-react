@@ -1,6 +1,7 @@
 import React from 'react';
 import { useConnector } from 'anduro-wallet-connecter/dist'
 export const CreateAssetVC = () => {
+  const {getNetworkInformation, getWalletInformation, createasset} = React.useContext<any>(useConnector)
   const [receiverAddress, setReceiverAddress] = React.useState<any>("")
   // for asset
   const [name, setName] = React.useState<string>("")
@@ -13,7 +14,7 @@ export const CreateAssetVC = () => {
   const [assetId, setAssetId] = React.useState<number>(0)
 
 
-  const {getNetworkInformation, createasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
+  // const {getNetworkInformation, createasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
   const handleCreateAssetFormSubmit = (event: any) => {
     event.preventDefault()
     createasset({
@@ -29,10 +30,12 @@ export const CreateAssetVC = () => {
         assetId,
     })
   }
-  const handleCreateAssetCallback = (event: any) => {
-    // console.log("Create Asset Event", event)
+  React.useEffect(() => {
     console.log("Create And Mint Network Information", getNetworkInformation())
     console.log("Create And Mint Wallet Information", getWalletInformation())
+  }, [])
+  const handleCreateAssetCallback = (event: any) => {
+    // console.log("Create Asset Event", event)
   }
   return (
     <div>
@@ -43,7 +46,6 @@ export const CreateAssetVC = () => {
             <div className='input_padd'>
               <select onChange={(event) => setCreateAssetTransactionType(event.target.value)}>
                 <option value="create">Create</option>
-                <option value="transfer">Transfer</option>
                 <option value="mint">Mint</option>
               </select>
             </div>
@@ -81,14 +83,16 @@ export const CreateAssetVC = () => {
                 </div>
               </div>
             )}
-            <div className='display-flex'>
-              <div className='label-text-align'>
-                <label>Receiver Address :</label>
+            {createAssetTransactionType !== "create" && (
+              <div className='display-flex'>
+                <div className='label-text-align'>
+                  <label>Receiver Address :</label>
+                </div>
+                <div className='input_padd'>
+                  <input type="text" placeholder='Receiver Address' value={receiverAddress} onChange={(event) => setReceiverAddress(event.target.value)}/>
+                </div>
               </div>
-              <div className='input_padd'>
-                <input type="text" placeholder='Receiver Address' value={receiverAddress} onChange={(event) => setReceiverAddress(event.target.value)}/>
-              </div>
-            </div>
+            )}
             <div className='display-flex'>
               <div className='label-text-align'>
                 <label>Supply :</label>

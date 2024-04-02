@@ -21,7 +21,7 @@ const routes = [
   {
     path: "/transfer",
     exact: true,
-    component: CreateAssetVC,
+    component: TransferAssetVC,
   },
 ]
 
