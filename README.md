@@ -12,7 +12,7 @@ implementations.
 ## Before running example, pls follow below things.
 Since the chrome extension is not published. please do below steps temporarily to connect wallet from website
 1. Go to examples/src/config/walletApi.ts
-2. Replace WALLETURL with your browswer wallet url
+2. Replace WALLETURL with your browser wallet url
 
 
 ## Installing
