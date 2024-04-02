@@ -358,7 +358,7 @@ var UseConnectorProvider = function(props) {
             });
         } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
             if (event.data.status) {
-                if (requestType === "connect" /* connect */  || requestType === "disconnected" /* disconnected */ ) {
+                if (requestType === "connect" /* connect */  || requestType === "disconnect" /* disconnected */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         siteurl: window.location.origin,
