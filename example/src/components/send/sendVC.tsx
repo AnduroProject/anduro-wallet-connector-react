@@ -1,5 +1,5 @@
 import React from 'react';
-import { useConnector } from 'anduro-wallet-connecter/dist'
+import { useConnector } from 'anduro-wallet-connector'
 export const SendVC = () => {
   const {getNetworkInformation, getWalletInformation, send} = React.useContext<any>(useConnector)
   const [amount, setAmount] = React.useState<any>("")
