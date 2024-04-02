@@ -15,12 +15,11 @@ Since the chrome extension is not published. please do below steps temporarily t
 2. Replace WALLETURL with your browser wallet url
 
 
-## Installing
+## Installing example app
 
-For the latest stable version:
+go to example folder and run below command
 
 ```bash
-go to example repo
 npm install
 ```
 
