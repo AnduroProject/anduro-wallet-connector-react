@@ -133,9 +133,9 @@ export const useConnector = (props: Props) => {
     if (event.data.type === requestTypes.connectionResponse) {
       if (event.data.status) {
         childWindow.close();
+        setIsconnected(true)
         setNetworkInformation(event.data.result)
         requestData.onComplete(event.data);
-        // setIsconnected(true)
       } else {
         requestData.onComplete(event.data)
       }
@@ -145,11 +145,12 @@ export const useConnector = (props: Props) => {
     } else if (event.data.type === requestTypes.walletLoaded) {
       if (event.data.status) {
         if (requestType === requestTypes.connect || requestType === requestTypes.disconnected) {
-          sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId});
           setIsconnected(true);  
+          sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId});
          
         } else if (requestType === "networkinfo") {
           sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
+          setIsconnected(true);  
         } else if (requestType === requestTypes.send) {
           sendMessageToChildWindow({requestType: requestType, transactionType: transactionData.transactionType, amount: transactionData.amount, receiverAddress: transactionData.receiverAddress, feerate: transactionData.feeRate, chainId: networkInformation.chainId })
         } else if (requestType === requestTypes.createAsset) {

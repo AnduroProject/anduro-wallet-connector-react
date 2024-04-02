@@ -119,6 +119,7 @@ var useConnector = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
+                setIsconnected(true);
                 setNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
             } else {
@@ -130,17 +131,18 @@ var useConnector = function(props) {
         } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
             if (event.data.status) {
                 if (requestType === "connect" /* connect */  || requestType === "disconnected" /* disconnected */ ) {
+                    setIsconnected(true);
                     sendMessageToChildWindow({
                         requestType: requestType,
                         siteurl: window.location.origin,
                         chainId: requestData.chainId
                     });
-                    setIsconnected(true);
                 } else if (requestType === "networkinfo") {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         siteurl: window.location.origin
                     });
+                    setIsconnected(true);
                 } else if (requestType === "send" /* send */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
