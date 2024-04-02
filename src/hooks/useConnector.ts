@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { EventEmitter } from "events";
-import {waitFor} from 'wait-for-event';
-import process from 'node:process'
 
 type Props = {
   walletUrl: string;
