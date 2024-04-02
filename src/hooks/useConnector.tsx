@@ -118,10 +118,9 @@ export const UseConnectorProvider = (props: any) => {
      
       if (networkState.chainId === null && childWindow === null && !isConnected) {
         const url = `${WALLETURL}?requestType=networkinfo`;
-        chrome.windows.create({url: WALLETURL, type: "popup"});
-        // let targetWindow: any = window.open(url,"_blank",windowFeatures);
-        // setChildWindow(targetWindow)
-        // setRequestType("networkinfo")
+        let targetWindow: any = window.open(url,"_blank",windowFeatures);
+        setChildWindow(targetWindow)
+        setRequestType("networkinfo")
       }
     }, [networkState,isConnected]);
     
@@ -133,6 +132,7 @@ export const UseConnectorProvider = (props: any) => {
         window.addEventListener("beforeunload", handleWindowClose);
         window.addEventListener('message', handleMessage);
         return () => {
+          childWindow.removeEventListener("beforeunload", handleWindowClose);
           window.removeEventListener('message', handleMessage);
         };
       }

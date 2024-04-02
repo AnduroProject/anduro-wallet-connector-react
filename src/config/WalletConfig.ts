@@ -1,1 +1,1 @@
-export const WALLETURL = "chrome-extension://ajgnmjjgdpkalfgahngbddmmdaapolbh/index.html"
+export const WALLETURL = "http://localhost:5002"

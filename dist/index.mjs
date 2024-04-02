@@ -47,7 +47,7 @@ function _unsupported_iterable_to_array(o, minLen) {
 }
 import React, { useState, useEffect } from "react";
 // src/config/WalletConfig.ts
-var WALLETURL = "chrome-extension://ajgnmjjgdpkalfgahngbddmmdaapolbh/index.html";
+var WALLETURL = "http://localhost:5002";
 // src/hooks/useConnector.tsx
 import { jsx } from "react/jsx-runtime";
 var useConnector = React.createContext(null);
@@ -97,10 +97,9 @@ var UseConnectorProvider = function(props) {
     useEffect(function() {
         if (networkState.chainId === null && childWindow === null && !isConnected) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
-            chrome.windows.create({
-                url: WALLETURL,
-                type: "popup"
-            });
+            var targetWindow = window.open(url, "_blank", windowFeatures);
+            setChildWindow(targetWindow);
+            setRequestType("networkinfo");
         }
     }, [
         networkState,
@@ -114,6 +113,7 @@ var UseConnectorProvider = function(props) {
             window.addEventListener("beforeunload", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
+                childWindow.removeEventListener("beforeunload", handleWindowClose);
                 window.removeEventListener("message", handleMessage);
             };
         }
