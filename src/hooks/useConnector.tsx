@@ -133,15 +133,13 @@ export const UseConnectorProvider = (props: any) => {
       console.log("childWindow :", childWindow)
       if (childWindow != null) {
         console.log("close")
-        window.addEventListener("beforeunload", onUnload)
+        childWindow.addEventListener("beforeunload", onUnload)
         window.addEventListener('message', handleMessage);
         return () => {
-          window.removeEventListener("beforeunload", onUnload)
+          childWindow.removeEventListener("beforeunload", onUnload)
           window.removeEventListener('message', handleMessage);
         };
       }
-      
-     
     }, [childWindow,isConnected]);
     
     const handleWindowClose = () => {
