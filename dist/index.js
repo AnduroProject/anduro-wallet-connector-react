@@ -167,9 +167,10 @@ var UseConnectorProvider = function(props) {
     (0, import_react.useEffect)(function() {
         if (networkState.chainId === null && childWindow === null && !isConnected) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
-            var targetWindow = window.open(url, "_blank", windowFeatures);
-            setChildWindow(targetWindow);
-            setRequestType("networkinfo");
+            chrome.windows.create({
+                url: WALLETURL,
+                type: "popup"
+            });
         }
     }, [
         networkState,
