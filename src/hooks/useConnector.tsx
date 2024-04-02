@@ -100,9 +100,6 @@ export const UseConnectorProvider = (props: any) => {
         setRequestType("networkinfo")
       }
     }, [networkInformation]);
-    useEffect(() => {
-      console.log("Package walletInformation", walletInformation)
-    }, [walletInformation.connectionState, walletInformation.accountPublicKey]);
     
     useEffect(() => {
       if (childWindow != null) {
@@ -182,8 +179,6 @@ export const UseConnectorProvider = (props: any) => {
         });
     }
     const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
-      console.log("updateWalletInformation connectionState", connectionState)
-      console.log("updateWalletInformation accountPublicKey", accountPublicKey)
       setWalletInformation({
         accountPublicKey: accountPublicKey,
         connectionState: connectionState,

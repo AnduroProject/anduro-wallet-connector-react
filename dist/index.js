@@ -298,12 +298,6 @@ var UseConnectorProvider = function(props) {
         networkInformation
     ]);
     (0, import_react.useEffect)(function() {
-        console.log("Package walletInformation", walletInformation);
-    }, [
-        walletInformation.connectionState,
-        walletInformation.accountPublicKey
-    ]);
-    (0, import_react.useEffect)(function() {
         if (childWindow != null) {
             window.addEventListener("close", function(event) {
                 alert("Window closed");
@@ -413,8 +407,6 @@ var UseConnectorProvider = function(props) {
         });
     };
     var updateWalletInformation = function(connectionState, accountPublicKey) {
-        console.log("updateWalletInformation connectionState", connectionState);
-        console.log("updateWalletInformation accountPublicKey", accountPublicKey);
         setWalletInformation({
             accountPublicKey: accountPublicKey,
             connectionState: connectionState
