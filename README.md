@@ -38,7 +38,7 @@ we will use the <UseConnectorProvider /> component to connect anduro wallet exte
 
 ### 1. Connect Anduro Wallet 
 
-Connect Anduro wallet using connect function 
+Connect Anduro wallet using connect function. 
 
 ```bash 
 import React from 'react';
@@ -53,7 +53,7 @@ const handleConnectResponse = async () => {
 
 ### 2. Disconnect Anduro Wallet 
 
-Disconnect Anduro wallet using disconnect function 
+Disconnect Anduro wallet using disconnect function. 
 
 
 ```bash 
@@ -69,23 +69,29 @@ const handleConnectResponse = async () => {
 
 Create Asset in  Anduro wallet using create asset function.
 
+**Parameters**
+
+name: Asset name  
+symbol: Asset Symbol  
+imageUrl: Image Url for asset   
+
 ```bash  
 import { useConnector } from 'anduro-wallet-connector';
 import React from 'react';
 
-const { createasset } = React.useContext<any>(useConnector);
+const {createasset} = React.useContext<any>(useConnector);
 
 const handleCreateAssetAction = async () => {
   const result = await createasset({
-    name,
-    symbol,
-    imageUrl,
-    supply,
-    properties,
-    assetType,
-    transactionType: createAssetTransactionType,
-    receiverAddress,
-    assetId,
+    name: "Anduro",
+    symbol: "Anduro",
+    imageUrl: "https://anduro.png/",
+    supply: 100,
+    properties: [{type: "#1 Type", value: "#1 Value"}],
+    assetType: 0,
+    transactionType: "create",
+    receiverAddress: "ccrt1qy6302x6qm8084tfwuf2hagfe8ndvpevg3u5n2j",
+    assetId: 1,
   })
 }
 ```

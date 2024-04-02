@@ -302,20 +302,20 @@ var UseConnectorProvider = function(props) {
     ]);
     (0, import_react.useEffect)(function() {
         console.log("isConnectedeeeee1111", isConnected);
+        var onUnload = function(e) {
+            e.preventDefault();
+            return e.returnValue = "Are you sure you want to close?";
+        };
+        console.log("childWindow :", childWindow);
         if (childWindow != null) {
             console.log("close");
+            window.addEventListener("beforeunload", onUnload);
             window.addEventListener("message", handleMessage);
             return function() {
+                window.removeEventListener("beforeunload", onUnload);
                 window.removeEventListener("message", handleMessage);
             };
         }
-        var checkChildWindowClosed = setInterval(function() {
-            if (childWindow && childWindow.closed) {
-                clearInterval(checkChildWindowClosed);
-                console.log("close came");
-                alert("Child window is closed!");
-            }
-        }, 1e3);
     }, [
         childWindow,
         isConnected

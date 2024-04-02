@@ -127,20 +127,22 @@ export const UseConnectorProvider = (props: any) => {
     
     useEffect(() => {
       console.log('isConnectedeeeee1111', isConnected)
+      const onUnload = (e: any) => {
+        e.preventDefault()
+        return (e.returnValue = "Are you sure you want to close?")
+      }
+      console.log("childWindow :", childWindow)
       if (childWindow != null) {
         console.log("close")
+        window.addEventListener("beforeunload", onUnload)
         window.addEventListener('message', handleMessage);
         return () => {
+          window.removeEventListener("beforeunload", onUnload)
           window.removeEventListener('message', handleMessage);
         };
       }
-      const checkChildWindowClosed = setInterval(() => {
-        if (childWindow && childWindow.closed) {
-          clearInterval(checkChildWindowClosed);
-          console.log("close came")
-          alert('Child window is closed!');
-        }
-      }, 1000);
+      
+     
     }, [childWindow,isConnected]);
     
     const handleWindowClose = () => {
