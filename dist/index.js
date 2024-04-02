@@ -249,13 +249,12 @@ var resolvePromise = null;
 var UseConnectorProvider = function(props) {
     var _ref = _sliced_to_array((0, import_react.useState)(null), 2), childWindow = _ref[0], setChildWindow = _ref[1];
     var _ref1 = _sliced_to_array((0, import_react.useState)(""), 2), requestType = _ref1[0], setRequestType = _ref1[1];
-    var _ref2 = _sliced_to_array((0, import_react.useState)(false), 2), isConnected = _ref2[0], setIsConnected = _ref2[1];
-    var _ref3 = _sliced_to_array((0, import_react.useState)({
+    var _ref2 = _sliced_to_array((0, import_react.useState)({
         transactionType: "",
         amount: 0,
         receiverAddress: "",
         feeRate: 1
-    }), 2), transactionData = _ref3[0], setTransactionData = _ref3[1];
+    }), 2), transactionData = _ref2[0], setTransactionData = _ref2[1];
     var _import_react_default_useState = _sliced_to_array(import_react.default.useState(null), 2), requestData = _import_react_default_useState[0], setRequestData = _import_react_default_useState[1];
     var _import_react_default_useState1 = _sliced_to_array(import_react.default.useState({
         name: "",
@@ -314,14 +313,12 @@ var UseConnectorProvider = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
-                setIsConnected(true);
                 updateNetworkInformation(event.data.result);
-                console.log("Connection Response received", event.data);
+                updateWalletInformation("connected", event.data.result.accountPublicKey);
                 resolvePromise({
                     status: true,
                     result: event.data
                 });
-                updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
                 resolvePromise({
                     status: false,
@@ -393,6 +390,7 @@ var UseConnectorProvider = function(props) {
             childWindow.close();
             if (event.data.status) {
                 updateNetworkInformation(event.data.result);
+                updateWalletInformation("connected", event.data.result.accountPublicKey);
             }
         } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */ ) {
             childWindow.close();

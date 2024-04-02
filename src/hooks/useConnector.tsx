@@ -76,7 +76,6 @@ let resolvePromise: any = null;
 export const UseConnectorProvider = (props: any) => {
     const [childWindow, setChildWindow] = useState<any>(null);
     const [requestType, setRequestType] = useState("");
-    const [isConnected, setIsConnected] = useState<boolean>(false);
     const [transactionData, setTransactionData] = useState<createTransactionParams>({
       transactionType: "",
       amount: 0,
@@ -130,11 +129,9 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
-          setIsConnected(true);
           updateNetworkInformation(event.data.result)
-          console.log("Connection Response received", event.data)
-          resolvePromise({status: true, result: event.data})
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
+          resolvePromise({status: true, result: event.data})
         } else {
           resolvePromise({status: false, result: event.data})
         }
@@ -167,6 +164,7 @@ export const UseConnectorProvider = (props: any) => {
         childWindow.close()
         if (event.data.status) {
             updateNetworkInformation(event.data.result)
+            updateWalletInformation("connected", event.data.result.accountPublicKey)
         }
       } else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse) {
         childWindow.close()

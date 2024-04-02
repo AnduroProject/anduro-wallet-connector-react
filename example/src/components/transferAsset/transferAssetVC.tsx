@@ -1,7 +1,7 @@
 import React from 'react';
 import { useConnector } from 'anduro-wallet-connector'
 export const TransferAssetVC = () => {
-  const {getNetworkInformation, getWalletInformation, transferasset} = React.useContext<any>(useConnector)
+  const {networkState, walletState, transferasset} = React.useContext<any>(useConnector)
   const [supply, setSupply] = React.useState<any>("")
   const [assetId, setAssetId] = React.useState<number>(0)
   const [receiverAddress, setReceiverAddress] = React.useState("")
@@ -18,8 +18,8 @@ export const TransferAssetVC = () => {
     console.log("*******Transfer Asset Result", result)
   }
   React.useEffect(() => {
-    console.log("Transfer Network Information", getNetworkInformation())
-    console.log("Transfer Wallet Information", getWalletInformation())
+    console.log("Transfer Network Information", networkState)
+    console.log("Transfer Wallet Information", walletState)
   }, [])
   return (
     <div>
