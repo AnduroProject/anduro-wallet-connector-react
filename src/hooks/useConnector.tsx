@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { WALLETURL } from "../config/WalletConfig";
 
-interface WalletInfo {
+interface WalletState {
     accountPublicKey: string; // wallet account public key
     connectionState: string; // connection state
 };
-interface NetworkInfo {
+interface NetworkState {
     chainId: any; // Chain ID
     networkType: string; // Chain type (bitcoin OR sidechain)
 };
@@ -39,10 +39,6 @@ interface TransferAssetParams {
     receiverAddress: string;
     supply: number;
 }
-interface WalletInfo {
-    accountPublicKey: string; // wallet account public key
-    connectionState: string; // connection state
-};
 enum requestTypes {
   connect = 'connect',
   disconnected = 'disconnect',
@@ -65,8 +61,8 @@ enum requestTypes {
 };
 
 type UseConnectorContextContextType = {
-  getNetworkInformation: any;
-  getWalletInformation: any;
+  networkState: NetworkState;
+  walletState: WalletState;
   connect: any;
   disconnect: any;
   send: any;
@@ -103,31 +99,18 @@ export const UseConnectorProvider = (props: any) => {
       receiverAddress: "",
       supply: 0,
     });
-    const [networkInformation, setNetworkInformation] = React.useState<NetworkInfo>({chainId: null, networkType: ""})
-    const [walletInformation, setWalletInformation] = React.useState<WalletInfo>({accountPublicKey: "", connectionState: "disconnected"})
-    const [resolve, setResolve] = useState<any>(null);
-    const [reject, setReject] = useState<any>(null);
+    const [networkState, setNetworkState] = React.useState<NetworkState>({chainId: null, networkType: ""})
+    const [walletState, setWalletState] = React.useState<WalletState>({accountPublicKey: "", connectionState: "disconnected"})
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
 
     useEffect(() => {
-      if (resolve) {
-        console.log("resolve function", resolve)
-      }
-    }, [resolve]);
-    useEffect(() => {
-      if (reject) {
-        console.log("reject function", reject)
-      }
-    }, [reject]);
-
-    useEffect(() => {
-      if (networkInformation.chainId === null && childWindow === null) {
+      if (networkState.chainId === null && childWindow === null) {
         const url = `${WALLETURL}?requestType=networkinfo`;
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
       }
-    }, [networkInformation]);
+    }, [networkState]);
     
     useEffect(() => {
       const handleWindowClose = () => {
@@ -166,7 +149,7 @@ export const UseConnectorProvider = (props: any) => {
           } else if (requestType === requestTypes.networkinfo) {
             sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
           } else if (requestType === requestTypes.send) {
-            sendMessageToChildWindow({requestType: requestType, transactionType: transactionData.transactionType, amount: transactionData.amount, receiverAddress: transactionData.receiverAddress, feerate: transactionData.feeRate, chainId: networkInformation.chainId })
+            sendMessageToChildWindow({requestType: requestType, transactionType: transactionData.transactionType, amount: transactionData.amount, receiverAddress: transactionData.receiverAddress, feerate: transactionData.feeRate, chainId: networkState.chainId })
           } else if (requestType === requestTypes.createAsset) {
             const formValues = {
               headline: createAssetData.name,
@@ -175,9 +158,9 @@ export const UseConnectorProvider = (props: any) => {
               imagebase64Data: {data: "", type: ""},
               symbol: createAssetData.symbol,
             }
-            sendMessageToChildWindow({requestType: requestType, transactionType: createAssetData.transactionType, formValues, assetType: createAssetData.assetType, properties: createAssetData.properties, chainId: networkInformation.chainId, supply: createAssetData.supply, receiverAddress: createAssetData.receiverAddress, assetId: createAssetData.assetId })
+            sendMessageToChildWindow({requestType: requestType, transactionType: createAssetData.transactionType, formValues, assetType: createAssetData.assetType, properties: createAssetData.properties, chainId: networkState.chainId, supply: createAssetData.supply, receiverAddress: createAssetData.receiverAddress, assetId: createAssetData.assetId })
           } else if (requestType === requestTypes.transferAsset) {
-            sendMessageToChildWindow({requestType: requestType, chainId: networkInformation.chainId, supply: transferAssetData.supply, receiverAddress: transferAssetData.receiverAddress, assetId: transferAssetData.assetId })
+            sendMessageToChildWindow({requestType: requestType, chainId: networkState.chainId, supply: transferAssetData.supply, receiverAddress: transferAssetData.receiverAddress, assetId: transferAssetData.assetId })
           }
         }
       } else if (event.data.type === requestTypes.networkinfoResponse) {
@@ -197,13 +180,13 @@ export const UseConnectorProvider = (props: any) => {
       childWindow.postMessage(data, "*");
     }
     const updateNetworkInformation = (params: any) => {
-        setNetworkInformation({
+        setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType,
         });
     }
     const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
-      setWalletInformation({
+      setWalletState({
         accountPublicKey: accountPublicKey,
         connectionState: connectionState,
       })
@@ -232,12 +215,6 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise = resolve;
       })
     }
-    const getNetworkInformation = () => {
-      return networkInformation;
-    }
-    const getWalletInformation = () => {
-      return walletInformation;
-    }
     const send = (params: createTransactionParams) => {
       return new Promise((resolve, reject) => {
         if (checkWalletConnection(resolve, "")) {
@@ -262,10 +239,10 @@ export const UseConnectorProvider = (props: any) => {
     const checkWalletConnection = (resolve: any, transactionType: string) => {
       let status: boolean = true;
       let error: any = null;
-      if (networkInformation.chainId === null || networkInformation.networkType === "") {
+      if (networkState.chainId === null || networkState.networkType === "") {
         status = false
         error = "The wallet is not connected."
-      } else if (transactionType && networkInformation.networkType === requestTypes.bitcoin) {
+      } else if (transactionType && networkState.networkType === requestTypes.bitcoin) {
         status = false
         error = "can't process your request, Invalid transaction type."
       }
@@ -283,9 +260,9 @@ export const UseConnectorProvider = (props: any) => {
       if (transactionType === requestTypes.normal) {
         status = true
       } else if (transactionType === requestTypes.pegin) {
-        status = networkInformation.networkType === requestTypes.bitcoin
+        status = networkState.networkType === requestTypes.bitcoin
       } else if (transactionType === requestTypes.pegout) {
-        status = networkInformation.networkType === requestTypes.sidechain
+        status = networkState.networkType === requestTypes.sidechain
       }
       return status
     }
@@ -318,8 +295,8 @@ export const UseConnectorProvider = (props: any) => {
   return (
     <useConnector.Provider
       value={{
-        getNetworkInformation,
-        getWalletInformation,
+        networkState,
+        walletState,
         connect,
         disconnect,
         send,

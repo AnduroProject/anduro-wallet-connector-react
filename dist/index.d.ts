@@ -1,9 +1,17 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import React from 'react';
 
+interface WalletState {
+    accountPublicKey: string;
+    connectionState: string;
+}
+interface NetworkState {
+    chainId: any;
+    networkType: string;
+}
 type UseConnectorContextContextType = {
-    getNetworkInformation: any;
-    getWalletInformation: any;
+    networkState: NetworkState;
+    walletState: WalletState;
     connect: any;
     disconnect: any;
     send: any;

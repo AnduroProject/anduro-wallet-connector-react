@@ -210,37 +210,21 @@ var UseConnectorProvider = function(props) {
     var _React_useState3 = _sliced_to_array(React.useState({
         chainId: null,
         networkType: ""
-    }), 2), networkInformation = _React_useState3[0], setNetworkInformation = _React_useState3[1];
+    }), 2), networkState = _React_useState3[0], setNetworkState = _React_useState3[1];
     var _React_useState4 = _sliced_to_array(React.useState({
         accountPublicKey: "",
         connectionState: "disconnected"
-    }), 2), walletInformation = _React_useState4[0], setWalletInformation = _React_useState4[1];
-    var _useState4 = _sliced_to_array(useState(null), 2), resolve = _useState4[0], setResolve = _useState4[1];
-    var _useState5 = _sliced_to_array(useState(null), 2), reject = _useState5[0], setReject = _useState5[1];
+    }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
-        if (resolve) {
-            console.log("resolve function", resolve);
-        }
-    }, [
-        resolve
-    ]);
-    useEffect(function() {
-        if (reject) {
-            console.log("reject function", reject);
-        }
-    }, [
-        reject
-    ]);
-    useEffect(function() {
-        if (networkInformation.chainId === null && childWindow === null) {
+        if (networkState.chainId === null && childWindow === null) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
         }
     }, [
-        networkInformation
+        networkState
     ]);
     useEffect(function() {
         var handleWindowClose = function() {
@@ -301,7 +285,7 @@ var UseConnectorProvider = function(props) {
                         amount: transactionData.amount,
                         receiverAddress: transactionData.receiverAddress,
                         feerate: transactionData.feeRate,
-                        chainId: networkInformation.chainId
+                        chainId: networkState.chainId
                     });
                 } else if (requestType === "create-asset" /* createAsset */ ) {
                     var formValues = {
@@ -320,7 +304,7 @@ var UseConnectorProvider = function(props) {
                         formValues: formValues,
                         assetType: createAssetData.assetType,
                         properties: createAssetData.properties,
-                        chainId: networkInformation.chainId,
+                        chainId: networkState.chainId,
                         supply: createAssetData.supply,
                         receiverAddress: createAssetData.receiverAddress,
                         assetId: createAssetData.assetId
@@ -328,7 +312,7 @@ var UseConnectorProvider = function(props) {
                 } else if (requestType === "transfer-asset" /* transferAsset */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
-                        chainId: networkInformation.chainId,
+                        chainId: networkState.chainId,
                         supply: transferAssetData.supply,
                         receiverAddress: transferAssetData.receiverAddress,
                         assetId: transferAssetData.assetId
@@ -355,13 +339,13 @@ var UseConnectorProvider = function(props) {
         childWindow.postMessage(data, "*");
     };
     var updateNetworkInformation = function(params) {
-        setNetworkInformation({
+        setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType
         });
     };
     var updateWalletInformation = function(connectionState, accountPublicKey) {
-        setWalletInformation({
+        setWalletState({
             accountPublicKey: accountPublicKey,
             connectionState: connectionState
         });
@@ -371,7 +355,7 @@ var UseConnectorProvider = function(props) {
             return _ts_generator(this, function(_state) {
                 return [
                     2,
-                    new Promise(function(resolve2, reject2) {
+                    new Promise(function(resolve, reject) {
                         var url = "".concat(WALLETURL, "?requestType=connect");
                         var childWindow2 = window.open(url, "_blank", windowFeatures);
                         setRequestType("connect");
@@ -380,7 +364,7 @@ var UseConnectorProvider = function(props) {
                             chainId: params.chainId
                         });
                         updateWalletInformation("connecting", "");
-                        resolvePromise = resolve2;
+                        resolvePromise = resolve;
                     })
                 ];
             });
@@ -390,27 +374,21 @@ var UseConnectorProvider = function(props) {
         };
     }();
     var disconnect = function() {
-        return new Promise(function(resolve2, reject2) {
+        return new Promise(function(resolve, reject) {
             var url = "".concat(WALLETURL, "?requestType=disconnect");
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("disconnect");
             setChildWindow(childWindow2);
             updateWalletInformation("disconnecting", "");
-            resolvePromise = resolve2;
+            resolvePromise = resolve;
         });
     };
-    var getNetworkInformation = function() {
-        return networkInformation;
-    };
-    var getWalletInformation = function() {
-        return walletInformation;
-    };
     var send = function(params) {
-        return new Promise(function(resolve2, reject2) {
-            if (checkWalletConnection(resolve2, "")) {
+        return new Promise(function(resolve, reject) {
+            if (checkWalletConnection(resolve, "")) {
                 var validateTransactionTypeResult = validateSendTransactionType(params.transactionType);
                 if (!validateTransactionTypeResult) {
-                    resolve2({
+                    resolve({
                         status: false,
                         error: "can't process your request, Invalid transaction type",
                         result: null
@@ -422,22 +400,22 @@ var UseConnectorProvider = function(props) {
                 setRequestType("send");
                 setChildWindow(childWindow2);
                 setTransactionData(params);
-                resolvePromise = resolve2;
+                resolvePromise = resolve;
             }
         });
     };
-    var checkWalletConnection = function(resolve2, transactionType) {
+    var checkWalletConnection = function(resolve, transactionType) {
         var status = true;
         var error = null;
-        if (networkInformation.chainId === null || networkInformation.networkType === "") {
+        if (networkState.chainId === null || networkState.networkType === "") {
             status = false;
             error = "The wallet is not connected.";
-        } else if (transactionType && networkInformation.networkType === "bitcoin" /* bitcoin */ ) {
+        } else if (transactionType && networkState.networkType === "bitcoin" /* bitcoin */ ) {
             status = false;
             error = "can't process your request, Invalid transaction type.";
         }
         if (!status) {
-            resolve2({
+            resolve({
                 status: status,
                 result: null,
                 error: error
@@ -450,41 +428,41 @@ var UseConnectorProvider = function(props) {
         if (transactionType === "normal" /* normal */ ) {
             status = true;
         } else if (transactionType === "pegin" /* pegin */ ) {
-            status = networkInformation.networkType === "bitcoin" /* bitcoin */ ;
+            status = networkState.networkType === "bitcoin" /* bitcoin */ ;
         } else if (transactionType === "pegout" /* pegout */ ) {
-            status = networkInformation.networkType === "sidechain" /* sidechain */ ;
+            status = networkState.networkType === "sidechain" /* sidechain */ ;
         }
         return status;
     };
     var createasset = function(params) {
-        return new Promise(function(resolve2, reject2) {
-            if (checkWalletConnection(resolve2, params.transactionType)) {
+        return new Promise(function(resolve, reject) {
+            if (checkWalletConnection(resolve, params.transactionType)) {
                 var url = "".concat(WALLETURL, "?requestType=create-asset");
                 var childWindow2 = window.open(url, "_blank", windowFeatures);
                 setRequestType("create-asset");
                 setChildWindow(childWindow2);
                 setCreateAssetData(params);
-                resolvePromise = resolve2;
+                resolvePromise = resolve;
             }
         });
     };
     var transferasset = function(params) {
-        return new Promise(function(resolve2, reject2) {
-            if (checkWalletConnection(resolve2, "transfer")) {
+        return new Promise(function(resolve, reject) {
+            if (checkWalletConnection(resolve, "transfer")) {
                 var url = "".concat(WALLETURL, "?requestType=transfer-asset");
                 var childWindow2 = window.open(url, "_blank", windowFeatures);
                 setRequestType("transfer-asset");
                 setChildWindow(childWindow2);
                 setTransferAssetData(params);
-                resolvePromise = resolve2;
+                resolvePromise = resolve;
             }
         });
     };
     var children = props.children;
     return /* @__PURE__ */ jsx(useConnector.Provider, {
         value: {
-            getNetworkInformation: getNetworkInformation,
-            getWalletInformation: getWalletInformation,
+            networkState: networkState,
+            walletState: walletState,
             connect: connect,
             disconnect: disconnect,
             send: send,
