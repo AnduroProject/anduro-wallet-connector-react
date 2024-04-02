@@ -114,13 +114,14 @@ export const UseConnectorProvider = (props: any) => {
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     
     useEffect(() => {
-      if (networkInformation.chainId === null && childWindow === null) {
+      console.log('isConnectedeeeee', isConnected)
+      if (networkInformation.chainId === null && childWindow === null && !isConnected) {
         const url = `${WALLETURL}?requestType=networkinfo`;
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
       }
-    }, [networkInformation]);
+    }, [networkInformation,isConnected]);
     
     useEffect(() => {
       const handleWindowClose = () => {
@@ -136,8 +137,11 @@ export const UseConnectorProvider = (props: any) => {
           window.removeEventListener('message', handleMessage);
         };
       }
-    }, [childWindow,isConnected]);
-  
+    }, [childWindow]);
+    
+    const handleWindowClose = () => {
+      alert("Window closed");
+    };
   
     const handleMessage = (event: any) => {
       console.log("Message Received", event.data)

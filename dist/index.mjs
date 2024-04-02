@@ -95,33 +95,37 @@ var UseConnectorProvider = function(props) {
     }), 2), walletInformation = _React_useState4[0], setWalletInformation = _React_useState4[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
-        if (networkInformation.chainId === null && childWindow === null) {
+        console.log("isConnectedeeeee", isConnected);
+        if (networkInformation.chainId === null && childWindow === null && !isConnected) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
         }
     }, [
-        networkInformation
+        networkInformation,
+        isConnected
     ]);
     useEffect(function() {
-        var handleWindowClose = function() {
+        var handleWindowClose2 = function() {
             console.log("close came");
         };
         if (childWindow != null) {
             console.log("close");
-            childWindow.addEventListener("beforeunload", handleWindowClose);
-            window.addEventListener("beforeunload", handleWindowClose);
+            childWindow.addEventListener("beforeunload", handleWindowClose2);
+            window.addEventListener("beforeunload", handleWindowClose2);
             window.addEventListener("message", handleMessage);
             return function() {
-                childWindow.removeEventListener("beforeunload", handleWindowClose);
+                childWindow.removeEventListener("beforeunload", handleWindowClose2);
                 window.removeEventListener("message", handleMessage);
             };
         }
     }, [
-        childWindow,
-        isConnected
+        childWindow
     ]);
+    var handleWindowClose = function() {
+        alert("Window closed");
+    };
     var handleMessage = function(event) {
         console.log("Message Received", event.data);
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
