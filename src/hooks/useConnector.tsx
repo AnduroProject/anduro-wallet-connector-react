@@ -124,11 +124,16 @@ export const UseConnectorProvider = (props: any) => {
     }, [networkInformation,isConnected]);
     
     useEffect(() => {
-      
+      const handleWindowClose = () => {
+        console.log("close came")
+      };
       if (childWindow != null) {
-        childWindow.addEventListener("close", handleWindowClose);
+        console.log("close")
+        childWindow.addEventListener("beforeunload", handleWindowClose);
+        window.addEventListener("beforeunload", handleWindowClose);
         window.addEventListener('message', handleMessage);
         return () => {
+          childWindow.removeEventListener("beforeunload", handleWindowClose);
           window.removeEventListener('message', handleMessage);
         };
       }

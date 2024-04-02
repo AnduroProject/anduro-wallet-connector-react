@@ -107,10 +107,16 @@ var UseConnectorProvider = function(props) {
         isConnected
     ]);
     useEffect(function() {
+        var handleWindowClose2 = function() {
+            console.log("close came");
+        };
         if (childWindow != null) {
-            childWindow.addEventListener("close", handleWindowClose);
+            console.log("close");
+            childWindow.addEventListener("beforeunload", handleWindowClose2);
+            window.addEventListener("beforeunload", handleWindowClose2);
             window.addEventListener("message", handleMessage);
             return function() {
+                childWindow.removeEventListener("beforeunload", handleWindowClose2);
                 window.removeEventListener("message", handleMessage);
             };
         }
