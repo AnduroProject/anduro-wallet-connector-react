@@ -197,15 +197,12 @@ export const UseConnectorProvider = (props: any) => {
       } 
       else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse || event.data.type === requestTypes.disconnectResponse) {
         childWindow.close()
-        if (transactionData.onComplete) {
-          transactionData.onComplete(event.data)
-        } else if (createAssetData.onComplete) {
-          createAssetData.onComplete(event.data)
+        if (transactionData.onComplete || createAssetData.onComplete) {
+          resolvePromise({status: true, result: event.data})
         }
         if (event.data.type === "disconnect-response") {
           updateWalletInformation("disconnected", "")
         }
-        resolvePromise({status: true, result: event.data})
       }
     }
     const sendMessageToChildWindow = (data: any) => {

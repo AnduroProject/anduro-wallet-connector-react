@@ -347,18 +347,15 @@ var UseConnectorProvider = function(props) {
             }
         } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */  || event.data.type === "disconnect-response" /* disconnectResponse */ ) {
             childWindow.close();
-            if (transactionData.onComplete) {
-                transactionData.onComplete(event.data);
-            } else if (createAssetData.onComplete) {
-                createAssetData.onComplete(event.data);
+            if (transactionData.onComplete || createAssetData.onComplete) {
+                resolvePromise({
+                    status: true,
+                    result: event.data
+                });
             }
             if (event.data.type === "disconnect-response") {
                 updateWalletInformation("disconnected", "");
             }
-            resolvePromise({
-                status: true,
-                result: event.data
-            });
         }
     };
     var sendMessageToChildWindow = function(data) {
