@@ -129,7 +129,7 @@ export const UseConnectorProvider = (props: any) => {
     
     useEffect(() => {
       console.log('isConnectedeeeee1111', isConnected)
-      childWindow.addEventListener("close", handleWindowClose);
+      // childWindow.addEventListener("close", handleWindowClose);
       if (childWindow != null) {
         console.log("close")
         window.addEventListener('message', handleMessage);
