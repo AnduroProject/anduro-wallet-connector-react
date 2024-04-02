@@ -47,7 +47,7 @@ function _unsupported_iterable_to_array(o, minLen) {
 }
 import React, { useState, useEffect } from "react";
 // src/config/WalletConfig.ts
-var WALLETURL = "http://localhost:3000";
+var WALLETURL = "http://localhost:5002";
 // src/hooks/useConnector.tsx
 import { jsx } from "react/jsx-runtime";
 var useConnector = React.createContext(null);

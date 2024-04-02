@@ -117,7 +117,7 @@ module.exports = __toCommonJS(src_exports);
 // src/hooks/useConnector.tsx
 var import_react = __toESM(require("react"));
 // src/config/WalletConfig.ts
-var WALLETURL = "http://localhost:3000";
+var WALLETURL = "http://localhost:5002";
 // src/hooks/useConnector.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var useConnector = import_react.default.createContext(null);
