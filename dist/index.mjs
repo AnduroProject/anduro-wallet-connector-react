@@ -98,9 +98,6 @@ var UseConnectorProvider = function(props) {
         if (networkState.chainId === null && childWindow === null && !isConnected) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
-            if (targetWindow.closed) {
-                alert("Window closed!");
-            }
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
         }
@@ -117,6 +114,13 @@ var UseConnectorProvider = function(props) {
                 window.removeEventListener("message", handleMessage);
             };
         }
+        var checkChildWindowClosed = setInterval(function() {
+            if (childWindow && childWindow.closed) {
+                clearInterval(checkChildWindowClosed);
+                console.log("close came");
+                alert("Child window is closed!");
+            }
+        }, 1e3);
     }, [
         childWindow,
         isConnected
