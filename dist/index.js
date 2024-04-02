@@ -180,7 +180,6 @@ var UseConnectorProvider = function(props) {
     ]);
     (0, import_react.useEffect)(function() {
         console.log("isConnectedeeeee1111", isConnected);
-        childWindow.addEventListener("close", handleWindowClose);
         if (childWindow != null) {
             console.log("close");
             window.addEventListener("message", handleMessage);
