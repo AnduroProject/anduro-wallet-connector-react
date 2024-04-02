@@ -36,13 +36,13 @@ function App () {
 
 we will use the <UseConnectorProvider /> component to connect anduro wallet extension.
 
-## 1. Connect Anduro Wallet 
+### 1. Connect Anduro Wallet 
 
 Connect Anduro wallet using connect function 
 
 ```bash 
 import React from 'react';
-const {connect} = React.useContext<any>(useConnector);
+const { connect } = React.useContext<any>(useConnector);
 
 const handleConnectResponse = async () => {
   const result = await connect({
@@ -51,29 +51,29 @@ const handleConnectResponse = async () => {
 }
 ```
 
-## 2. Disconnect Anduro Wallet 
+### 2. Disconnect Anduro Wallet 
 
 Disconnect Anduro wallet using disconnect function 
 
 
 ```bash 
 import React from 'react';
-const {disconnect} = React.useContext<any>(useConnector);
+const { disconnect } = React.useContext<any>(useConnector);
 
 const handleConnectResponse = async () => {
   const result = await disconnect()
 }
 ```
 
-## 3. Create Asset Transfer 
+### 3. Create Asset 
 
-Create Asset Transfer in  Anduro wallet using create asset function.
+Create Asset in  Anduro wallet using create asset function.
 
 ```bash  
 import { useConnector } from 'anduro-wallet-connector';
 import React from 'react';
 
-const {createasset} = React.useContext<any>(useConnector);
+const { createasset } = React.useContext<any>(useConnector);
 
 const handleCreateAssetAction = async () => {
   const result = await createasset({
@@ -90,7 +90,10 @@ const handleCreateAssetAction = async () => {
 }
 ```
 
-## 4.Transfer Asset
+### 4.Transfer Asset
+
+Create Asset transfer in anduro wallet using transfer asset function
+
 ```bash 
 import { useConnector } from 'anduro-wallet-connector';
 import React from 'react';
@@ -105,3 +108,44 @@ const exampleFunction = async () => {
   })
 }
 ```
+
+### 5.Network and wallet informations
+
+We provide network and wallet information
+
+```bash
+import { useConnector } from 'anduro-wallet-connector';
+import React from 'react';
+
+const { networkState, walletState } = React.useContext<any>(useConnector);
+```
+
+### 6.Send / Convert  ( BTC and CBTC )
+
+** Parameters **
+
+transactionType: 
+  1.normal - Send BTC / CBTC 
+  2.pegin - Convert BTC to CBTC , 
+  3.pegout - Convert CBTC to BTC 
+amount: transaction amount.
+receiverAddress: Receiver address ( Sidechain address / bitcoint address )
+feeRate: Fee rate per virtual byte
+
+
+```bash
+import { useConnector } from 'anduro-wallet-connector';
+import React from 'react';
+
+const { send } = React.useContext<any>(useConnector);
+const handleSendAction = async () => {
+  const params = {
+      transactionType: "normal",
+      amount: 1,
+      receiverAddress: "ccrt1qy6302x6qm8084tfwuf2hagfe8ndvpevg3u5n2j",
+      feeRate: 1,
+    }
+    const result = await send(params);
+}
+```
+
