@@ -106,23 +106,23 @@ var __toCommonJS = function(mod) {
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+    UseConnectorProvider: function() {
+        return UseConnectorProvider;
+    },
     useConnector: function() {
         return useConnector;
     }
 });
 module.exports = __toCommonJS(src_exports);
-// src/hooks/useConnector.ts
+// src/hooks/useConnector.tsx
 var import_react = __toESM(require("react"));
 var import_events = require("events");
-var walletInformation = {
-    accountPublicKey: "",
-    connectionState: "disconnected" /* disconnected */ 
-};
-var networkInformation = {
-    chainId: null,
-    networkType: ""
-};
-var useConnector = function(props) {
+// src/config/WalletConfig.ts
+var WALLETURL = "http://localhost:3000";
+// src/hooks/useConnector.tsx
+var import_jsx_runtime = require("react/jsx-runtime");
+var useConnector = import_react.default.createContext(null);
+var UseConnectorProvider = function(props) {
     var walletEvent = new import_events.EventEmitter();
     var _ref = _sliced_to_array((0, import_react.useState)(null), 2), childWindow = _ref[0], setChildWindow = _ref[1];
     var _ref1 = _sliced_to_array((0, import_react.useState)(false), 2), isConnected = _ref1[0], setIsconnected = _ref1[1];
@@ -157,10 +157,18 @@ var useConnector = function(props) {
         supply: 0,
         onComplete: null
     }), 2), transferAssetData = _import_react_default_useState2[0], setTransferAssetData = _import_react_default_useState2[1];
+    var _import_react_default_useState3 = _sliced_to_array(import_react.default.useState({
+        chainId: null,
+        networkType: ""
+    }), 2), networkInformation = _import_react_default_useState3[0], setNetworkInformation = _import_react_default_useState3[1];
+    var _import_react_default_useState4 = _sliced_to_array(import_react.default.useState({
+        accountPublicKey: "",
+        connectionState: "disconnected"
+    }), 2), walletInformation = _import_react_default_useState4[0], setWalletInformation = _import_react_default_useState4[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     (0, import_react.useEffect)(function() {
         if (networkInformation.chainId === null && childWindow === null) {
-            var url = "".concat(props.walletUrl, "?requestType=networkinfo");
+            var url = "".concat(WALLETURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
@@ -187,7 +195,7 @@ var useConnector = function(props) {
             if (event.data.status) {
                 childWindow.close();
                 setIsconnected(true);
-                setNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
             } else {
                 requestData.onComplete(event.data);
@@ -254,7 +262,7 @@ var useConnector = function(props) {
         } else if (event.data.type === "networkinfo-response" /* networkinfoResponse */ ) {
             childWindow.close();
             if (event.data.status) {
-                setNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result);
             }
         } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */  || event.data.type === "disconnect-response" /* disconnectResponse */ ) {
             childWindow.close();
@@ -268,15 +276,19 @@ var useConnector = function(props) {
     var sendMessageToChildWindow = function(data) {
         childWindow.postMessage(data, "*");
     };
-    var setNetworkInformation = function(params) {
-        networkInformation.chainId = params.chainId;
-        networkInformation.networkType = params.networkType;
-        walletInformation.accountPublicKey = params.accountPublicKey;
-        walletInformation.connectionState = params.connectionState;
+    var updateNetworkInformation = function(params) {
+        setNetworkInformation({
+            chainId: params.chainId,
+            networkType: params.networkType
+        });
+        setWalletInformation({
+            accountPublicKey: params.accountPublicKey,
+            connectionState: params.connectionState
+        });
     };
     var connect = function(params) {
         return new Promise(function(resolve, reject) {
-            var url = "".concat(props.walletUrl, "?requestType=connect");
+            var url = "".concat(WALLETURL, "?requestType=connect");
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("connect");
             setChildWindow(childWindow2);
@@ -285,19 +297,11 @@ var useConnector = function(props) {
                 chainId: params.chainId,
                 onComplete: params.onComplete
             });
-            while(1 > 0){
-                console.log("isConnected", isConnected);
-                if (isConnected) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
             resolve(true);
         });
     };
     var disconnect = function() {
-        var url = "".concat(props.walletUrl, "?requestType=disconnect");
+        var url = "".concat(WALLETURL, "?requestType=disconnect");
         var childWindow2 = window.open(url, "_blank", windowFeatures);
         setRequestType("disconnect");
         setChildWindow(childWindow2);
@@ -319,7 +323,7 @@ var useConnector = function(props) {
                 });
                 return;
             }
-            var url = "".concat(props.walletUrl, "?requestType=send");
+            var url = "".concat(WALLETURL, "?requestType=send");
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("send");
             setChildWindow(childWindow2);
@@ -358,7 +362,7 @@ var useConnector = function(props) {
     };
     var createasset = function(params) {
         if (checkWalletConnection(params.onComplete, params.transactionType)) {
-            var url = "".concat(props.walletUrl, "?requestType=create-asset");
+            var url = "".concat(WALLETURL, "?requestType=create-asset");
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("create-asset");
             setChildWindow(childWindow2);
@@ -367,25 +371,30 @@ var useConnector = function(props) {
     };
     var transferasset = function(params) {
         if (checkWalletConnection(params.onComplete, "transfer")) {
-            var url = "".concat(props.walletUrl, "?requestType=transfer-asset");
+            var url = "".concat(WALLETURL, "?requestType=transfer-asset");
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("transfer-asset");
             setChildWindow(childWindow2);
             setTransferAssetData(params);
         }
     };
-    return {
-        connect: connect,
-        getNetworkInformation: getNetworkInformation,
-        send: send,
-        createasset: createasset,
-        transferasset: transferasset,
-        disconnect: disconnect,
-        getWalletInformation: getWalletInformation
-    };
+    var children = props.children;
+    return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(useConnector.Provider, {
+        value: {
+            getNetworkInformation: getNetworkInformation,
+            getWalletInformation: getWalletInformation,
+            connect: connect,
+            disconnect: disconnect,
+            send: send,
+            createasset: createasset,
+            transferasset: transferasset
+        },
+        children: children
+    });
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+    UseConnectorProvider: UseConnectorProvider,
     useConnector: useConnector
 });
 //# sourceMappingURL=index.js.map
