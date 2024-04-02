@@ -122,7 +122,7 @@ const { networkState, walletState } = React.useContext<any>(useConnector);
 
 ### 6.Send / Convert  ( BTC and CBTC )
 
-** Parameters **
+**Parameters**
 
 transactionType: 
   1.normal - Send BTC / CBTC 
