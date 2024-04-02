@@ -241,7 +241,7 @@ var import_events = require("events");
 var import_node_process = __toESM(require("process"));
 var walletInformation = {
     accountPublicKey: "",
-    connectionState: "disconnected"
+    connectionState: "disconnected" /* disconnected */ 
 };
 var networkInformation = {
     chainId: null,
@@ -307,7 +307,7 @@ var useConnector = function(props) {
     ]);
     var handleMessage = function(event) {
         console.log("Message Received", event.data);
-        if (event.data.type === "connection-response") {
+        if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
                 setNetworkInformation(event.data.result);
@@ -319,12 +319,12 @@ var useConnector = function(props) {
             } else {
                 requestData.onComplete(event.data);
             }
-        } else if (event.data.type === "account-not-created") {
+        } else if (event.data.type === "account-not-created" /* accountNotCreated */ ) {
             childWindow.close();
             requestData.onComplete(event.data);
-        } else if (event.data.type === "wallet-loaded") {
+        } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
             if (event.data.status) {
-                if (requestType === "connect" || requestType === "disconnect") {
+                if (requestType === "connect" /* connect */  || requestType === "disconnected" /* disconnected */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         siteurl: window.location.origin,
@@ -335,12 +335,12 @@ var useConnector = function(props) {
                     import_node_process.default.nextTick(function() {
                         walletEvent.emit("connectionresponse", event.data);
                     });
-                } else if (requestType === "networkinfo") {
+                } else if (requestType === "networkinfo" /* networkinfo */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         siteurl: window.location.origin
                     });
-                } else if (requestType === "send") {
+                } else if (requestType === "send" /* send */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         transactionType: transactionData.transactionType,
@@ -349,7 +349,7 @@ var useConnector = function(props) {
                         feerate: transactionData.feeRate,
                         chainId: networkInformation.chainId
                     });
-                } else if (requestType === "create-asset") {
+                } else if (requestType === "create-asset" /* createAsset */ ) {
                     var formValues = {
                         headline: createAssetData.name,
                         imageUrl: createAssetData.imageUrl,
@@ -371,7 +371,7 @@ var useConnector = function(props) {
                         receiverAddress: createAssetData.receiverAddress,
                         assetId: createAssetData.assetId
                     });
-                } else if (requestType === "transfer-asset") {
+                } else if (requestType === "transfer-asset" /* transferAsset */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         chainId: networkInformation.chainId,
@@ -381,12 +381,12 @@ var useConnector = function(props) {
                     });
                 }
             }
-        } else if (event.data.type === "networkinfo-response") {
+        } else if (event.data.type === "networkinfo-response" /* networkinfoResponse */ ) {
             childWindow.close();
             if (event.data.status) {
                 setNetworkInformation(event.data.result);
             }
-        } else if (event.data.type === "send-response" || event.data.type === "create-asset-response" || event.data.type === "disconnect-response") {
+        } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */  || event.data.type === "disconnect-response" /* disconnectResponse */ ) {
             childWindow.close();
             if (transactionData.onComplete) {
                 transactionData.onComplete(event.data);
@@ -482,7 +482,7 @@ var useConnector = function(props) {
         if (networkInformation.chainId === null || networkInformation.networkType === "") {
             status = false;
             error = "The wallet is not connected.";
-        } else if (transactionType && networkInformation.networkType === "bitcoin") {
+        } else if (transactionType && networkInformation.networkType === "bitcoin" /* bitcoin */ ) {
             status = false;
             error = "can't process your request, Invalid transaction type.";
         }
@@ -497,12 +497,12 @@ var useConnector = function(props) {
     };
     var validateSendTransactionType = function(transactionType) {
         var status = false;
-        if (transactionType === "normal") {
+        if (transactionType === "normal" /* normal */ ) {
             status = true;
-        } else if (transactionType === "pegin") {
-            status = networkInformation.networkType === "bitcoin";
-        } else if (transactionType === "pegout") {
-            status = networkInformation.networkType === "sidechain";
+        } else if (transactionType === "pegin" /* pegin */ ) {
+            status = networkInformation.networkType === "bitcoin" /* bitcoin */ ;
+        } else if (transactionType === "pegout" /* pegout */ ) {
+            status = networkInformation.networkType === "sidechain" /* sidechain */ ;
         }
         return status;
     };
