@@ -9,6 +9,7 @@ type UseConnectorContextContextType = {
     send: any;
     createasset: any;
     transferasset: any;
+    isConnectedVal: boolean;
 };
 declare const useConnector: React.Context<UseConnectorContextContextType | null>;
 declare const UseConnectorProvider: (props: any) => react_jsx_runtime.JSX.Element;

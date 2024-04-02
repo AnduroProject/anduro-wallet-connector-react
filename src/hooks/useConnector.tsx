@@ -76,6 +76,7 @@ type UseConnectorContextContextType = {
   send: any;
   createasset: any;
   transferasset: any;
+  isConnectedVal: boolean;
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(
     null,
@@ -114,7 +115,7 @@ export const UseConnectorProvider = (props: any) => {
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     
     useEffect(() => {
-      console.log('isConnectedeeeee', isConnected)
+     
       if (networkInformation.chainId === null && childWindow === null && !isConnected) {
         const url = `${WALLETURL}?requestType=networkinfo`;
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
@@ -124,9 +125,7 @@ export const UseConnectorProvider = (props: any) => {
     }, [networkInformation,isConnected]);
     
     useEffect(() => {
-      const handleWindowClose = () => {
-        console.log("close came")
-      };
+      console.log('isConnectedeeeee1111', isConnected)
       if (childWindow != null) {
         console.log("close")
         childWindow.addEventListener("beforeunload", handleWindowClose);
@@ -148,14 +147,12 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
-          setTimeout(() => {
-            setIsConnected(true);
-          })          
-          console.log('isconnected2222', isConnected)
+          isConnectedVal = true         
+          console.log('isconnected2222', isConnectedVal)
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);
           console.log("test22222")
-          console.log('isconnected22221111', isConnected)
+          console.log('isconnected22221111', isConnectedVal)
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
         } else {
           requestData.onComplete(event.data)
@@ -218,6 +215,7 @@ export const UseConnectorProvider = (props: any) => {
         connectionState: connectionState,
       })
     }
+    let isConnectedVal = false;
     const connect = (params: connectParams) => {
       return new Promise((resolve, reject) => {
         const url = `${WALLETURL}?requestType=connect`;
@@ -231,10 +229,10 @@ export const UseConnectorProvider = (props: any) => {
         })
         updateWalletInformation("connecting", "")
         console.log("datares1", params)
-        console.log('isconnected', isConnected)
+        console.log('isconnected', isConnectedVal)
         while (1 > 0) {
-          console.log('isconnected1111ggggg', isConnected)
-          if (isConnected) {
+          console.log('isconnected1111ggggg', isConnectedVal)
+          if (isConnectedVal) {
             break;
           } else {
             continue;
@@ -341,6 +339,7 @@ export const UseConnectorProvider = (props: any) => {
         send,
         createasset,
         transferasset,
+        isConnectedVal,
       }}
     >
       {children}

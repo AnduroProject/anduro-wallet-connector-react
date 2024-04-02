@@ -95,7 +95,6 @@ var UseConnectorProvider = function(props) {
     }), 2), walletInformation = _React_useState4[0], setWalletInformation = _React_useState4[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
-        console.log("isConnectedeeeee", isConnected);
         if (networkInformation.chainId === null && childWindow === null && !isConnected) {
             var url = "".concat(WALLETURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
@@ -107,16 +106,14 @@ var UseConnectorProvider = function(props) {
         isConnected
     ]);
     useEffect(function() {
-        var handleWindowClose2 = function() {
-            console.log("close came");
-        };
+        console.log("isConnectedeeeee1111", isConnected);
         if (childWindow != null) {
             console.log("close");
-            childWindow.addEventListener("beforeunload", handleWindowClose2);
-            window.addEventListener("beforeunload", handleWindowClose2);
+            childWindow.addEventListener("beforeunload", handleWindowClose);
+            window.addEventListener("beforeunload", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
-                childWindow.removeEventListener("beforeunload", handleWindowClose2);
+                childWindow.removeEventListener("beforeunload", handleWindowClose);
                 window.removeEventListener("message", handleMessage);
             };
         }
@@ -132,14 +129,12 @@ var UseConnectorProvider = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
-                setTimeout(function() {
-                    setIsConnected(true);
-                });
-                console.log("isconnected2222", isConnected);
+                isConnectedVal = true;
+                console.log("isconnected2222", isConnectedVal);
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
-                console.log("isconnected22221111", isConnected);
+                console.log("isconnected22221111", isConnectedVal);
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
                 requestData.onComplete(event.data);
@@ -234,6 +229,7 @@ var UseConnectorProvider = function(props) {
             connectionState: connectionState
         });
     };
+    var isConnectedVal = false;
     var connect = function(params) {
         return new Promise(function(resolve, reject) {
             var url = "".concat(WALLETURL, "?requestType=connect");
@@ -247,10 +243,10 @@ var UseConnectorProvider = function(props) {
             });
             updateWalletInformation("connecting", "");
             console.log("datares1", params);
-            console.log("isconnected", isConnected);
+            console.log("isconnected", isConnectedVal);
             while(1 > 0){
-                console.log("isconnected1111ggggg", isConnected);
-                if (isConnected) {
+                console.log("isconnected1111ggggg", isConnectedVal);
+                if (isConnectedVal) {
                     break;
                 } else {
                     continue;
@@ -347,7 +343,8 @@ var UseConnectorProvider = function(props) {
             disconnect: disconnect,
             send: send,
             createasset: createasset,
-            transferasset: transferasset
+            transferasset: transferasset,
+            isConnectedVal: isConnectedVal
         },
         children: children
     });
