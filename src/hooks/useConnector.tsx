@@ -141,10 +141,11 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
+          setIsConnected(true);
           updateNetworkInformation(event.data.result)
           requestData.onComplete(event.data);
           console.log("test22222")
-          updateWalletInformation("connected", event.data.result.accountPublicKey)
+          updateWalletInformation("connected", event.data.result.accountPublicKey)          
         } else {
           requestData.onComplete(event.data)
         }
@@ -220,15 +221,15 @@ export const UseConnectorProvider = (props: any) => {
         updateWalletInformation("connecting", "")
         console.log("datares1", params)
         console.log('isconnected', isConnected)
+        while (1 > 0) {
+          console.log('isconnected1111', isConnected)
+          if (isConnected) {
+            break;
+          } else {
+            continue;
+          }
+        }
         resolve(true)
-        // while (1 > 0) {
-        //   console.log('isconnected', isConnected)
-        //   if (isConnected) {
-        //     break;
-        //   } else {
-        //     continue;
-        //   }
-        // }
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
         //   let response = await data;

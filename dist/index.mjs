@@ -123,6 +123,7 @@ var UseConnectorProvider = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
+                setIsConnected(true);
                 updateNetworkInformation(event.data.result);
                 requestData.onComplete(event.data);
                 console.log("test22222");
@@ -234,6 +235,14 @@ var UseConnectorProvider = function(props) {
             updateWalletInformation("connecting", "");
             console.log("datares1", params);
             console.log("isconnected", isConnected);
+            while(1 > 0){
+                console.log("isconnected1111", isConnected);
+                if (isConnected) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
             resolve(true);
         });
     };
