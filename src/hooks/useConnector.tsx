@@ -239,7 +239,7 @@ export const UseConnectorProvider = (props: any) => {
         //     continue;
         //   }
         // }
-        resolve(true)
+        // resolve(true)
         // walletEvent.on("connectionresponse", async (data) =>{
         //   console.log("datares", data)
         //   let response = await data;
