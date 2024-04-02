@@ -113,7 +113,6 @@ var UseConnectorProvider = function(props) {
             window.addEventListener("beforeunload", handleWindowClose);
             window.addEventListener("message", handleMessage);
             return function() {
-                childWindow.removeEventListener("beforeunload", handleWindowClose);
                 window.removeEventListener("message", handleMessage);
             };
         }
