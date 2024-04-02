@@ -118,9 +118,10 @@ export const UseConnectorProvider = (props: any) => {
      
       if (networkState.chainId === null && childWindow === null && !isConnected) {
         const url = `${WALLETURL}?requestType=networkinfo`;
-        let targetWindow: any = window.open(url,"_blank",windowFeatures);
-        setChildWindow(targetWindow)
-        setRequestType("networkinfo")
+        chrome.windows.create({url: WALLETURL, type: "popup"});
+        // let targetWindow: any = window.open(url,"_blank",windowFeatures);
+        // setChildWindow(targetWindow)
+        // setRequestType("networkinfo")
       }
     }, [networkState,isConnected]);
     
