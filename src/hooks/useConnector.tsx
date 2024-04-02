@@ -83,7 +83,7 @@ export const useConnector = React.createContext<UseConnectorContextContextType |
 export const UseConnectorProvider = (props: any) => {
     const [childWindow, setChildWindow] = useState<any>(null);
     const [requestType, setRequestType] = useState("");
-    const [isConnected, setIsConnected] = useState<boolean>(false);
+    const [isConnected, setIsConnected] = useState(false);
     const [transactionData, setTransactionData] = useState<createTransactionParams>({
       transactionType: "",
       amount: 0,
@@ -133,7 +133,7 @@ export const UseConnectorProvider = (props: any) => {
           window.removeEventListener('message', handleMessage);
         };
       }
-    }, [childWindow]);
+    }, [childWindow,isConnected]);
   
   
     const handleMessage = (event: any) => {

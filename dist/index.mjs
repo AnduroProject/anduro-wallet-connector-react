@@ -116,7 +116,8 @@ var UseConnectorProvider = function(props) {
             };
         }
     }, [
-        childWindow
+        childWindow,
+        isConnected
     ]);
     var handleMessage = function(event) {
         console.log("Message Received", event.data);
