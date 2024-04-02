@@ -59,6 +59,7 @@ const networkInformation: NetworkInfo = {
 export const useConnector = (props: Props) => {
   const walletEvent = new EventEmitter()
   const [childWindow, setChildWindow] = useState<any>(null);
+  const [isConnected , setIsconnected] = useState<boolean>(false);
   const [requestType, setRequestType] = useState("");
   const [transactionData, setTransactionData] = useState<createTransactionParams>({
     transactionType: "",
@@ -116,10 +117,7 @@ export const useConnector = (props: Props) => {
         childWindow.close();
         setNetworkInformation(event.data.result)
         requestData.onComplete(event.data);
-        console.log("test22222")
-        process.nextTick(() => {
-          walletEvent.emit("connectionresponse", event.data);   
-        });
+        // setIsconnected(true)
       } else {
         requestData.onComplete(event.data)
       }
@@ -130,11 +128,8 @@ export const useConnector = (props: Props) => {
       if (event.data.status) {
         if (requestType === "connect" || requestType === "disconnect") {
           sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId});
-          console.log("test1")
-          walletEvent.emit("connectionresponse", event.data);   
-          process.nextTick(() => {
-            walletEvent.emit("connectionresponse", event.data);   
-          });
+          setIsconnected(true);  
+         
         } else if (requestType === "networkinfo") {
           sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
         } else if (requestType === "send") {
@@ -187,23 +182,14 @@ export const useConnector = (props: Props) => {
         chainId: params.chainId,
         onComplete: params.onComplete,
       })
-      console.log("datares1", params)
-      setTimeout(function() {
-        console.log("kkkk")
-       walletEvent.on("connectionresponse", async (data) =>{
-        console.log("datares", data)
-        let response = await data;
-        console.log("datares111", response)
-        resolve(response)
-      })
-      }, 5000)
-      // waitFor('connectionresponse', walletEvent, async (data) =>{
-      //     console.log("datares", data)
-      //     let response = await data;
-      //     console.log("datares111", response)
-      //     resolve(response)
-        
-      // });
+      while (1 > 0) {
+        console.log("isConnected", isConnected)
+        if (isConnected) {
+           resolve(true)
+        } else {
+          continue;
+        }
+      }
     })  
    
   }
