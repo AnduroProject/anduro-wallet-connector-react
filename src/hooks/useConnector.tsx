@@ -107,7 +107,8 @@ export const UseConnectorProvider = (props: any) => {
       console.log("networkState", networkState)
       if (networkState.chainId === null) {
         console.log("NETWORK STATE CHECK", networkState)
-        const url = `${walletURL}?requestType=networkinfo`;
+        let walleturl = "http://localhost:5002"
+        const url = `${walleturl}?requestType=networkinfo`;
         console.log("Wallet URL", url)
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
@@ -124,12 +125,12 @@ export const UseConnectorProvider = (props: any) => {
       }
     }, [childWindow]);
     useEffect(() => {
-      // const onUnload = (e: any) => {
-      //   e.preventDefault()
-      //   return (e.returnValue = "Are you sure you want to close?")
-      // }
-      // window.addEventListener("beforeunload", onUnload)
-      // return () => window.removeEventListener("beforeunload", onUnload)
+      const onUnload = (e: any) => {
+        e.preventDefault()
+        return (e.returnValue = "Are you sure you want to close?")
+      }
+      window.addEventListener("beforeunload", onUnload)
+      return () => window.removeEventListener("beforeunload", onUnload)
     }, [])
   
     const handleMessage = (event: any) => {
@@ -201,51 +202,51 @@ export const UseConnectorProvider = (props: any) => {
       })
     }
     const connect = async (params: connectParams) => {
-      // return new Promise((resolve, reject) => {
-      //   const url = `${params.walletURL}?requestType=connect`;
-      //   let childWindow = window.open(url,"_blank",windowFeatures);
-      //   localStorage.setItem("walletURL", params.walletURL)
-      //   setWalletURL(params.walletURL)
-      //   setRequestType("connect")
-      //   setChildWindow(childWindow)
-      //   setRequestData({
-      //     chainId: params.chainId,
-      //   })
-      //   updateWalletInformation("connecting", "")
-      //   resolvePromise = resolve;
-      // })
+      return new Promise((resolve, reject) => {
+        const url = `${params.walletURL}?requestType=connect`;
+        let childWindow = window.open(url,"_blank",windowFeatures);
+        localStorage.setItem("walletURL", params.walletURL)
+        setWalletURL(params.walletURL)
+        setRequestType("connect")
+        setChildWindow(childWindow)
+        setRequestData({
+          chainId: params.chainId,
+        })
+        updateWalletInformation("connecting", "")
+        resolvePromise = resolve;
+      })
     }
   
     const disconnect = () => {
-      // return new Promise((resolve, reject) => {
-      //   const url = `${walletURL}?requestType=disconnect`;
-      //   let childWindow = window.open(url,"_blank",windowFeatures);
-      //   setRequestType("disconnect")
-      //   setChildWindow(childWindow)
-      //   updateWalletInformation("disconnecting", "")
-      //   resolvePromise = resolve;
-      // })
+      return new Promise((resolve, reject) => {
+        const url = `${walletURL}?requestType=disconnect`;
+        let childWindow = window.open(url,"_blank",windowFeatures);
+        setRequestType("disconnect")
+        setChildWindow(childWindow)
+        updateWalletInformation("disconnecting", "")
+        resolvePromise = resolve;
+      })
     }
     const send = (params: createTransactionParams) => {
-      // return new Promise((resolve, reject) => {
-      //   if (checkWalletConnection(resolve, "")) {
-      //     const validateTransactionTypeResult = validateSendTransactionType(params.transactionType)
-      //     if (!validateTransactionTypeResult) {
-      //       resolve({
-      //         status: false,
-      //         error: "can't process your request, Invalid transaction type",
-      //         result: null,
-      //       })
-      //       return;
-      //     }
-      //     const url = `${walletURL}?requestType=send`;
-      //     let childWindow = window.open(url,"_blank",windowFeatures);
-      //     setRequestType("send")
-      //     setChildWindow(childWindow)
-      //     setTransactionData(params)
-      //     resolvePromise = resolve;
-      //   }
-      // })
+      return new Promise((resolve, reject) => {
+        if (checkWalletConnection(resolve, "")) {
+          const validateTransactionTypeResult = validateSendTransactionType(params.transactionType)
+          if (!validateTransactionTypeResult) {
+            resolve({
+              status: false,
+              error: "can't process your request, Invalid transaction type",
+              result: null,
+            })
+            return;
+          }
+          const url = `${walletURL}?requestType=send`;
+          let childWindow = window.open(url,"_blank",windowFeatures);
+          setRequestType("send")
+          setChildWindow(childWindow)
+          setTransactionData(params)
+          resolvePromise = resolve;
+        }
+      })
     }
     const checkWalletConnection = (onError: any, transactionType: string) => {
       let status: boolean = true;
@@ -278,28 +279,28 @@ export const UseConnectorProvider = (props: any) => {
       return status
     }
     const createasset = (params: CreateassetParams) => {
-      // return new Promise((resolve, reject) => {
-      //   if (checkWalletConnection(resolve, params.transactionType)) {
-      //     const url = `${walletURL}?requestType=create-asset`;
-      //     let childWindow = window.open(url,"_blank",windowFeatures);
-      //     setRequestType("create-asset")
-      //     setChildWindow(childWindow)
-      //     setCreateAssetData(params)
-      //     resolvePromise = resolve;
-      //   }
-      // })
+      return new Promise((resolve, reject) => {
+        if (checkWalletConnection(resolve, params.transactionType)) {
+          const url = `${walletURL}?requestType=create-asset`;
+          let childWindow = window.open(url,"_blank",windowFeatures);
+          setRequestType("create-asset")
+          setChildWindow(childWindow)
+          setCreateAssetData(params)
+          resolvePromise = resolve;
+        }
+      })
     }
     const transferasset = (params: TransferAssetParams) => {
-      // return new Promise((resolve, reject) => {
-      //   if (checkWalletConnection(resolve, "transfer")) {
-      //     const url = `${walletURL}?requestType=transfer-asset`;
-      //     let childWindow = window.open(url,"_blank",windowFeatures);
-      //     setRequestType("transfer-asset")
-      //     setChildWindow(childWindow)
-      //     setTransferAssetData(params)
-      //     resolvePromise = resolve;
-      //   }
-      // })
+      return new Promise((resolve, reject) => {
+        if (checkWalletConnection(resolve, "transfer")) {
+          const url = `${walletURL}?requestType=transfer-asset`;
+          let childWindow = window.open(url,"_blank",windowFeatures);
+          setRequestType("transfer-asset")
+          setChildWindow(childWindow)
+          setTransferAssetData(params)
+          resolvePromise = resolve;
+        }
+      })
     }
 
   const { children } = props
