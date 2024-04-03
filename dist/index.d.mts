@@ -31,8 +31,8 @@ interface CreateassetParams {
     properties: PropertiesType[];
     assetType: number;
     transactionType: string;
-    receiverAddress: string;
-    assetId?: number;
+    receiverAddress?: string | undefined;
+    assetId?: number | undefined;
 }
 interface TransferAssetParams {
     assetId: number;

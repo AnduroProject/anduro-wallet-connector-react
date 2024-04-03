@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import { ConnectorVW } from '../../UI/connectorVW';
 import { useConnector } from "anduro-wallet-connector"
 import { Link } from 'react-router-dom';
+import { WALLETURL } from '../../config/walletApi';
 export const ConnectorVC = () => {
-  const {networkState, walletState, connect, disconnect, send, createasset, transferasset} = React.useContext<any>(useConnector)
-  // const {connect, disconnect, getNetworkInformation, send, createasset, transferasset, getWalletInformation} = useConnector({walletUrl: "http://localhost:5002"})
+  const {networkState, walletState, connect, disconnect, } = useContext<any>(useConnector)
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 2,
+      walletURL: WALLETURL
     })
     console.log("*******Connect Result", result)
   }
@@ -15,10 +16,6 @@ export const ConnectorVC = () => {
     const result = await disconnect()
     console.log("*******Disconnect Result", result)
   }
-  // React.useEffect(() => {
-  //   console.log("Connector Network Information", networkState)
-  //   console.log("Connector Wallet Information", walletState)
-  // }, [])
   React.useEffect(() => {
     console.log("Connector Network Information", networkState)
     console.log("Connector Wallet Information", walletState)
