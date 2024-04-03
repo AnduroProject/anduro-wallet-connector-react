@@ -116,6 +116,7 @@ export const UseConnectorProvider = (props: any) => {
       if (networkState.chainId === null && requestType !== "disconnect") {
         const url = `${walletURL}?requestType=networkinfo`;
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
+        console.log("targetWindow", targetWindow)
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
       }

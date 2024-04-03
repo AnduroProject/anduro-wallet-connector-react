@@ -217,6 +217,7 @@ var UseConnectorProvider = function(props) {
         if (networkState.chainId === null && requestType !== "disconnect") {
             var url = "".concat(walletURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
+            console.log("targetWindow", targetWindow);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
         }
