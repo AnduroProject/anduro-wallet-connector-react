@@ -112,7 +112,7 @@ const handleCreateAssetAction = async () => {
 }
 ```
 
-### 4.Transfer Asset
+### 4. Transfer Asset
 
 Create Asset transfer in anduro wallet using transfer asset function
 
@@ -137,7 +137,7 @@ const handleTransferFunction = async () => {
 }
 ```
 
-### 5.Network and wallet informations
+### 5. Network and wallet informations
 
 We provide network and wallet information
 
@@ -148,7 +148,7 @@ import React from 'react';
 const { networkState, walletState } = React.useContext<any>(useConnector);
 ```
 
-### 6.Send / Convert  ( BTC and CBTC )
+### 6. Send / Convert  ( BTC and CBTC )
 
 **Parameters**
 

@@ -327,7 +327,7 @@ export const UseConnectorProvider = (props: any) => {
     }
 
     /**
-     * The following function used for setting networking information send BTC / CBTC in anduro wallet
+     * The following function is used to validate transaction types
      * 
      * @param transactionType
      * 
