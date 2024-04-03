@@ -1,3 +1,12 @@
+/*
+Project : Anduro Wallet Connector
+FileName : useConnector.tsx
+Author : MarathonDH Developers
+File Created : 04/03/2024
+CopyRights : Marathon DH
+Purpose : This is the file that is used to handle connect , disconnect and manage anduro wallet.
+*/
+
 import React, { useState, useEffect } from "react";
 
 interface WalletState {
@@ -33,12 +42,12 @@ interface CreateassetParams {
     transactionType: string;
     receiverAddress?: string | undefined;
     assetId?: number | undefined;
-}
+};
 interface TransferAssetParams {
     assetId: number;
     receiverAddress: string;
     supply: number;
-}
+};
 enum requestTypes {
   connect = 'connect',
   disconnected = 'disconnect',
@@ -106,7 +115,6 @@ export const UseConnectorProvider = (props: any) => {
     useEffect(() => {
       if (networkState.chainId === null && requestType !== "disconnect") {
         const url = `${walletURL}?requestType=networkinfo`;
-        console.log("Wallet URL", url)
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
@@ -121,15 +129,10 @@ export const UseConnectorProvider = (props: any) => {
         };
       }
     }, [childWindow]);
-    // useEffect(() => {
-    //   const onUnload = (e: any) => {
-    //     e.preventDefault()
-    //     return (e.returnValue = "Are you sure you want to close?")
-    //   }
-    //   window.addEventListener("beforeunload", onUnload)
-    //   return () => window.removeEventListener("beforeunload", onUnload)
-    // }, [])
-  
+
+    /**
+     * The following function used for listening messages from anduro wallet extension
+    */
     const handleMessage = (event: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
@@ -141,11 +144,9 @@ export const UseConnectorProvider = (props: any) => {
           resolvePromise({status: false, result: event.data})
         }
       } else if (event.data.type === requestTypes.accountNotCreated) {
-        console.log("Account Not Created", event.data)
         childWindow.close()
         resolvePromise({status: false, result: event.data})
       } else if (event.data.type === requestTypes.walletLoaded) {
-        console.log("requestType", requestType, requestData)
         if (event.data.status) {
           if (requestType === requestTypes.connect || requestType === requestTypes.disconnected) {
             sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData ? requestData.chainId : 0});
@@ -167,7 +168,6 @@ export const UseConnectorProvider = (props: any) => {
           }
         }
       } else if (event.data.type === requestTypes.networkinfoResponse) {
-        console.log("Network Info Response", event.data)
         childWindow.close()
         if (event.data.status) {
             updateNetworkInformation(event.data.result, "networkinfoResponse")
@@ -182,26 +182,37 @@ export const UseConnectorProvider = (props: any) => {
         updateWalletInformation("disconnected", "")
       }
     }
+
+    /**
+     * The following function used for sending messages to anduro wallet extension
+    */
     const sendMessageToChildWindow = (data: any) => {
       childWindow.postMessage(data, "*");
     }
+
+    /**
+     * The following function used for setting network information in library
+    */
     const updateNetworkInformation = (params: any, from: string) => {
-      console.log("+=======From CHeck", from)
-      console.log("NETWORK PARAMS CHECK 1 ", params.chainId)
-      console.log("NETWORK PARAMS CHECK 2 ", params.networkType)
         setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType,
         });
     }
+
+    /**
+     * The following function used for setting wallet account public key , connection state information in library
+    */
     const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
-      console.log("WALLET PARAMS CHECK 1 ", connectionState)
-      console.log("WALLET PARAMS CHECK 2 ", accountPublicKey)
       setWalletState({
         accountPublicKey: accountPublicKey,
         connectionState: connectionState,
       })
     }
+
+    /**
+     * The following function used for connecting anduro wallet extension
+    */
     const connect = async (params: connectParams) => {
       return new Promise((resolve, reject) => {
         const url = `${params.walletURL}?requestType=connect`;
@@ -218,6 +229,9 @@ export const UseConnectorProvider = (props: any) => {
       })
     }
   
+    /**
+     * The following function used for disconnecting anduro wallet extension
+    */
     const disconnect = () => {
       return new Promise((resolve, reject) => {
         const url = `${walletURL}?requestType=disconnect`;
@@ -231,6 +245,11 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise = resolve;
       })
     }
+
+    /**
+     * The following function used for send BTC / CBTC to receiver and 
+     * convert BTC to CBTC / CBTC to BTC in anduro wallet
+    */
     const send = (params: createTransactionParams) => {
       return new Promise((resolve, reject) => {
         if (checkWalletConnection(resolve, "")) {
@@ -252,6 +271,10 @@ export const UseConnectorProvider = (props: any) => {
         }
       })
     }
+
+    /**
+     * The following function used for checking anduro wallet is in connected state or not 
+    */
     const checkWalletConnection = (onError: any, transactionType: string) => {
       let status: boolean = true;
       let error: any = null;
@@ -271,6 +294,10 @@ export const UseConnectorProvider = (props: any) => {
       }
       return status
     }
+
+    /**
+     * The following function used for setting networking information send BTC / CBTC in anduro wallet
+    */
     const validateSendTransactionType = (transactionType: string) => {
       let status: boolean = false
       if (transactionType === requestTypes.normal) {
@@ -282,6 +309,10 @@ export const UseConnectorProvider = (props: any) => {
       }
       return status
     }
+
+    /**
+     * The following function used for creating asset in anduro wallet
+    */
     const createasset = (params: CreateassetParams) => {
       return new Promise((resolve, reject) => {
         if (checkWalletConnection(resolve, params.transactionType)) {
@@ -294,6 +325,10 @@ export const UseConnectorProvider = (props: any) => {
         }
       })
     }
+
+    /**
+     * The following function used for transfer asset / mint  in anduro wallet
+    */
     const transferasset = (params: TransferAssetParams) => {
       return new Promise((resolve, reject) => {
         if (checkWalletConnection(resolve, "transfer")) {
@@ -307,20 +342,20 @@ export const UseConnectorProvider = (props: any) => {
       })
     }
 
-  const { children } = props
-  return (
-    <useConnector.Provider
-      value={{
-        walletState,
-        networkState,
-        connect,
-        disconnect,
-        send,
-        createasset,
-        transferasset,
-      }}
-    >
-      {children}
-    </useConnector.Provider>
-  )
+    const { children } = props
+    return (
+      <useConnector.Provider
+        value={{
+          walletState,
+          networkState,
+          connect,
+          disconnect,
+          send,
+          createasset,
+          transferasset,
+        }}
+      >
+        {children}
+      </useConnector.Provider>
+    )
 }

@@ -37,7 +37,7 @@ import React from 'react';
 
 function App () {
   return (
-    <UseConnectorProvider />
+    <UseConnectorProvider walletURL={Anduro wallet url}/>
   );
 }
 ```
@@ -68,14 +68,14 @@ Disconnect Anduro wallet using disconnect function.
 import React from 'react';
 const { disconnect } = React.useContext<any>(useConnector);
 
-const handleConnectResponse = async () => {
+const handleDisConnectResponse = async () => {
   const result = await disconnect()
 }
 ```
 
 ### 3. Create Asset 
 
-Create Asset in  Anduro wallet using create asset function.
+Create Asset in Anduro wallet using create asset function.
 
 **Parameters**
 
@@ -114,7 +114,7 @@ import React from 'react';
 
 const { transferasset } = React.useContext<any>(useConnector);
 
-const exampleFunction = async () => {
+const handleTransferFunction = async () => {
   const result = await transferasset({
     assetId: 1,
     receiverAddress: "ccrt1qy6302x6qm8084tfwuf2hagfe8ndvpevg3u5n2j",

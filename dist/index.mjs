@@ -216,7 +216,6 @@ var UseConnectorProvider = function(props) {
     useEffect(function() {
         if (networkState.chainId === null && requestType !== "disconnect") {
             var url = "".concat(walletURL, "?requestType=networkinfo");
-            console.log("Wallet URL", url);
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
@@ -251,14 +250,12 @@ var UseConnectorProvider = function(props) {
                 });
             }
         } else if (event.data.type === "account-not-created" /* accountNotCreated */ ) {
-            console.log("Account Not Created", event.data);
             childWindow.close();
             resolvePromise({
                 status: false,
                 result: event.data
             });
         } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
-            console.log("requestType", requestType, requestData);
             if (event.data.status) {
                 if (requestType === "connect" /* connect */  || requestType === "disconnect" /* disconnected */ ) {
                     sendMessageToChildWindow({
@@ -313,7 +310,6 @@ var UseConnectorProvider = function(props) {
                 }
             }
         } else if (event.data.type === "networkinfo-response" /* networkinfoResponse */ ) {
-            console.log("Network Info Response", event.data);
             childWindow.close();
             if (event.data.status) {
                 updateNetworkInformation(event.data.result, "networkinfoResponse");
@@ -338,17 +334,12 @@ var UseConnectorProvider = function(props) {
         childWindow.postMessage(data, "*");
     };
     var updateNetworkInformation = function(params, from) {
-        console.log("+=======From CHeck", from);
-        console.log("NETWORK PARAMS CHECK 1 ", params.chainId);
-        console.log("NETWORK PARAMS CHECK 2 ", params.networkType);
         setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType
         });
     };
     var updateWalletInformation = function(connectionState, accountPublicKey) {
-        console.log("WALLET PARAMS CHECK 1 ", connectionState);
-        console.log("WALLET PARAMS CHECK 2 ", accountPublicKey);
         setWalletState({
             accountPublicKey: accountPublicKey,
             connectionState: connectionState
