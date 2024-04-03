@@ -104,11 +104,12 @@ export const UseConnectorProvider = (props: any) => {
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
 
     useEffect(() => {
-      if (networkState.chainId === null && childWindow === null) {
-        // const url = `${walletURL}?requestType=networkinfo`;
-        // let targetWindow: any = window.open(url,"_blank",windowFeatures);
-        // setChildWindow(targetWindow)
-        // setRequestType("networkinfo")
+      if (networkState.chainId === null) {
+        console.log("NETWORK STATE CHECK", networkState)
+        const url = `${walletURL}?requestType=networkinfo`;
+        let targetWindow: any = window.open(url,"_blank",windowFeatures);
+        setChildWindow(targetWindow)
+        setRequestType("networkinfo")
       }
     }, [networkState]);
     
