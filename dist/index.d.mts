@@ -42,7 +42,6 @@ interface TransferAssetParams {
 type UseConnectorContextContextType = {
     networkState: NetworkState;
     walletState: WalletState;
-    isConnected: boolean;
     connect: (params: connectParams) => any;
     transferasset: (params: TransferAssetParams) => any;
     createasset: (params: CreateassetParams) => any;

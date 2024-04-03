@@ -176,13 +176,12 @@ var resolvePromise = null;
 var UseConnectorProvider = function(props) {
     var _useState = _sliced_to_array(useState(null), 2), childWindow = _useState[0], setChildWindow = _useState[1];
     var _useState1 = _sliced_to_array(useState(""), 2), requestType = _useState1[0], setRequestType = _useState1[1];
-    var _useState2 = _sliced_to_array(useState(false), 2), isConnected = _useState2[0], setIsConnected = _useState2[1];
-    var _useState3 = _sliced_to_array(useState({
+    var _useState2 = _sliced_to_array(useState({
         transactionType: "",
         amount: 0,
         receiverAddress: "",
         feeRate: 1
-    }), 2), transactionData = _useState3[0], setTransactionData = _useState3[1];
+    }), 2), transactionData = _useState2[0], setTransactionData = _useState2[1];
     var _React_useState = _sliced_to_array(React.useState(null), 2), requestData = _React_useState[0], setRequestData = _React_useState[1];
     var _React_useState1 = _sliced_to_array(React.useState({
         name: "",
@@ -212,18 +211,17 @@ var UseConnectorProvider = function(props) {
         accountPublicKey: "",
         connectionState: "disconnected"
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
-    var _useState4 = _sliced_to_array(useState(localStorage.getItem("walletURL") || ""), 2), walletURL = _useState4[0], setWalletURL = _useState4[1];
+    var _useState3 = _sliced_to_array(useState(localStorage.getItem("walletURL") || ""), 2), walletURL = _useState3[0], setWalletURL = _useState3[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
-        if (networkState.chainId === null && childWindow === null && !isConnected) {
+        if (networkState.chainId === null && childWindow === null) {
             var url = "".concat(walletURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
         }
     }, [
-        networkState,
-        isConnected
+        networkState
     ]);
     useEffect(function() {
         console.log("childWindow :", childWindow);
@@ -235,23 +233,19 @@ var UseConnectorProvider = function(props) {
             };
         }
     }, [
-        childWindow,
-        isConnected
+        childWindow
     ]);
     useEffect(function() {}, []);
     var handleMessage = function(event) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
-                setTimeout(function() {
-                    setIsConnected(true);
-                });
                 updateNetworkInformation(event.data.result);
+                updateWalletInformation("connected", event.data.result.accountPublicKey);
                 resolvePromise({
                     status: true,
                     result: event.data
                 });
-                updateWalletInformation("connected", event.data.result.accountPublicKey);
             } else {
                 resolvePromise({
                     status: false,
@@ -468,8 +462,7 @@ var UseConnectorProvider = function(props) {
             disconnect: disconnect,
             send: send,
             createasset: createasset,
-            transferasset: transferasset,
-            isConnected: isConnected
+            transferasset: transferasset
         },
         children: children
     });

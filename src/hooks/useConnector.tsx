@@ -63,7 +63,6 @@ enum requestTypes {
 type UseConnectorContextContextType = {
   networkState: NetworkState;
   walletState: WalletState;
-  isConnected: boolean;
   connect: (params: connectParams) => any;
   transferasset: (params: TransferAssetParams) => any;
   createasset: (params: CreateassetParams) => any;
@@ -77,7 +76,6 @@ let resolvePromise: any = null;
 export const UseConnectorProvider = (props: any) => {
     const [childWindow, setChildWindow] = useState<any>(null);
     const [requestType, setRequestType] = useState("");
-    const [isConnected, setIsConnected] = useState(false);
     const [transactionData, setTransactionData] = useState<createTransactionParams>({
       transactionType: "",
       amount: 0,
@@ -107,13 +105,13 @@ export const UseConnectorProvider = (props: any) => {
 
     useEffect(() => {
      
-      if (networkState.chainId === null && childWindow === null && !isConnected) {
+      if (networkState.chainId === null && childWindow === null) {
         const url = `${walletURL}?requestType=networkinfo`;
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
       }
-    }, [networkState,isConnected]);
+    }, [networkState]);
     
     useEffect(() => {
       console.log("childWindow :", childWindow)
@@ -124,7 +122,7 @@ export const UseConnectorProvider = (props: any) => {
           window.removeEventListener('message', handleMessage);
         };
       }
-    }, [childWindow,isConnected]);
+    }, [childWindow]);
     useEffect(() => {
       // const onUnload = (e: any) => {
       //   e.preventDefault()
@@ -138,12 +136,9 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
-          setTimeout(() => {
-            setIsConnected(true);
-          })          
           updateNetworkInformation(event.data.result)
-          resolvePromise({status: true, result: event.data})
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
+          resolvePromise({status: true, result: event.data})
         } else {
           resolvePromise({status: false, result: event.data})
         }
@@ -312,7 +307,6 @@ export const UseConnectorProvider = (props: any) => {
         send,
         createasset,
         transferasset,
-        isConnected,
       }}
     >
       {children}
