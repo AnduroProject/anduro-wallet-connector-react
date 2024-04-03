@@ -1,10 +1,10 @@
-/**
-* Project : Marathon DH
-* FileName : useConnector.tsx
-* Author : BSEtec
-* Purpose : This is connector file used for connect , manange and disconnect anduro wallet 
-* CopyRights : Marathon DH
-* Date : 04/03/2019
+/*
+Project : Anduro Wallet Connector
+FileName : useConnector.tsx
+Author : MarathonDH Developers
+File Created : 04/03/2024
+CopyRights : Marathon DH
+Purpose : This is the file that is used to handle connect , disconnect and manage anduro wallet.
 */
 
 import React, { useState, useEffect } from "react";
