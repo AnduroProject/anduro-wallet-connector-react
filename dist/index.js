@@ -393,7 +393,7 @@ var UseConnectorProvider = function(props) {
         } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */ ) {
             childWindow.close();
             resolvePromise({
-                status: true,
+                status: event.data.status,
                 result: event.data
             });
         } else if (event.data.type === "disconnect-response" /* disconnectResponse */ ) {

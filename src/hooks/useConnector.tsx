@@ -184,7 +184,7 @@ export const UseConnectorProvider = (props: any) => {
         }
       } else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse) {
         childWindow.close()
-        resolvePromise({status: true, result: event.data})
+        resolvePromise({status: event.data.status, result: event.data})
       } else if (event.data.type === requestTypes.disconnectResponse) {
         childWindow.close()
         updateNetworkInformation({chainId: null, networkType: "",})
