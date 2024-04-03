@@ -10,7 +10,7 @@
     "@types/node": "^16.18.91",
     "@types/react": "^18.2.71",
     "@types/react-dom": "^18.2.22",
-    "anduro-wallet-connector": "github:MarathonDH/anduro-wallet-connector-react#token=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",
+    "anduro-wallet-connector": "github:MarathonDH/anduro-wallet-connector-react",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
