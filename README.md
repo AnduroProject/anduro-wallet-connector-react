@@ -37,7 +37,7 @@ import React from 'react';
 
 function App () {
   return (
-    <UseConnectorProvider walletURL={Your wallet url}/>
+    <UseConnectorProvider walletURL={Anduro wallet url}/>
   );
 }
 ```
