@@ -284,12 +284,7 @@ var UseConnectorProvider = function(props) {
     var _ref3 = _sliced_to_array((0, import_react.useState)(localStorage.getItem("walletURL") || ""), 2), walletURL = _ref3[0], setWalletURL = _ref3[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     (0, import_react.useEffect)(function() {
-        if (networkState.chainId === null && childWindow === null) {
-            var url = "".concat(walletURL, "?requestType=networkinfo");
-            var targetWindow = window.open(url, "_blank", windowFeatures);
-            setChildWindow(targetWindow);
-            setRequestType("networkinfo");
-        }
+        if (networkState.chainId === null && childWindow === null) {}
     }, [
         networkState
     ]);

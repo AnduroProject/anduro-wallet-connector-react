@@ -105,10 +105,10 @@ export const UseConnectorProvider = (props: any) => {
 
     useEffect(() => {
       if (networkState.chainId === null && childWindow === null) {
-        const url = `${walletURL}?requestType=networkinfo`;
-        let targetWindow: any = window.open(url,"_blank",windowFeatures);
-        setChildWindow(targetWindow)
-        setRequestType("networkinfo")
+        // const url = `${walletURL}?requestType=networkinfo`;
+        // let targetWindow: any = window.open(url,"_blank",windowFeatures);
+        // setChildWindow(targetWindow)
+        // setRequestType("networkinfo")
       }
     }, [networkState]);
     
