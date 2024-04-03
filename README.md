@@ -143,7 +143,7 @@ transactionType:
   2.pegin - Convert BTC to CBTC , 
   3.pegout - Convert CBTC to BTC 
 amount: transaction amount.
-receiverAddress: Receiver address ( Sidechain address / bitcoint address )
+receiverAddress: Receiver address ( Sidechain address / bitcoin address )
 feeRate: Fee rate per virtual byte
 
 

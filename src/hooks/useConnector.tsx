@@ -219,7 +219,9 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for connecting anduro wallet extension
+     * 
      * @param chainId Connection request chain ID
+     * 
     */
     const connect = async (params: connectParams) => {
       return new Promise((resolve, reject) => {
@@ -253,6 +255,12 @@ export const UseConnectorProvider = (props: any) => {
     /**
      * The following function used for send BTC / CBTC to receiver and 
      * convert BTC to CBTC / CBTC to BTC in anduro wallet
+     * 
+     * @param transactionType 1. normal - Send BTC / CBTC OR CBTC / BTC, 2. pegin - Convert BTC to CBTC, 3. pegout - Convert CBTC to BTC
+     * @param amount transaction amount
+     * @param receiverAddress Receiver address ( coordinate address / bitcoin address )
+     * @param feeRate
+     * 
     */
     const send = (params: createTransactionParams) => {
       return new Promise((resolve, reject) => {
