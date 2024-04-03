@@ -104,7 +104,6 @@ export const UseConnectorProvider = (props: any) => {
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
 
     useEffect(() => {
-     
       if (networkState.chainId === null && childWindow === null) {
         const url = `${walletURL}?requestType=networkinfo`;
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
@@ -195,51 +194,51 @@ export const UseConnectorProvider = (props: any) => {
       })
     }
     const connect = async (params: connectParams) => {
-      return new Promise((resolve, reject) => {
-        const url = `${params.walletURL}?requestType=connect`;
-        let childWindow = window.open(url,"_blank",windowFeatures);
-        localStorage.setItem("walletURL", params.walletURL)
-        setWalletURL(params.walletURL)
-        setRequestType("connect")
-        setChildWindow(childWindow)
-        setRequestData({
-          chainId: params.chainId,
-        })
-        updateWalletInformation("connecting", "")
-        resolvePromise = resolve;
-      })  
+      // return new Promise((resolve, reject) => {
+      //   const url = `${params.walletURL}?requestType=connect`;
+      //   let childWindow = window.open(url,"_blank",windowFeatures);
+      //   localStorage.setItem("walletURL", params.walletURL)
+      //   setWalletURL(params.walletURL)
+      //   setRequestType("connect")
+      //   setChildWindow(childWindow)
+      //   setRequestData({
+      //     chainId: params.chainId,
+      //   })
+      //   updateWalletInformation("connecting", "")
+      //   resolvePromise = resolve;
+      // })
     }
   
     const disconnect = () => {
-      return new Promise((resolve, reject) => {
-        const url = `${walletURL}?requestType=disconnect`;
-        let childWindow = window.open(url,"_blank",windowFeatures);
-        setRequestType("disconnect")
-        setChildWindow(childWindow)
-        updateWalletInformation("disconnecting", "")
-        resolvePromise = resolve;
-      })
+      // return new Promise((resolve, reject) => {
+      //   const url = `${walletURL}?requestType=disconnect`;
+      //   let childWindow = window.open(url,"_blank",windowFeatures);
+      //   setRequestType("disconnect")
+      //   setChildWindow(childWindow)
+      //   updateWalletInformation("disconnecting", "")
+      //   resolvePromise = resolve;
+      // })
     }
     const send = (params: createTransactionParams) => {
-      return new Promise((resolve, reject) => {
-        if (checkWalletConnection(resolve, "")) {
-          const validateTransactionTypeResult = validateSendTransactionType(params.transactionType)
-          if (!validateTransactionTypeResult) {
-            resolve({
-              status: false,
-              error: "can't process your request, Invalid transaction type",
-              result: null,
-            })
-            return;
-          }
-          const url = `${walletURL}?requestType=send`;
-          let childWindow = window.open(url,"_blank",windowFeatures);
-          setRequestType("send")
-          setChildWindow(childWindow)
-          setTransactionData(params)
-          resolvePromise = resolve;
-        }
-      })
+      // return new Promise((resolve, reject) => {
+      //   if (checkWalletConnection(resolve, "")) {
+      //     const validateTransactionTypeResult = validateSendTransactionType(params.transactionType)
+      //     if (!validateTransactionTypeResult) {
+      //       resolve({
+      //         status: false,
+      //         error: "can't process your request, Invalid transaction type",
+      //         result: null,
+      //       })
+      //       return;
+      //     }
+      //     const url = `${walletURL}?requestType=send`;
+      //     let childWindow = window.open(url,"_blank",windowFeatures);
+      //     setRequestType("send")
+      //     setChildWindow(childWindow)
+      //     setTransactionData(params)
+      //     resolvePromise = resolve;
+      //   }
+      // })
     }
     const checkWalletConnection = (onError: any, transactionType: string) => {
       let status: boolean = true;
@@ -272,28 +271,28 @@ export const UseConnectorProvider = (props: any) => {
       return status
     }
     const createasset = (params: CreateassetParams) => {
-      return new Promise((resolve, reject) => {
-        if (checkWalletConnection(resolve, params.transactionType)) {
-          const url = `${walletURL}?requestType=create-asset`;
-          let childWindow = window.open(url,"_blank",windowFeatures);
-          setRequestType("create-asset")
-          setChildWindow(childWindow)
-          setCreateAssetData(params)
-          resolvePromise = resolve;
-        }
-      })
+      // return new Promise((resolve, reject) => {
+      //   if (checkWalletConnection(resolve, params.transactionType)) {
+      //     const url = `${walletURL}?requestType=create-asset`;
+      //     let childWindow = window.open(url,"_blank",windowFeatures);
+      //     setRequestType("create-asset")
+      //     setChildWindow(childWindow)
+      //     setCreateAssetData(params)
+      //     resolvePromise = resolve;
+      //   }
+      // })
     }
     const transferasset = (params: TransferAssetParams) => {
-      return new Promise((resolve, reject) => {
-        if (checkWalletConnection(resolve, "transfer")) {
-          const url = `${walletURL}?requestType=transfer-asset`;
-          let childWindow = window.open(url,"_blank",windowFeatures);
-          setRequestType("transfer-asset")
-          setChildWindow(childWindow)
-          setTransferAssetData(params)
-          resolvePromise = resolve;
-        }
-      })
+      // return new Promise((resolve, reject) => {
+      //   if (checkWalletConnection(resolve, "transfer")) {
+      //     const url = `${walletURL}?requestType=transfer-asset`;
+      //     let childWindow = window.open(url,"_blank",windowFeatures);
+      //     setRequestType("transfer-asset")
+      //     setChildWindow(childWindow)
+      //     setTransferAssetData(params)
+      //     resolvePromise = resolve;
+      //   }
+      // })
     }
 
   const { children } = props

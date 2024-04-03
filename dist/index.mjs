@@ -347,20 +347,7 @@ var UseConnectorProvider = function(props) {
         var _ref = _async_to_generator(function(params) {
             return _ts_generator(this, function(_state) {
                 return [
-                    2,
-                    new Promise(function(resolve, reject) {
-                        var url = "".concat(params.walletURL, "?requestType=connect");
-                        var childWindow2 = window.open(url, "_blank", windowFeatures);
-                        localStorage.setItem("walletURL", params.walletURL);
-                        setWalletURL(params.walletURL);
-                        setRequestType("connect");
-                        setChildWindow(childWindow2);
-                        setRequestData({
-                            chainId: params.chainId
-                        });
-                        updateWalletInformation("connecting", "");
-                        resolvePromise = resolve;
-                    })
+                    2
                 ];
             });
         });
@@ -368,37 +355,8 @@ var UseConnectorProvider = function(props) {
             return _ref.apply(this, arguments);
         };
     }();
-    var disconnect = function() {
-        return new Promise(function(resolve, reject) {
-            var url = "".concat(walletURL, "?requestType=disconnect");
-            var childWindow2 = window.open(url, "_blank", windowFeatures);
-            setRequestType("disconnect");
-            setChildWindow(childWindow2);
-            updateWalletInformation("disconnecting", "");
-            resolvePromise = resolve;
-        });
-    };
-    var send = function(params) {
-        return new Promise(function(resolve, reject) {
-            if (checkWalletConnection(resolve, "")) {
-                var validateTransactionTypeResult = validateSendTransactionType(params.transactionType);
-                if (!validateTransactionTypeResult) {
-                    resolve({
-                        status: false,
-                        error: "can't process your request, Invalid transaction type",
-                        result: null
-                    });
-                    return;
-                }
-                var url = "".concat(walletURL, "?requestType=send");
-                var childWindow2 = window.open(url, "_blank", windowFeatures);
-                setRequestType("send");
-                setChildWindow(childWindow2);
-                setTransactionData(params);
-                resolvePromise = resolve;
-            }
-        });
-    };
+    var disconnect = function() {};
+    var send = function(params) {};
     var checkWalletConnection = function(onError, transactionType) {
         var status = true;
         var error = null;
@@ -429,30 +387,8 @@ var UseConnectorProvider = function(props) {
         }
         return status;
     };
-    var createasset = function(params) {
-        return new Promise(function(resolve, reject) {
-            if (checkWalletConnection(resolve, params.transactionType)) {
-                var url = "".concat(walletURL, "?requestType=create-asset");
-                var childWindow2 = window.open(url, "_blank", windowFeatures);
-                setRequestType("create-asset");
-                setChildWindow(childWindow2);
-                setCreateAssetData(params);
-                resolvePromise = resolve;
-            }
-        });
-    };
-    var transferasset = function(params) {
-        return new Promise(function(resolve, reject) {
-            if (checkWalletConnection(resolve, "transfer")) {
-                var url = "".concat(walletURL, "?requestType=transfer-asset");
-                var childWindow2 = window.open(url, "_blank", windowFeatures);
-                setRequestType("transfer-asset");
-                setChildWindow(childWindow2);
-                setTransferAssetData(params);
-                resolvePromise = resolve;
-            }
-        });
-    };
+    var createasset = function(params) {};
+    var transferasset = function(params) {};
     var children = props.children;
     return /* @__PURE__ */ jsx(useConnector.Provider, {
         value: {
