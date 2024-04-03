@@ -180,6 +180,7 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise({status: true, result: event.data})
       } else if (event.data.type === requestTypes.disconnectResponse) {
         childWindow.close()
+        updateNetworkInformation({chainId: null, networkType: "",})
         updateWalletInformation("disconnected", "")
       }
     }

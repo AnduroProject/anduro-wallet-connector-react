@@ -399,6 +399,10 @@ var UseConnectorProvider = function(props) {
             });
         } else if (event.data.type === "disconnect-response" /* disconnectResponse */ ) {
             childWindow.close();
+            updateNetworkInformation({
+                chainId: null,
+                networkType: ""
+            });
             updateWalletInformation("disconnected", "");
         }
     };
