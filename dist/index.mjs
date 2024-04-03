@@ -405,7 +405,7 @@ var UseConnectorProvider = function(props) {
             }
         });
     };
-    var checkWalletConnection = function(onError, transactionType) {
+    var checkWalletConnection = function(resolve, transactionType) {
         var status = true;
         var error = null;
         if (networkState.chainId === null || networkState.networkType === "") {
@@ -416,7 +416,7 @@ var UseConnectorProvider = function(props) {
             error = "can't process your request, Invalid transaction type.";
         }
         if (!status) {
-            onError({
+            resolve({
                 status: status,
                 result: null,
                 error: error

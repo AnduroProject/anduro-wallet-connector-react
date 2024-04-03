@@ -17,7 +17,6 @@ interface NetworkState {
     chainId: any;
     networkType: string;
 };
-
 interface connectParams {
   chainId: number;
 };
@@ -139,6 +138,9 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for listening messages from anduro wallet extension
+     * 
+     * @param event Event message
+     * 
     */
     const handleMessage = (event: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
@@ -192,6 +194,9 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for sending messages to anduro wallet extension
+     * 
+     * @param data Data to send to the wallet
+     * 
     */
     const sendMessageToChildWindow = (data: any) => {
       childWindow.postMessage(data, "*");
@@ -199,6 +204,9 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for setting network information in library
+     * 
+     * @param params Event message
+     * 
     */
     const updateNetworkInformation = (params: any) => {
         setNetworkState({
@@ -209,6 +217,10 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for setting wallet account public key , connection state information in library
+     * 
+     * @param connectionState The connection state of the Anduro wallet
+     * @param accountPublicKey The Anduro wallet account public key
+     * 
     */
     const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
       setWalletState({
@@ -220,7 +232,7 @@ export const UseConnectorProvider = (props: any) => {
     /**
      * The following function used for connecting anduro wallet extension
      * 
-     * @param chainId Connection request chain ID
+     * @param chainId Chain ID for connecting the Anduro wallet
      * 
     */
     const connect = async (params: connectParams) => {
@@ -289,8 +301,12 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for checking anduro wallet is in connected state or not 
+     * 
+     * @param onError 
+     * @param transactionType 
+     * 
     */
-    const checkWalletConnection = (onError: any, transactionType: string) => {
+    const checkWalletConnection = (resolve: any, transactionType: string) => {
       let status: boolean = true;
       let error: any = null;
       if (networkState.chainId === null || networkState.networkType === "") {
@@ -301,7 +317,7 @@ export const UseConnectorProvider = (props: any) => {
         error = "can't process your request, Invalid transaction type."
       }
       if (!status) {
-        onError({
+        resolve({
           status: status,
           result: null,
           error,
@@ -312,6 +328,9 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for setting networking information send BTC / CBTC in anduro wallet
+     * 
+     * @param transactionType
+     * 
     */
     const validateSendTransactionType = (transactionType: string) => {
       let status: boolean = false
