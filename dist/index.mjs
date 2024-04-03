@@ -340,6 +340,7 @@ var UseConnectorProvider = function(props) {
         childWindow.postMessage(data, "*");
     };
     var updateNetworkInformation = function(params, from) {
+        console.log("+=======From CHeck", from);
         console.log("NETWORK PARAMS CHECK 1 ", params.chainId);
         console.log("NETWORK PARAMS CHECK 2 ", params.networkType);
         setNetworkState({

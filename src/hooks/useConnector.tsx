@@ -188,6 +188,7 @@ export const UseConnectorProvider = (props: any) => {
       childWindow.postMessage(data, "*");
     }
     const updateNetworkInformation = (params: any, from: string) => {
+      console.log("+=======From CHeck", from)
       console.log("NETWORK PARAMS CHECK 1 ", params.chainId)
       console.log("NETWORK PARAMS CHECK 2 ", params.networkType)
         setNetworkState({
