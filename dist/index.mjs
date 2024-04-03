@@ -238,16 +238,7 @@ var UseConnectorProvider = function(props) {
         childWindow,
         isConnected
     ]);
-    useEffect(function() {
-        var onUnload = function(e) {
-            e.preventDefault();
-            return e.returnValue = "Are you sure you want to close?";
-        };
-        window.addEventListener("beforeunload", onUnload);
-        return function() {
-            return window.removeEventListener("beforeunload", onUnload);
-        };
-    }, []);
+    useEffect(function() {}, []);
     var handleMessage = function(event) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
