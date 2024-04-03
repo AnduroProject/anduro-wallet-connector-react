@@ -227,6 +227,9 @@ export const UseConnectorProvider = (props: any) => {
         let childWindow = window.open(url,"_blank",windowFeatures);
         setRequestType("disconnect")
         setChildWindow(childWindow)
+        setRequestData({
+          chainId: "",
+        })
         updateWalletInformation("disconnecting", "")
         resolvePromise = resolve;
       })

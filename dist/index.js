@@ -458,6 +458,9 @@ var UseConnectorProvider = function(props) {
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("disconnect");
             setChildWindow(childWindow2);
+            setRequestData({
+                chainId: ""
+            });
             updateWalletInformation("disconnecting", "");
             resolvePromise = resolve;
         });
