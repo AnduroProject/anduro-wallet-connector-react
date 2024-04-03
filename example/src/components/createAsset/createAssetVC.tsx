@@ -1,7 +1,7 @@
 import React from 'react';
 import { useConnector } from 'anduro-wallet-connector'
 export const CreateAssetVC = () => {
-  const {networkState, walletState, createasset} = React.useContext<any>(useConnector)
+  const { createasset } = React.useContext<any>(useConnector)
   const [receiverAddress, setReceiverAddress] = React.useState<any>("")
 
   const [name, setName] = React.useState<string>("")
@@ -28,10 +28,6 @@ export const CreateAssetVC = () => {
     })
     console.log("*******Create and Mint asset Result", result)
   }
-  React.useEffect(() => {
-    console.log("Create And Mint Network Information", networkState)
-    console.log("Create And Mint Wallet Information", walletState)
-  }, [])
   return (
     <div className="widset_parent">
       <h3 className='title'>{createAssetTransactionType} Asset</h3>
