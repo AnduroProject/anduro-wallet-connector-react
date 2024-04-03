@@ -11,7 +11,6 @@ interface NetworkState {
 }
 interface connectParams {
     chainId: number;
-    walletURL: string;
 }
 interface createTransactionParams {
     transactionType: string;

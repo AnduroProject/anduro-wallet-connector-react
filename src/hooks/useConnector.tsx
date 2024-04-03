@@ -10,17 +10,16 @@ Purpose : This is the file that is used to handle connect , disconnect and manag
 import React, { useState, useEffect } from "react";
 
 interface WalletState {
-    accountPublicKey: string; // wallet account public key
-    connectionState: string; // connection state
+    accountPublicKey: string;
+    connectionState: string;
 };
 interface NetworkState {
-    chainId: any; // Chain ID
-    networkType: string; // Chain type (bitcoin OR sidechain)
+    chainId: any;
+    networkType: string;
 };
 
 interface connectParams {
   chainId: number;
-  walletURL: string;
 };
 interface createTransactionParams {
     transactionType: string;
@@ -129,6 +128,14 @@ export const UseConnectorProvider = (props: any) => {
         };
       }
     }, [childWindow]);
+    useEffect(() => {
+      if (
+        (localStorage.getItem("walletURL") && localStorage.getItem("walletURL") !== props.walletURL) ||
+        (localStorage.getItem("walletURL") === null && props.walletURL)
+      ) {
+        localStorage.setItem("walletURL", props.walletURL)
+      }
+    }, []);
 
     /**
      * The following function used for listening messages from anduro wallet extension
@@ -137,7 +144,7 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
-          updateNetworkInformation(event.data.result, "connectionResponse")
+          updateNetworkInformation(event.data.result)
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
           resolvePromise({status: true, result: event.data})
         } else {
@@ -170,7 +177,7 @@ export const UseConnectorProvider = (props: any) => {
       } else if (event.data.type === requestTypes.networkinfoResponse) {
         childWindow.close()
         if (event.data.status) {
-            updateNetworkInformation(event.data.result, "networkinfoResponse")
+            updateNetworkInformation(event.data.result)
             updateWalletInformation("conneted", event.data.result.accountPublicKey)
         }
       } else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse) {
@@ -178,7 +185,7 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise({status: true, result: event.data})
       } else if (event.data.type === requestTypes.disconnectResponse) {
         childWindow.close()
-        updateNetworkInformation({chainId: null, networkType: "",}, "disconnectResponse")
+        updateNetworkInformation({chainId: null, networkType: "",})
         updateWalletInformation("disconnected", "")
       }
     }
@@ -193,7 +200,7 @@ export const UseConnectorProvider = (props: any) => {
     /**
      * The following function used for setting network information in library
     */
-    const updateNetworkInformation = (params: any, from: string) => {
+    const updateNetworkInformation = (params: any) => {
         setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType,
@@ -212,13 +219,13 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for connecting anduro wallet extension
+     * @param chainId Connection request chain ID
     */
     const connect = async (params: connectParams) => {
       return new Promise((resolve, reject) => {
-        const url = `${params.walletURL}?requestType=connect`;
+        const url = `${walletURL}?requestType=connect`;
         let childWindow = window.open(url,"_blank",windowFeatures);
-        localStorage.setItem("walletURL", params.walletURL)
-        setWalletURL(params.walletURL)
+        setWalletURL(walletURL)
         setRequestType("connect")
         setChildWindow(childWindow)
         setRequestData({
@@ -238,9 +245,6 @@ export const UseConnectorProvider = (props: any) => {
         let childWindow = window.open(url,"_blank",windowFeatures);
         setRequestType("disconnect")
         setChildWindow(childWindow)
-        setRequestData({
-          chainId: "",
-        })
         updateWalletInformation("disconnecting", "")
         resolvePromise = resolve;
       })

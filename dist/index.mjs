@@ -233,11 +233,16 @@ var UseConnectorProvider = function(props) {
     }, [
         childWindow
     ]);
+    useEffect(function() {
+        if (localStorage.getItem("walletURL") && localStorage.getItem("walletURL") !== props.walletURL || localStorage.getItem("walletURL") === null && props.walletURL) {
+            localStorage.setItem("walletURL", props.walletURL);
+        }
+    }, []);
     var handleMessage = function(event) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
-                updateNetworkInformation(event.data.result, "connectionResponse");
+                updateNetworkInformation(event.data.result);
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
                 resolvePromise({
                     status: true,
@@ -312,7 +317,7 @@ var UseConnectorProvider = function(props) {
         } else if (event.data.type === "networkinfo-response" /* networkinfoResponse */ ) {
             childWindow.close();
             if (event.data.status) {
-                updateNetworkInformation(event.data.result, "networkinfoResponse");
+                updateNetworkInformation(event.data.result);
                 updateWalletInformation("conneted", event.data.result.accountPublicKey);
             }
         } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */ ) {
@@ -326,14 +331,14 @@ var UseConnectorProvider = function(props) {
             updateNetworkInformation({
                 chainId: null,
                 networkType: ""
-            }, "disconnectResponse");
+            });
             updateWalletInformation("disconnected", "");
         }
     };
     var sendMessageToChildWindow = function(data) {
         childWindow.postMessage(data, "*");
     };
-    var updateNetworkInformation = function(params, from) {
+    var updateNetworkInformation = function(params) {
         setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType
@@ -351,10 +356,9 @@ var UseConnectorProvider = function(props) {
                 return [
                     2,
                     new Promise(function(resolve, reject) {
-                        var url = "".concat(params.walletURL, "?requestType=connect");
+                        var url = "".concat(walletURL, "?requestType=connect");
                         var childWindow2 = window.open(url, "_blank", windowFeatures);
-                        localStorage.setItem("walletURL", params.walletURL);
-                        setWalletURL(params.walletURL);
+                        setWalletURL(walletURL);
                         setRequestType("connect");
                         setChildWindow(childWindow2);
                         setRequestData({
@@ -376,9 +380,6 @@ var UseConnectorProvider = function(props) {
             var childWindow2 = window.open(url, "_blank", windowFeatures);
             setRequestType("disconnect");
             setChildWindow(childWindow2);
-            setRequestData({
-                chainId: ""
-            });
             updateWalletInformation("disconnecting", "");
             resolvePromise = resolve;
         });
