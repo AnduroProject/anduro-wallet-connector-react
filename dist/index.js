@@ -284,9 +284,11 @@ var UseConnectorProvider = function(props) {
     var _ref3 = _sliced_to_array((0, import_react.useState)(localStorage.getItem("walletURL") || ""), 2), walletURL = _ref3[0], setWalletURL = _ref3[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     (0, import_react.useEffect)(function() {
+        console.log("networkState", networkState);
         if (networkState.chainId === null) {
             console.log("NETWORK STATE CHECK", networkState);
             var url = "".concat(walletURL, "?requestType=networkinfo");
+            console.log("Wallet URL", url);
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
             setRequestType("networkinfo");
@@ -295,9 +297,7 @@ var UseConnectorProvider = function(props) {
         networkState
     ]);
     (0, import_react.useEffect)(function() {
-        console.log("childWindow :", childWindow);
         if (childWindow != null) {
-            console.log("close");
             window.addEventListener("message", handleMessage);
             return function() {
                 window.removeEventListener("message", handleMessage);
@@ -324,6 +324,7 @@ var UseConnectorProvider = function(props) {
                 });
             }
         } else if (event.data.type === "account-not-created" /* accountNotCreated */ ) {
+            console.log("Account Not Created", event.data);
             childWindow.close();
             resolvePromise({
                 status: false,
@@ -384,6 +385,7 @@ var UseConnectorProvider = function(props) {
                 }
             }
         } else if (event.data.type === "networkinfo-response" /* networkinfoResponse */ ) {
+            console.log("Network Info Response", event.data);
             childWindow.close();
             if (event.data.status) {
                 updateNetworkInformation(event.data.result);

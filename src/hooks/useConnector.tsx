@@ -104,9 +104,11 @@ export const UseConnectorProvider = (props: any) => {
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
 
     useEffect(() => {
+      console.log("networkState", networkState)
       if (networkState.chainId === null) {
         console.log("NETWORK STATE CHECK", networkState)
         const url = `${walletURL}?requestType=networkinfo`;
+        console.log("Wallet URL", url)
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
@@ -114,9 +116,7 @@ export const UseConnectorProvider = (props: any) => {
     }, [networkState]);
     
     useEffect(() => {
-      console.log("childWindow :", childWindow)
       if (childWindow != null) {
-        console.log("close")
         window.addEventListener('message', handleMessage);
         return () => {
           window.removeEventListener('message', handleMessage);
@@ -143,6 +143,7 @@ export const UseConnectorProvider = (props: any) => {
           resolvePromise({status: false, result: event.data})
         }
       } else if (event.data.type === requestTypes.accountNotCreated) {
+        console.log("Account Not Created", event.data)
         childWindow.close()
         resolvePromise({status: false, result: event.data})
       } else if (event.data.type === requestTypes.walletLoaded) {
@@ -167,6 +168,7 @@ export const UseConnectorProvider = (props: any) => {
           }
         }
       } else if (event.data.type === requestTypes.networkinfoResponse) {
+        console.log("Network Info Response", event.data)
         childWindow.close()
         if (event.data.status) {
             updateNetworkInformation(event.data.result)
