@@ -211,7 +211,7 @@ var UseConnectorProvider = function(props) {
         accountPublicKey: "",
         connectionState: "disconnected"
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
-    var _useState3 = _sliced_to_array(useState(localStorage.getItem("walletURL") || props.walletURL ? props.walletURL : ""), 2), walletURL = _useState3[0], setWalletURL = _useState3[1];
+    var _useState3 = _sliced_to_array(useState(localStorage.getItem("walletURL") || props.walletURL), 2), walletURL = _useState3[0], setWalletURL = _useState3[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
         console.log("networkState", networkState);
@@ -237,16 +237,6 @@ var UseConnectorProvider = function(props) {
     }, [
         childWindow
     ]);
-    useEffect(function() {
-        var onUnload = function(e) {
-            e.preventDefault();
-            return e.returnValue = "Are you sure you want to close?";
-        };
-        window.addEventListener("beforeunload", onUnload);
-        return function() {
-            return window.removeEventListener("beforeunload", onUnload);
-        };
-    }, []);
     var handleMessage = function(event) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {

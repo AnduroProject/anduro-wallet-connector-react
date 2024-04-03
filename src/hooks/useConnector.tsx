@@ -100,7 +100,7 @@ export const UseConnectorProvider = (props: any) => {
     });
     const [networkState, setNetworkState] = React.useState<NetworkState>({chainId: null, networkType: ""})
     const [walletState, setWalletState] = React.useState<WalletState>({accountPublicKey: "", connectionState: "disconnected"})
-    const [walletURL, setWalletURL] = useState(localStorage.getItem("walletURL") || props.walletURL ? props.walletURL : "");
+    const [walletURL, setWalletURL] = useState(localStorage.getItem("walletURL") || props.walletURL);
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
 
     useEffect(() => {
@@ -124,14 +124,14 @@ export const UseConnectorProvider = (props: any) => {
         };
       }
     }, [childWindow]);
-    useEffect(() => {
-      const onUnload = (e: any) => {
-        e.preventDefault()
-        return (e.returnValue = "Are you sure you want to close?")
-      }
-      window.addEventListener("beforeunload", onUnload)
-      return () => window.removeEventListener("beforeunload", onUnload)
-    }, [])
+    // useEffect(() => {
+    //   const onUnload = (e: any) => {
+    //     e.preventDefault()
+    //     return (e.returnValue = "Are you sure you want to close?")
+    //   }
+    //   window.addEventListener("beforeunload", onUnload)
+    //   return () => window.removeEventListener("beforeunload", onUnload)
+    // }, [])
   
     const handleMessage = (event: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
