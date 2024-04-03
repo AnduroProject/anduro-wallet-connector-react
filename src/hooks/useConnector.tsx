@@ -1,3 +1,12 @@
+/**
+* Project : Marathon DH
+* FileName : useConnector.tsx
+* Author : BSEtec
+* Purpose : This is connector file used for connect , manange and disconnect anduro wallet 
+* CopyRights : Marathon DH
+* Date : 04/03/2019
+*/
+
 import React, { useState, useEffect } from "react";
 
 interface WalletState {
