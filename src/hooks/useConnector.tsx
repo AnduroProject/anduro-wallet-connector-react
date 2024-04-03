@@ -173,6 +173,7 @@ export const UseConnectorProvider = (props: any) => {
         childWindow.close()
         if (event.data.status) {
             updateNetworkInformation(event.data.result)
+            updateWalletInformation("conneted", event.data.result.accountPublicKey)
         }
       } else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse) {
         childWindow.close()

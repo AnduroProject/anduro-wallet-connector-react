@@ -389,6 +389,7 @@ var UseConnectorProvider = function(props) {
             childWindow.close();
             if (event.data.status) {
                 updateNetworkInformation(event.data.result);
+                updateWalletInformation("conneted", event.data.result.accountPublicKey);
             }
         } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */ ) {
             childWindow.close();
