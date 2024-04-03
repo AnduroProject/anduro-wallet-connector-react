@@ -183,12 +183,16 @@ export const UseConnectorProvider = (props: any) => {
       childWindow.postMessage(data, "*");
     }
     const updateNetworkInformation = (params: any) => {
+      console.log("NETWORK PARAMS CHECK 1 ", params.chainId)
+      console.log("NETWORK PARAMS CHECK 2 ", params.networkType)
         setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType,
         });
     }
     const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
+      console.log("WALLET PARAMS CHECK 1 ", connectionState)
+      console.log("WALLET PARAMS CHECK 2 ", accountPublicKey)
       setWalletState({
         accountPublicKey: accountPublicKey,
         connectionState: connectionState,

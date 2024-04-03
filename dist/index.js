@@ -403,12 +403,16 @@ var UseConnectorProvider = function(props) {
         childWindow.postMessage(data, "*");
     };
     var updateNetworkInformation = function(params) {
+        console.log("NETWORK PARAMS CHECK 1 ", params.chainId);
+        console.log("NETWORK PARAMS CHECK 2 ", params.networkType);
         setNetworkState({
             chainId: params.chainId,
             networkType: params.networkType
         });
     };
     var updateWalletInformation = function(connectionState, accountPublicKey) {
+        console.log("WALLET PARAMS CHECK 1 ", connectionState);
+        console.log("WALLET PARAMS CHECK 2 ", accountPublicKey);
         setWalletState({
             accountPublicKey: accountPublicKey,
             connectionState: connectionState
