@@ -256,10 +256,13 @@ export const UseConnectorProvider = (props: any) => {
      * The following function used for send BTC / CBTC to receiver and 
      * convert BTC to CBTC / CBTC to BTC in anduro wallet
      * 
-     * @param transactionType 1. normal - Send BTC / CBTC OR CBTC / BTC, 2. pegin - Convert BTC to CBTC, 3. pegout - Convert CBTC to BTC
+     * @param transactionType transactionType: 
+     *                          1. normal - Send BTC / CBTC OR CBTC / BTC
+     *                          2. pegin - Convert BTC to CBTC
+     *                          3. pegout - Convert CBTC to BTC
      * @param amount transaction amount
-     * @param receiverAddress Receiver address ( coordinate address / bitcoin address )
-     * @param feeRate
+     * @param receiverAddress (Optional) Receiver address ( coordinate address / bitcoin address )
+     * @param feeRate (Optional) Fee rate per virtual byte
      * 
     */
     const send = (params: createTransactionParams) => {
@@ -324,6 +327,19 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for creating asset in anduro wallet
+     * 
+     * @param name The asset's name
+     * @param symbol The asset's symbol
+     * @param imageUrl The asset's image URL
+     * @param supply The asset's total supply
+     * @param properties The asset's trait data
+     * @param assetType assetType :
+     *                    1. 0 for creating tokens.
+     *                    2. 1 for creating NFT.
+     * @param transactionType transactionType: create OR mint
+     * @param receiverAddress (Optional) Required for mint transactions
+     * @param assetId (Optional) Required for mint transactions
+     * 
     */
     const createasset = (params: CreateassetParams) => {
       return new Promise((resolve, reject) => {
@@ -340,6 +356,11 @@ export const UseConnectorProvider = (props: any) => {
 
     /**
      * The following function used for transfer asset / mint  in anduro wallet
+     * 
+     * @param assetId The asset ID
+     * @param receiverAddress Receiver Address
+     * @param supply supply to transfer
+     * 
     */
     const transferasset = (params: TransferAssetParams) => {
       return new Promise((resolve, reject) => {

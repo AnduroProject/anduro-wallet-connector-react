@@ -79,9 +79,17 @@ Create Asset in Anduro wallet using create asset function.
 
 **Parameters**
 
-name: Asset name  
-symbol: Asset Symbol  
-imageUrl: Image Url for asset   
+name: The asset's name  
+symbol: The asset's symbol  
+imageUrl: The asset's image URL
+supply: The asset's total supply
+properties: The asset's trait data
+assetType: 
+  1. 0 for creating tokens.
+  2. 1 for creating NFT.
+transactionType: transactionType: create OR mint
+receiverAddress: (Optional) Required for mint transactions
+assetId: (Optional) Required for mint transactions
 
 ```bash  
 import { useConnector } from 'anduro-wallet-connector';
@@ -107,6 +115,12 @@ const handleCreateAssetAction = async () => {
 ### 4.Transfer Asset
 
 Create Asset transfer in anduro wallet using transfer asset function
+
+**Parameters**
+
+assetId: The asset ID 
+receiverAddress: Receiver Address
+supply: supply to transfer
 
 ```bash 
 import { useConnector } from 'anduro-wallet-connector';
@@ -143,8 +157,8 @@ transactionType:
   2.pegin - Convert BTC to CBTC , 
   3.pegout - Convert CBTC to BTC 
 amount: transaction amount.
-receiverAddress: Receiver address ( Sidechain address / bitcoin address )
-feeRate: Fee rate per virtual byte
+receiverAddress: (Optional) Receiver address ( Sidechain address / bitcoin address )
+feeRate: (Optional) Fee rate per virtual byte
 
 
 ```bash
