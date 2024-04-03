@@ -116,27 +116,23 @@ export const UseConnectorProvider = (props: any) => {
     }, [networkState,isConnected]);
     
     useEffect(() => {
+      console.log("childWindow :", childWindow)
+      if (childWindow != null) {
+        console.log("close")
+        window.addEventListener('message', handleMessage);
+        return () => {
+          window.removeEventListener('message', handleMessage);
+        };
+      }
+    }, [childWindow,isConnected]);
+    useEffect(() => {
       const onUnload = (e: any) => {
         e.preventDefault()
         return (e.returnValue = "Are you sure you want to close?")
       }
-      console.log("childWindow :", childWindow)
-      if (childWindow != null) {
-        console.log("close")
-        window.addEventListener("beforeunload", onUnload)
-        window.addEventListener('message', handleMessage);
-        return () => {
-          window.removeEventListener("beforeunload", onUnload)
-          window.removeEventListener('message', handleMessage);
-        };
-      }
-      
-     
-    }, [childWindow,isConnected]);
-    
-    const handleWindowClose = () => {
-      alert("Window closed");
-    };
+      window.addEventListener("beforeunload", onUnload)
+      return () => window.removeEventListener("beforeunload", onUnload)
+    }, [])
   
     const handleMessage = (event: any) => {
       if (event.data.type === requestTypes.connectionResponse) {

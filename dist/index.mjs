@@ -226,17 +226,11 @@ var UseConnectorProvider = function(props) {
         isConnected
     ]);
     useEffect(function() {
-        var onUnload = function(e) {
-            e.preventDefault();
-            return e.returnValue = "Are you sure you want to close?";
-        };
         console.log("childWindow :", childWindow);
         if (childWindow != null) {
             console.log("close");
-            window.addEventListener("beforeunload", onUnload);
             window.addEventListener("message", handleMessage);
             return function() {
-                window.removeEventListener("beforeunload", onUnload);
                 window.removeEventListener("message", handleMessage);
             };
         }
@@ -244,9 +238,16 @@ var UseConnectorProvider = function(props) {
         childWindow,
         isConnected
     ]);
-    var handleWindowClose = function() {
-        alert("Window closed");
-    };
+    useEffect(function() {
+        var onUnload = function(e) {
+            e.preventDefault();
+            return e.returnValue = "Are you sure you want to close?";
+        };
+        window.addEventListener("beforeunload", onUnload);
+        return function() {
+            return window.removeEventListener("beforeunload", onUnload);
+        };
+    }, []);
     var handleMessage = function(event) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
