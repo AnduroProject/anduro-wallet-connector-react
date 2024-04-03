@@ -104,11 +104,8 @@ export const UseConnectorProvider = (props: any) => {
     const windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
 
     useEffect(() => {
-      console.log("networkState", networkState)
-      if (networkState.chainId === null) {
-        console.log("NETWORK STATE CHECK", networkState)
-        let walleturl = "http://localhost:5002"
-        const url = `${walleturl}?requestType=networkinfo`;
+      if (networkState.chainId === null && requestType !== "disconnect") {
+        const url = `${walletURL}?requestType=networkinfo`;
         console.log("Wallet URL", url)
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
@@ -151,7 +148,7 @@ export const UseConnectorProvider = (props: any) => {
         console.log("requestType", requestType, requestData)
         if (event.data.status) {
           if (requestType === requestTypes.connect || requestType === requestTypes.disconnected) {
-            sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId || ""});
+            sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData ? requestData.chainId : 0});
           } else if (requestType === requestTypes.networkinfo) {
             sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
           } else if (requestType === requestTypes.send) {

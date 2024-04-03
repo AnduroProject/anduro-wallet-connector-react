@@ -284,11 +284,8 @@ var UseConnectorProvider = function(props) {
     var _ref3 = _sliced_to_array((0, import_react.useState)(localStorage.getItem("walletURL") || props.walletURL), 2), walletURL = _ref3[0], setWalletURL = _ref3[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     (0, import_react.useEffect)(function() {
-        console.log("networkState", networkState);
-        if (networkState.chainId === null) {
-            console.log("NETWORK STATE CHECK", networkState);
-            var walleturl = "http://localhost:5002";
-            var url = "".concat(walleturl, "?requestType=networkinfo");
+        if (networkState.chainId === null && requestType !== "disconnect") {
+            var url = "".concat(walletURL, "?requestType=networkinfo");
             console.log("Wallet URL", url);
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
@@ -337,7 +334,7 @@ var UseConnectorProvider = function(props) {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         siteurl: window.location.origin,
-                        chainId: requestData.chainId || ""
+                        chainId: requestData ? requestData.chainId : 0
                     });
                 } else if (requestType === "networkinfo" /* networkinfo */ ) {
                     sendMessageToChildWindow({
