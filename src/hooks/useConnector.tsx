@@ -106,7 +106,6 @@ export const UseConnectorProvider = (props: any) => {
     useEffect(() => {
       if (networkState.chainId === null && requestType !== "disconnect") {
         const url = `${walletURL}?requestType=networkinfo`;
-        console.log("Wallet URL", url)
         let targetWindow: any = window.open(url,"_blank",windowFeatures);
         setChildWindow(targetWindow)
         setRequestType("networkinfo")
@@ -136,11 +135,9 @@ export const UseConnectorProvider = (props: any) => {
           resolvePromise({status: false, result: event.data})
         }
       } else if (event.data.type === requestTypes.accountNotCreated) {
-        console.log("Account Not Created", event.data)
         childWindow.close()
         resolvePromise({status: false, result: event.data})
       } else if (event.data.type === requestTypes.walletLoaded) {
-        console.log("requestType", requestType, requestData)
         if (event.data.status) {
           if (requestType === requestTypes.connect || requestType === requestTypes.disconnected) {
             sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData ? requestData.chainId : 0});
@@ -162,7 +159,6 @@ export const UseConnectorProvider = (props: any) => {
           }
         }
       } else if (event.data.type === requestTypes.networkinfoResponse) {
-        console.log("Network Info Response", event.data)
         childWindow.close()
         if (event.data.status) {
             updateNetworkInformation(event.data.result, "networkinfoResponse")
