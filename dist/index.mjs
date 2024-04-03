@@ -261,12 +261,13 @@ var UseConnectorProvider = function(props) {
                 result: event.data
             });
         } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
+            console.log("requestType", requestType, requestData);
             if (event.data.status) {
                 if (requestType === "connect" /* connect */  || requestType === "disconnect" /* disconnected */ ) {
                     sendMessageToChildWindow({
                         requestType: requestType,
                         siteurl: window.location.origin,
-                        chainId: requestData.chainId
+                        chainId: requestData.chainId || ""
                     });
                 } else if (requestType === "networkinfo" /* networkinfo */ ) {
                     sendMessageToChildWindow({

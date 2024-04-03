@@ -148,9 +148,10 @@ export const UseConnectorProvider = (props: any) => {
         childWindow.close()
         resolvePromise({status: false, result: event.data})
       } else if (event.data.type === requestTypes.walletLoaded) {
+        console.log("requestType", requestType, requestData)
         if (event.data.status) {
           if (requestType === requestTypes.connect || requestType === requestTypes.disconnected) {
-            sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId});
+            sendMessageToChildWindow({requestType, siteurl: window.location.origin, chainId: requestData.chainId || ""});
           } else if (requestType === requestTypes.networkinfo) {
             sendMessageToChildWindow({requestType: requestType, siteurl: window.location.origin})
           } else if (requestType === requestTypes.send) {
