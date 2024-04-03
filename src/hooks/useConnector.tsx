@@ -63,12 +63,12 @@ enum requestTypes {
 type UseConnectorContextContextType = {
   networkState: NetworkState;
   walletState: WalletState;
-  connect: any;
-  disconnect: any;
-  send: any;
-  createasset: any;
-  transferasset: any;
   isConnected: boolean;
+  connect: (params: connectParams) => any;
+  transferasset: (params: TransferAssetParams) => any;
+  createasset: (params: CreateassetParams) => any;
+  send: (params: createTransactionParams) => any;
+  disconnect: () => any;
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(
     null,
