@@ -137,7 +137,7 @@ export const UseConnectorProvider = (props: any) => {
       if (event.data.type === requestTypes.connectionResponse) {
         if (event.data.status) {
           childWindow.close();
-          updateNetworkInformation(event.data.result)
+          updateNetworkInformation(event.data.result, "connectionResponse")
           updateWalletInformation("connected", event.data.result.accountPublicKey)          
           resolvePromise({status: true, result: event.data})
         } else {
@@ -172,7 +172,7 @@ export const UseConnectorProvider = (props: any) => {
         console.log("Network Info Response", event.data)
         childWindow.close()
         if (event.data.status) {
-            updateNetworkInformation(event.data.result)
+            updateNetworkInformation(event.data.result, "networkinfoResponse")
             updateWalletInformation("conneted", event.data.result.accountPublicKey)
         }
       } else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse) {
@@ -180,14 +180,14 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise({status: true, result: event.data})
       } else if (event.data.type === requestTypes.disconnectResponse) {
         childWindow.close()
-        updateNetworkInformation({chainId: null, networkType: "",})
+        updateNetworkInformation({chainId: null, networkType: "",}, "disconnectResponse")
         updateWalletInformation("disconnected", "")
       }
     }
     const sendMessageToChildWindow = (data: any) => {
       childWindow.postMessage(data, "*");
     }
-    const updateNetworkInformation = (params: any) => {
+    const updateNetworkInformation = (params: any, from: string) => {
       console.log("NETWORK PARAMS CHECK 1 ", params.chainId)
       console.log("NETWORK PARAMS CHECK 2 ", params.networkType)
         setNetworkState({

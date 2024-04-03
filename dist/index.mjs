@@ -241,7 +241,7 @@ var UseConnectorProvider = function(props) {
         if (event.data.type === "connection-response" /* connectionResponse */ ) {
             if (event.data.status) {
                 childWindow.close();
-                updateNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result, "connectionResponse");
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
                 resolvePromise({
                     status: true,
@@ -318,7 +318,7 @@ var UseConnectorProvider = function(props) {
             console.log("Network Info Response", event.data);
             childWindow.close();
             if (event.data.status) {
-                updateNetworkInformation(event.data.result);
+                updateNetworkInformation(event.data.result, "networkinfoResponse");
                 updateWalletInformation("conneted", event.data.result.accountPublicKey);
             }
         } else if (event.data.type === "send-response" /* sendResponse */  || event.data.type === "create-asset-response" /* createAssetResponse */ ) {
@@ -332,14 +332,14 @@ var UseConnectorProvider = function(props) {
             updateNetworkInformation({
                 chainId: null,
                 networkType: ""
-            });
+            }, "disconnectResponse");
             updateWalletInformation("disconnected", "");
         }
     };
     var sendMessageToChildWindow = function(data) {
         childWindow.postMessage(data, "*");
     };
-    var updateNetworkInformation = function(params) {
+    var updateNetworkInformation = function(params, from) {
         console.log("NETWORK PARAMS CHECK 1 ", params.chainId);
         console.log("NETWORK PARAMS CHECK 2 ", params.networkType);
         setNetworkState({
