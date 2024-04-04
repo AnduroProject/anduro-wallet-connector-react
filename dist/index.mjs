@@ -214,7 +214,7 @@ var UseConnectorProvider = function(props) {
     var _useState3 = _sliced_to_array(useState(localStorage.getItem("walletURL") || props.walletURL), 2), walletURL = _useState3[0], setWalletURL = _useState3[1];
     var windowFeatures = "left=1000,top=100,width=370,height=550,fullscreen=yes,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,directories=no, status=no, titlebar=no";
     useEffect(function() {
-        if (networkState.chainId === null && requestType !== "disconnect") {
+        if (networkState.chainId === null && requestType !== "disconnect" && childWindow === null) {
             var url = "".concat(walletURL, "?requestType=networkinfo");
             var targetWindow = window.open(url, "_blank", windowFeatures);
             setChildWindow(targetWindow);
@@ -246,19 +246,22 @@ var UseConnectorProvider = function(props) {
                 updateWalletInformation("connected", event.data.result.accountPublicKey);
                 resolvePromise({
                     status: true,
-                    result: event.data
+                    result: event.data,
+                    error: null
                 });
             } else {
                 resolvePromise({
                     status: false,
-                    result: event.data
+                    result: null,
+                    error: event.data
                 });
             }
         } else if (event.data.type === "account-not-created" /* accountNotCreated */ ) {
             childWindow.close();
             resolvePromise({
                 status: false,
-                result: event.data
+                result: null,
+                error: event.data
             });
         } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
             if (event.data.status) {
@@ -324,7 +327,8 @@ var UseConnectorProvider = function(props) {
             childWindow.close();
             resolvePromise({
                 status: event.data.status,
-                result: event.data
+                result: event.data.status ? event.data : null,
+                error: event.data.status ? null : event.data
             });
         } else if (event.data.type === "disconnect-response" /* disconnectResponse */ ) {
             childWindow.close();
@@ -356,16 +360,24 @@ var UseConnectorProvider = function(props) {
                 return [
                     2,
                     new Promise(function(resolve, reject) {
-                        var url = "".concat(walletURL, "?requestType=connect");
-                        var childWindow2 = window.open(url, "_blank", windowFeatures);
-                        setWalletURL(walletURL);
-                        setRequestType("connect");
-                        setChildWindow(childWindow2);
-                        setRequestData({
-                            chainId: params.chainId
-                        });
-                        updateWalletInformation("connecting", "");
-                        resolvePromise = resolve;
+                        if (childWindow) {
+                            resolve({
+                                status: false,
+                                result: null,
+                                error: "wallet already opened"
+                            });
+                        } else {
+                            var url = "".concat(walletURL, "?requestType=connect");
+                            var walletWindow = window.open(url, "_blank", windowFeatures);
+                            setWalletURL(walletURL);
+                            setRequestType("connect");
+                            setChildWindow(walletWindow);
+                            setRequestData({
+                                chainId: params.chainId
+                            });
+                            updateWalletInformation("connecting", "");
+                            resolvePromise = resolve;
+                        }
                     })
                 ];
             });
@@ -376,32 +388,47 @@ var UseConnectorProvider = function(props) {
     }();
     var disconnect = function() {
         return new Promise(function(resolve, reject) {
-            var url = "".concat(walletURL, "?requestType=disconnect");
-            var childWindow2 = window.open(url, "_blank", windowFeatures);
-            setRequestType("disconnect");
-            setChildWindow(childWindow2);
-            updateWalletInformation("disconnecting", "");
-            resolvePromise = resolve;
+            if (childWindow) {
+                resolve({
+                    status: false,
+                    result: null,
+                    error: "wallet already opened"
+                });
+            } else {
+                var url = "".concat(walletURL, "?requestType=disconnect");
+                var childWindow2 = window.open(url, "_blank", windowFeatures);
+                setRequestType("disconnect");
+                setChildWindow(childWindow2);
+                updateWalletInformation("disconnecting", "");
+                resolvePromise = resolve;
+            }
         });
     };
     var send = function(params) {
         return new Promise(function(resolve, reject) {
             if (checkWalletConnection(resolve, "")) {
                 var validateTransactionTypeResult = validateSendTransactionType(params.transactionType);
-                if (!validateTransactionTypeResult) {
+                if (childWindow) {
                     resolve({
                         status: false,
-                        error: "can't process your request, Invalid transaction type",
+                        result: null,
+                        error: "wallet already opened"
+                    });
+                }
+                if (!validateTransactionTypeResult || childWindow) {
+                    resolve({
+                        status: false,
+                        error: childWindow ? "wallet already opened" : "can't process your request, Invalid transaction type",
                         result: null
                     });
-                    return;
+                } else {
+                    var url = "".concat(walletURL, "?requestType=send");
+                    var childWindow2 = window.open(url, "_blank", windowFeatures);
+                    setRequestType("send");
+                    setChildWindow(childWindow2);
+                    setTransactionData(params);
+                    resolvePromise = resolve;
                 }
-                var url = "".concat(walletURL, "?requestType=send");
-                var childWindow2 = window.open(url, "_blank", windowFeatures);
-                setRequestType("send");
-                setChildWindow(childWindow2);
-                setTransactionData(params);
-                resolvePromise = resolve;
             }
         });
     };
@@ -438,24 +465,40 @@ var UseConnectorProvider = function(props) {
     var createasset = function(params) {
         return new Promise(function(resolve, reject) {
             if (checkWalletConnection(resolve, params.transactionType)) {
-                var url = "".concat(walletURL, "?requestType=create-asset");
-                var childWindow2 = window.open(url, "_blank", windowFeatures);
-                setRequestType("create-asset");
-                setChildWindow(childWindow2);
-                setCreateAssetData(params);
-                resolvePromise = resolve;
+                if (childWindow) {
+                    resolve({
+                        status: false,
+                        result: null,
+                        error: "wallet already opened"
+                    });
+                } else {
+                    var url = "".concat(walletURL, "?requestType=create-asset");
+                    var childWindow2 = window.open(url, "_blank", windowFeatures);
+                    setRequestType("create-asset");
+                    setChildWindow(childWindow2);
+                    setCreateAssetData(params);
+                    resolvePromise = resolve;
+                }
             }
         });
     };
     var transferasset = function(params) {
         return new Promise(function(resolve, reject) {
             if (checkWalletConnection(resolve, "transfer")) {
-                var url = "".concat(walletURL, "?requestType=transfer-asset");
-                var childWindow2 = window.open(url, "_blank", windowFeatures);
-                setRequestType("transfer-asset");
-                setChildWindow(childWindow2);
-                setTransferAssetData(params);
-                resolvePromise = resolve;
+                if (childWindow) {
+                    resolve({
+                        status: false,
+                        result: null,
+                        error: "wallet already opened"
+                    });
+                } else {
+                    var url = "".concat(walletURL, "?requestType=transfer-asset");
+                    var childWindow2 = window.open(url, "_blank", windowFeatures);
+                    setRequestType("transfer-asset");
+                    setChildWindow(childWindow2);
+                    setTransferAssetData(params);
+                    resolvePromise = resolve;
+                }
             }
         });
     };
