@@ -328,11 +328,13 @@ var UseConnectorProvider = function(props) {
             }
         } else if (event.data.type === "account-not-created" /* accountNotCreated */ ) {
             childWindow.close();
-            resolvePromise({
-                status: false,
-                result: null,
-                error: event.data
-            });
+            if (resolvePromise) {
+                resolvePromise({
+                    status: false,
+                    result: null,
+                    error: event.data
+                });
+            }
         } else if (event.data.type === "wallet-loaded" /* walletLoaded */ ) {
             if (event.data.status) {
                 if (requestType === "connect" /* connect */  || requestType === "disconnect" /* disconnected */ ) {

@@ -154,7 +154,9 @@ export const UseConnectorProvider = (props: any) => {
         }
       } else if (event.data.type === requestTypes.accountNotCreated) {
         childWindow.close()
-        resolvePromise({status: false, result: null, error: event.data})
+        if (resolvePromise) {
+          resolvePromise({status: false, result: null, error: event.data})
+        }
       } else if (event.data.type === requestTypes.walletLoaded) {
         if (event.data.status) {
           if (requestType === requestTypes.connect || requestType === requestTypes.disconnected) {
