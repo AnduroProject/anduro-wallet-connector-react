@@ -1,9 +1,9 @@
 /*
 Project : Anduro Wallet Connector
 FileName : useConnector.tsx
-Author : MarathonDH Developers
+Author : 
 File Created : 04/03/2024
-CopyRights : Marathon DH
+CopyRights : 
 Purpose : This is the file that is used to handle connect , disconnect and manage anduro wallet.
 */
 
