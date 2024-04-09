@@ -58,7 +58,6 @@ enum requestTypes {
   transferAsset = 'transfer-asset',
   networkinfoResponse = 'networkinfo-response',
   sendResponse = 'send-response',
-  createAssetResponse = 'create-asset-response',
   disconnectResponse = 'disconnect-response',
   bitcoin = 'bitcoin',
   sidechain = 'sidechain',
@@ -184,7 +183,7 @@ export const UseConnectorProvider = (props: any) => {
             updateNetworkInformation(event.data.result)
             updateWalletInformation("conneted", event.data.result.accountPublicKey)
         }
-      } else if (event.data.type === requestTypes.sendResponse || event.data.type === requestTypes.createAssetResponse) {
+      } else if (event.data.type === requestTypes.sendResponse) {
         childWindow.close()
         resolvePromise({status: event.data.status, result: event.data.status ? event.data : null, error: event.data.status ? null : event.data})
       } else if (event.data.type === requestTypes.disconnectResponse) {
