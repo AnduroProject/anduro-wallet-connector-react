@@ -1,4 +1,4 @@
-# anduro-wallet-connector 
+# anduro-wallet-connector
 
 Anduro Wallet Connector is react library for connect, disconnect, send transaction ( BTC & CBTC ), asset creation, asset transfer , mint transfer, convert ( BTC to CBTC ), convert ( CBTC to BTC) in anduro browser wallet extension.
 
@@ -10,10 +10,11 @@ See our [Examples Repo][examples] for example anduro wallet connector react libr
 implementations.
 
 ## Before running example, pls follow below things.
+
 Since the chrome extension is not published. please do below steps temporarily to connect wallet from website
+
 1. Go to examples/src/config/walletApi.ts
 2. Replace WALLETURL with your browser wallet url
-
 
 ## Installing example app
 
@@ -25,13 +26,11 @@ npm install
 
 [examples]: https://github.com/MarathonDH/anduro-wallet-connector-react/tree/main/example
 
-
 ## Usage
 
 Initialize Anduro Wallet Connector with your wallet extension id via the options parameter:
 
-
-```bash 
+```bash
 import { UseConnectorProvider } from 'anduro-wallet-connector';
 import React from 'react';
 
@@ -44,11 +43,11 @@ function App () {
 
 we will use the <UseConnectorProvider /> component to connect anduro wallet extension.
 
-### 1. Connect Anduro Wallet 
+### 1. Connect Anduro Wallet
 
-Connect Anduro wallet using connect function. 
+Connect Anduro wallet using connect function.
 
-```bash 
+```bash
 import React from 'react';
 const { connect } = React.useContext<any>(useConnector);
 
@@ -59,12 +58,11 @@ const handleConnectResponse = async () => {
 }
 ```
 
-### 2. Disconnect Anduro Wallet 
+### 2. Disconnect Anduro Wallet
 
-Disconnect Anduro wallet using disconnect function. 
+Disconnect Anduro wallet using disconnect function.
 
-
-```bash 
+```bash
 import React from 'react';
 const { disconnect } = React.useContext<any>(useConnector);
 
@@ -73,7 +71,7 @@ const handleDisConnectResponse = async () => {
 }
 ```
 
-### 3. Create Asset 
+### 3. Create Asset
 
 Create Asset in Anduro wallet using create asset function.
 
@@ -84,14 +82,15 @@ symbol: The asset's symbol
 imageUrl: The asset's image URL
 supply: The asset's total supply
 properties: The asset's trait data
-assetType: 
-  1. 0 for creating tokens.
-  2. 1 for creating NFT.
-transactionType: transactionType: create OR mint
-receiverAddress: (Optional) Required for mint transactions
-assetId: (Optional) Required for mint transactions
+assetType:
 
-```bash  
+1. 0 for creating tokens.
+2. 1 for creating NFT.
+   transactionType: transactionType: create OR mint
+   receiverAddress: (Optional) Required for mint transactions
+   assetId: (Optional) Required for mint transactions
+
+```bash
 import { useConnector } from 'anduro-wallet-connector';
 import React from 'react';
 
@@ -118,11 +117,11 @@ Create Asset transfer in anduro wallet using transfer asset function
 
 **Parameters**
 
-assetId: The asset ID 
+assetId: The asset ID
 receiverAddress: Receiver Address
 supply: supply to transfer
 
-```bash 
+```bash
 import { useConnector } from 'anduro-wallet-connector';
 import React from 'react';
 
@@ -148,18 +147,17 @@ import React from 'react';
 const { networkState, walletState } = React.useContext<any>(useConnector);
 ```
 
-### 6. Send / Convert  ( BTC and CBTC )
+### 6. Send / Convert ( BTC and CBTC )
 
 **Parameters**
 
-transactionType: 
-  1.normal - Send BTC / CBTC 
-  2.pegin - Convert BTC to CBTC , 
-  3.pegout - Convert CBTC to BTC 
+transactionType:
+1.normal - Send BTC / CBTC
+2.pegin - Convert BTC to CBTC ,
+3.pegout - Convert CBTC to BTC
 amount: transaction amount.
 receiverAddress: (Optional) Receiver address ( Sidechain address / bitcoin address )
 feeRate: (Optional) Fee rate per virtual byte
-
 
 ```bash
 import { useConnector } from 'anduro-wallet-connector';
@@ -176,4 +174,3 @@ const handleSendAction = async () => {
     const result = await send(params);
 }
 ```
-
