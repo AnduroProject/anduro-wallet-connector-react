@@ -58,11 +58,6 @@ enum RequestTypes {
   send = "send",
   createAsset = "create-asset",
   transferAsset = "transfer-asset",
-  bitcoin = "bitcoin",
-  sidechain = "sidechain",
-  normal = "normal",
-  pegin = "pegin",
-  pegout = "pegout",
 }
 
 enum ResponseTypes {
@@ -71,6 +66,14 @@ enum ResponseTypes {
   sendResponse = "send-response",
   createAssetResponse = "create-asset-response",
   disconnectResponse = "disconnect-response",
+}
+
+enum TransactionTypes {
+  bitcoin = "bitcoin",
+  sidechain = "sidechain",
+  normal = "normal",
+  pegin = "pegin",
+  pegout = "pegout",
 }
 
 type UseConnectorContextContextType = {
@@ -403,7 +406,7 @@ export const UseConnectorProvider = (props: any) => {
     if (networkState.chainId === null || networkState.networkType === "") {
       status = false
       error = "The wallet is not connected."
-    } else if (transactionType && networkState.networkType === RequestTypes.bitcoin) {
+    } else if (transactionType && networkState.networkType === TransactionTypes.bitcoin) {
       status = false
       error = "can't process your request, Invalid transaction type."
     }
@@ -425,12 +428,12 @@ export const UseConnectorProvider = (props: any) => {
    */
   const validateSendTransactionType = (transactionType: string) => {
     let status: boolean = false
-    if (transactionType === RequestTypes.normal) {
+    if (transactionType === TransactionTypes.normal) {
       status = true
-    } else if (transactionType === RequestTypes.pegin) {
-      status = networkState.networkType === RequestTypes.bitcoin
-    } else if (transactionType === RequestTypes.pegout) {
-      status = networkState.networkType === RequestTypes.sidechain
+    } else if (transactionType === TransactionTypes.pegin) {
+      status = networkState.networkType === TransactionTypes.bitcoin
+    } else if (transactionType === TransactionTypes.pegout) {
+      status = networkState.networkType === TransactionTypes.sidechain
     }
     return status
   }
