@@ -48,81 +48,103 @@ export const CreateAssetVC = () => {
                   <option value={1}>1 NFT</option>
                 </select>
               </div>
-              <div className="display-flex">
-                <div className="label-text-align">
-                  <label>Name :</label>
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-5">
+                  <div className="label-text-align">
+                    <label>Name :</label>
+                  </div>
                 </div>
-                <div className="input_padd">
-                  <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                  />
-                </div>
-              </div>
-              <div className="display-flex">
-                <div className="label-text-align">
-                  <label>Symbol :</label>
-                </div>
-                <div className="input_padd">
-                  <input
-                    type="text"
-                    placeholder="Symbol"
-                    value={symbol}
-                    onChange={(event) => setSymbol(event.target.value)}
-                  />
+                <div className="col-sm-12 col-md-12 col-lg-7">
+                  <div className="input_padd">
+                    <input
+                      type="text"
+                      placeholder="Name"
+                      value={name}
+                      onChange={(event) => setName(event.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="display-flex">
-                <div className="label-text-align">
-                  <label>Image URL :</label>
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-5">
+                  <div className="label-text-align">
+                    <label>Symbol :</label>
+                  </div>
                 </div>
-                <div className="input_padd">
-                  <input
-                    type="text"
-                    placeholder="Image URL"
-                    value={imageUrl}
-                    onChange={(event) => setImageUrl(event.target.value)}
-                  />
+                <div className="col-sm-12 col-md-12 col-lg-7">
+                  <div className="input_padd">
+                    <input
+                      type="text"
+                      placeholder="Symbol"
+                      value={symbol}
+                      onChange={(event) => setSymbol(event.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-5">
+                  <div className="label-text-align">
+                    <label>Image URL :</label>
+                  </div>
+                </div>
+                <div className="col-sm-12 col-md-12 col-lg-7">
+                  <div className="input_padd">
+                    <input
+                      type="text"
+                      placeholder="Image URL"
+                      value={imageUrl}
+                      onChange={(event) => setImageUrl(event.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           )}
           {createAssetTransactionType !== "create" && (
-            <div className="display-flex">
-              <div className="label-text-align">
-                <label>Receiver Address :</label>
+
+            <><div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-5">
+                <div className="label-text-align">
+                  <label>Receiver Address :</label>
+                </div>
               </div>
+              <div className="col-sm-12 col-md-12 col-lg-7">
+                <div className="input_padd">
+                  <input
+                    type="text"
+                    placeholder="Receiver Address"
+                    value={receiverAddress}
+                    onChange={(event) => setReceiverAddress(event.target.value)} />
+                </div>
+              </div>
+            </div></>
+          )}
+          <div className="row">
+            <div className="col-sm-12 col-md-12 col-lg-5">
+              <div className="label-text-align">
+                <label>Supply :</label>
+              </div>
+            </div>
+            <div className="col-sm-12 col-md-12 col-lg-7">
               <div className="input_padd">
                 <input
                   type="text"
-                  placeholder="Receiver Address"
-                  value={receiverAddress}
-                  onChange={(event) => setReceiverAddress(event.target.value)}
+                  placeholder="Supply"
+                  value={supply}
+                  onChange={(event) => setSupply(event.target.value)}
                 />
               </div>
             </div>
-          )}
-          <div className="display-flex">
-            <div className="label-text-align">
-              <label>Supply :</label>
-            </div>
-            <div className="input_padd">
-              <input
-                type="text"
-                placeholder="Supply"
-                value={supply}
-                onChange={(event) => setSupply(event.target.value)}
-              />
-            </div>
           </div>
           {createAssetTransactionType !== "create" && (
-            <div>
-              <div className="display-flex">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
                   <label>Asset ID : *</label>
                 </div>
+              </div>
+              <div className="col-sm-12 col-md-12 col-lg-7">
                 <div className="input_padd">
                   <input
                     type="number"

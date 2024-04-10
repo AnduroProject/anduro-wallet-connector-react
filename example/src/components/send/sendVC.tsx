@@ -30,45 +30,61 @@ export const SendVC = () => {
                 <option value="pegout">PegOut</option>
               </select>
             </div>
-            <div className="display-flex">
-              <div className="label-text-align">
-                <label>Amount : *</label>
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-5">
+                <div className="label-text-align">
+                  <label>Amount : *</label>
+                </div>
               </div>
-              <div className="input_padd">
-                <input
-                  type="number"
-                  placeholder="Amount"
-                  value={amount}
-                  onChange={(event) => setAmount(event.target.value)}
-                />
+              <div className="col-sm-12 col-md-12 col-lg-7">
+                <div className="input_padd">
+                  <input
+                    type="number"
+                    placeholder="Amount"
+                    value={amount}
+                    onChange={(event) => setAmount(event.target.value)}
+                  />
+                </div>
               </div>
             </div>
-            <div className="display-flex">
-              <div className="label-text-align">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-5">
+                <div className="label-text-align">
                 <label>Receiver Address :</label>
+                </div>
               </div>
-              <div className="input_padd">
+              <div className="col-sm-12 col-md-12 col-lg-7">
+                <div className="input_padd">
                 <input
                   type="text"
                   placeholder="Receiver Address"
                   value={receiverAddress}
                   onChange={(event) => setReceiverAddress(event.target.value)}
                 />
+                </div>
               </div>
             </div>
-            <div className="display-flex">
-              <div className="label-text-align">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-5">
+                <div className="label-text-align">
                 <label>Fee rate (VB) :</label>
+                </div>
               </div>
-              <div className="input_padd">
+              <div className="col-sm-12 col-md-12 col-lg-7">
+                <div className="input_padd">
                 <input
                   type="number"
                   placeholder="Fee rate (VB)"
                   value={feerate}
                   onChange={(event) => setFeerate(event.target.value)}
                 />
+                </div>
               </div>
             </div>
+
+
+
+
             <button type="submit" className="btnsubmit">
               {sendType}
             </button>
