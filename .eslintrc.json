@@ -19,7 +19,9 @@
     "sourceType": "module"
   },
   "plugins": ["react", "jsx-a11y", "prettier"],
-  "rules": {},
+  "rules": {
+    "no-unused-vars":0
+  },
   "settings": {
     "react": {
       "version": "detect"
