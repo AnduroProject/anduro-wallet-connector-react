@@ -166,12 +166,12 @@ const { networkState, walletState } = React.useContext<any>(useConnector);
 
 **Parameters**
 
-transactionType:
-1.normal - Send BTC / CBTC
-2.pegin - Convert BTC to CBTC ,
-3.pegout - Convert CBTC to BTC
-amount: transaction amount.
-receiverAddress: (Optional) Receiver address ( Sidechain address / bitcoin address )
+transactionType:\
+1.normal - Send BTC / CBTC \
+2.pegin - Convert BTC to CBTC ,\
+3.pegout - Convert CBTC to BTC\
+amount: transaction amount.\
+receiverAddress: (Optional) Receiver address ( Sidechain address / bitcoin address )\
 feeRate: (Optional) Fee rate per virtual byte
 
 ```bash
