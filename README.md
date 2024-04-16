@@ -58,7 +58,9 @@ Connect Anduro wallet using connect function.
 
 **Parameter**
 
-chainId: 2 // 1 for Bitcoin 0r 2 for Sidechain
+chainId: 1 or 2 
+1. 1 for Bitcoin  
+2. 2 for Sidechain
 
 ```bash
 import React from 'react';
