@@ -99,9 +99,9 @@ supply: The asset's total supply
 properties: The asset's trait data
 assetType:
 
-1. 0 for creating tokens.
-2. 1 for creating NFT.
-   transactionType: transactionType: create OR mint
+1. 0 for creating tokens.\
+2. 1 for creating NFT.\
+   transactionType: transactionType: create OR mint\
    receiverAddress: (Optional) Required for mint transactions
    assetId: (Optional) Required for mint transactions
 
@@ -132,8 +132,8 @@ Create Asset transfer in anduro wallet using transfer asset function
 
 **Parameters**
 
-assetId: The asset ID
-receiverAddress: Receiver Address
+assetId: The asset ID \
+receiverAddress: Receiver Address \
 supply: supply to transfer
 
 ```bash
