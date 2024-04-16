@@ -99,7 +99,7 @@ supply: The asset's total supply
 properties: The asset's trait data
 assetType:
 
-1. 0 for creating tokens.\
+1. 0 for creating tokens.
 2. 1 for creating NFT.\
    transactionType: transactionType: create OR mint\
    receiverAddress: (Optional) Required for mint transactions
