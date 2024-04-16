@@ -19,6 +19,8 @@ Since the chrome extension is not published. please do below steps temporarily t
 
 ## Before npm install, we have to do ssh key generation for authenticating with repo
 
+[Ref] : https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent 
+
 1. ssh-keygen -t ed25519 -C "<YOUR-EMAIL>"
 2. eval "$(ssh-agent -s)"
 3. ssh-add ~/.ssh/id_ed25519
