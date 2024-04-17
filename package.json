@@ -1,6 +1,6 @@
 {
-  "name": "@AnduroProject/anduro-wallet-connector",
-  "version": "0.1.0",
+  "name": "@anduroProject/anduro-wallet-connector",
+  "version": "0.1.6",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
