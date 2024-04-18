@@ -6,6 +6,7 @@ File Created : 04/03/2024
 CopyRights : 
 Purpose : This is the file that is used to handle connect , disconnect and manage anduro wallet.
 */
+'use client';
 import React, { useState, useEffect } from "react"
 import { ERROR_MESSAGES } from "../helpers/errorMessages"
 import { handleErrorResponse, handleSuccessResponse } from "../helpers/handleResponse"
