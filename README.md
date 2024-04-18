@@ -44,12 +44,13 @@ npm install
 8. Copy Anduro wallet Extension id from your Manage extension
 9. Replace with EXTENSION_ID in below Anduro wallet url
 
-[Anduro wallet url] 
+## Anduro wallet url
+
 ```bash
 chrome-extension://<EXTENSION_ID>/index.html
 ```
-[examples]: https://github.com/MarathonDH/anduro-wallet-connector-react/tree/main/example
 
+[examples]: https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example
 
 ## Usage
 
