@@ -5,7 +5,8 @@
 .App-logo {
   pointer-events: none;
 }
-.widset_parent{
+
+.widset_parent {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -13,24 +14,31 @@
   text-align: center;
   flex-direction: column;
 }
-.title{
+
+.title {
   font-size: 26px;
 }
-.addpadding{
+
+.addpadding {
   padding: 20px 0px 6px 0px;
 }
-.input_padd{
+
+.input_padd {
   padding: 10px 0px;
 }
+
 .input_padd input {
   padding: 8px 10px;
   border: 1px solid black;
   border-radius: 2px;
 }
-.btnsubmit{
+
+.btnsubmit {
   font-size: 14px;
-    padding: 5px 12px;
+  padding: 5px 12px;
+  margin-top: 12px;
 }
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -56,15 +64,49 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .label-text-align {
   text-align: left;
   margin-right: 16px;
 }
+
 .display-flex {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.display-flex a {
+  text-decoration: none;
+}
+
+.breadcrumb::after {
+  content: '/';
+  padding: 0px 9px;
+}
+
+.breadcrumb:last-child::after {
+  content: '';
+}
+
+.connect_page h3 {
+  margin-top: 0px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row .col-lg-5 {
+  width: 40%;
+}
+
+.row .col-lg-7 {
+  width: 60%;
 }

@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
-import { ConnectorVW } from '../../UI/connectorVW';
+import React, { useContext } from "react"
+import { ConnectorVW } from "../../UI/connectorVW"
 import { useConnector } from "anduro-wallet-connector"
-import { Link } from 'react-router-dom';
-import { WALLETURL } from '../../config/walletApi';
+import { Link } from "react-router-dom"
+import { WALLETURL } from "../../config/walletApi"
 export const ConnectorVC = () => {
-  const {networkState, walletState, connect, disconnect, } = useContext<any>(useConnector)
+  const { networkState, walletState, connect, disconnect } = useContext<any>(useConnector)
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 2,
-      walletURL: WALLETURL
+      walletURL: WALLETURL,
     })
     console.log("*******Connect Result", result)
   }
@@ -23,22 +23,32 @@ export const ConnectorVC = () => {
   return (
     <div>
       {walletState.accountPublicKey === "" && (
-        <ConnectorVW title="Connect wallet" buttonName="Connect" handleClickAction={handleConnectionAction} />
+        <ConnectorVW
+          title="Connect wallet"
+          buttonName="Connect"
+          handleClickAction={handleConnectionAction}
+        />
       )}
       {walletState.accountPublicKey !== "" && (
-        <div>
-          <div className='display-flex'>
-            <Link to="/send">Send</Link>
+        <div className="connect_page">
+          <div className="display-flex">
+            <div className="breadcrumb">
+              <Link to="/send">Send</Link>
+            </div>
+            <div className="breadcrumb">
+              <Link to="/createasset">Create Asset</Link>
+            </div>
+            <div className="breadcrumb">
+              <Link to="/transfer">Transfer</Link>
+            </div>
           </div>
-          <div className='display-flex'>
-            <Link to="/createasset">Create Asset</Link>
-          </div>
-          <div className='display-flex'>
-            <Link to="/transfer">Transfer</Link>
-          </div>
-          <ConnectorVW title="Disconnect Wallet" buttonName="Disconnect" handleClickAction={handleDisconnectionAction} />
+          <ConnectorVW
+            title="Disconnect Wallet"
+            buttonName="Disconnect"
+            handleClickAction={handleDisconnectionAction}
+          />
         </div>
       )}
     </div>
-  );
+  )
 }

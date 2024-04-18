@@ -13,8 +13,8 @@ interface connectParams {
     chainId: number;
 }
 interface createTransactionParams {
-    transactionType: string;
-    amount: number;
+    transactionType?: string;
+    amount?: number;
     receiverAddress?: string | undefined;
     feeRate?: number | undefined;
 }
@@ -23,29 +23,29 @@ interface PropertiesType {
     value: string;
 }
 interface CreateassetParams {
-    name: string;
-    symbol: string;
-    imageUrl: string;
-    supply: number;
-    properties: PropertiesType[];
-    assetType: number;
-    transactionType: string;
+    name?: string;
+    symbol?: string;
+    imageUrl?: string;
+    supply?: number;
+    properties?: PropertiesType[];
+    assetType?: number;
+    transactionType?: string;
     receiverAddress?: string | undefined;
     assetId?: number | undefined;
 }
 interface TransferAssetParams {
-    assetId: number;
-    receiverAddress: string;
-    supply: number;
+    assetId?: number;
+    receiverAddress?: string;
+    supply?: number;
 }
 type UseConnectorContextContextType = {
     networkState: NetworkState;
     walletState: WalletState;
-    connect: (params: connectParams) => any;
-    transferasset: (params: TransferAssetParams) => any;
-    createasset: (params: CreateassetParams) => any;
-    send: (params: createTransactionParams) => any;
-    disconnect: () => any;
+    connect: (params: connectParams) => object;
+    transferasset: (params: TransferAssetParams) => object;
+    createasset: (params: CreateassetParams) => object;
+    send: (params: createTransactionParams) => object;
+    disconnect: () => object;
 };
 declare const useConnector: React.Context<UseConnectorContextContextType | null>;
 declare const UseConnectorProvider: (props: any) => react_jsx_runtime.JSX.Element;
