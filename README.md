@@ -2,7 +2,6 @@
 
 Anduro Wallet Connector is react library for connect, disconnect, send transaction ( BTC & CBTC ), asset creation, asset transfer , mint transfer, convert ( BTC to CBTC ), convert ( CBTC to BTC) in anduro browser wallet extension.
 
-
 ## Examples
 
 See our [Examples Repo][examples] for example anduro wallet connector react library integration
@@ -19,7 +18,7 @@ Since the chrome extension is not published. please do below steps temporarily t
 
 ## Before npm install, we have to do ssh key generation for authenticating with repo
 
-[Ref] : https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent 
+[Ref] : https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 1. ssh-keygen -t ed25519 -C "<YOUR-EMAIL>"
 2. eval "$(ssh-agent -s)"
@@ -58,8 +57,9 @@ Connect Anduro wallet using connect function.
 
 **Parameter**
 
-chainId: 1 or 2 
-1. 1 for Bitcoin  
+chainId: 1 or 2
+
+1. 1 for Bitcoin
 2. 2 for Sidechain
 
 ```bash

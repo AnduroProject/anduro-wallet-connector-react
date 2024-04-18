@@ -102,23 +102,25 @@ export const CreateAssetVC = () => {
             </div>
           )}
           {createAssetTransactionType !== "create" && (
-
-            <><div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-5">
-                <div className="label-text-align">
-                  <label>Receiver Address :</label>
+            <>
+              <div className="row">
+                <div className="col-sm-12 col-md-12 col-lg-5">
+                  <div className="label-text-align">
+                    <label>Receiver Address :</label>
+                  </div>
+                </div>
+                <div className="col-sm-12 col-md-12 col-lg-7">
+                  <div className="input_padd">
+                    <input
+                      type="text"
+                      placeholder="Receiver Address"
+                      value={receiverAddress}
+                      onChange={(event) => setReceiverAddress(event.target.value)}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="col-sm-12 col-md-12 col-lg-7">
-                <div className="input_padd">
-                  <input
-                    type="text"
-                    placeholder="Receiver Address"
-                    value={receiverAddress}
-                    onChange={(event) => setReceiverAddress(event.target.value)} />
-                </div>
-              </div>
-            </div></>
+            </>
           )}
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-5">

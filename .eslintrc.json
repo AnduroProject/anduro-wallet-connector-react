@@ -20,7 +20,7 @@
   },
   "plugins": ["react", "jsx-a11y", "prettier"],
   "rules": {
-    "no-unused-vars":0
+    "no-unused-vars": 0
   },
   "settings": {
     "react": {

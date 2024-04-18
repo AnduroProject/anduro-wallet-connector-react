@@ -32,15 +32,15 @@ export const ConnectorVC = () => {
       {walletState.accountPublicKey !== "" && (
         <div className="connect_page">
           <div className="display-flex">
-          <div className="breadcrumb">
-            <Link to="/send">Send</Link>
-          </div>
-          <div className="breadcrumb">
-            <Link to="/createasset">Create Asset</Link>
-          </div>
-          <div className="breadcrumb">
-            <Link to="/transfer">Transfer</Link>
-          </div>
+            <div className="breadcrumb">
+              <Link to="/send">Send</Link>
+            </div>
+            <div className="breadcrumb">
+              <Link to="/createasset">Create Asset</Link>
+            </div>
+            <div className="breadcrumb">
+              <Link to="/transfer">Transfer</Link>
+            </div>
           </div>
           <ConnectorVW
             title="Disconnect Wallet"
