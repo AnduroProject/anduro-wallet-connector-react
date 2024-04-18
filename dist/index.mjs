@@ -242,16 +242,6 @@ var UseConnectorProvider = function(props) {
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
     var _useState3 = _sliced_to_array(useState(props.walletURL), 2), walletURL = _useState3[0], setWalletURL = _useState3[1];
     useEffect(function() {
-        if (networkState.chainId === null && requestType !== "disconnect") {
-            var url = "".concat(walletURL, "?requestType=", "networkinfo" /* networkinfo */ );
-            var targetWindow = openWalletWindow(url);
-            setChildWindow(targetWindow);
-            setRequestType("networkinfo" /* networkinfo */ );
-        }
-    }, [
-        networkState
-    ]);
-    useEffect(function() {
         if (childWindow != null) {
             window.addEventListener("message", handleMessage);
             return function() {

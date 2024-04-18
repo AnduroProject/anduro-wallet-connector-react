@@ -104,15 +104,6 @@ export const UseConnectorProvider = (props: any) => {
   const [walletURL, setWalletURL] = useState(props.walletURL)
 
   useEffect(() => {
-    if (networkState.chainId === null && requestType !== "disconnect") {
-      const url = `${walletURL}?requestType=${RequestTypes.networkinfo}`
-      let targetWindow: any = openWalletWindow(url)
-      setChildWindow(targetWindow)
-      setRequestType(RequestTypes.networkinfo)
-    }
-  }, [networkState])
-
-  useEffect(() => {
     if (childWindow != null) {
       window.addEventListener("message", handleMessage)
       return () => {
