@@ -6,7 +6,6 @@ File Created : 04/03/2024
 CopyRights : 
 Purpose : This is the file that is used to handle connect , disconnect and manage anduro wallet.
 */
-'use client';
 import React, { useState, useEffect } from "react"
 import { ERROR_MESSAGES } from "../helpers/errorMessages"
 import { handleErrorResponse, handleSuccessResponse } from "../helpers/handleResponse"
@@ -102,7 +101,7 @@ export const UseConnectorProvider = (props: any) => {
     accountPublicKey: "",
     connectionState: "disconnected",
   })
-  const [walletURL, setWalletURL] = useState(localStorage.getItem("walletURL") || props.walletURL)
+  const [walletURL, setWalletURL] = useState(props.walletURL)
 
   useEffect(() => {
     if (networkState.chainId === null && requestType !== "disconnect") {
@@ -121,12 +120,6 @@ export const UseConnectorProvider = (props: any) => {
       }
     }
   }, [childWindow])
-
-  useEffect(() => {
-    if (props.walletURL && localStorage.getItem("walletURL") !== props.walletURL) {
-      localStorage.setItem("walletURL", props.walletURL)
-    }
-  }, [])
 
   /**
    * The following function used for listening messages from anduro wallet extension

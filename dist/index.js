@@ -310,7 +310,7 @@ var UseConnectorProvider = function(props) {
         accountPublicKey: "",
         connectionState: "disconnected"
     }), 2), walletState = _import_react_default_useState4[0], setWalletState = _import_react_default_useState4[1];
-    var _ref3 = _sliced_to_array((0, import_react.useState)(localStorage.getItem("walletURL") || props.walletURL), 2), walletURL = _ref3[0], setWalletURL = _ref3[1];
+    var _ref3 = _sliced_to_array((0, import_react.useState)(props.walletURL), 2), walletURL = _ref3[0], setWalletURL = _ref3[1];
     (0, import_react.useEffect)(function() {
         if (networkState.chainId === null && requestType !== "disconnect") {
             var url = "".concat(walletURL, "?requestType=", "networkinfo" /* networkinfo */ );
@@ -331,11 +331,6 @@ var UseConnectorProvider = function(props) {
     }, [
         childWindow
     ]);
-    (0, import_react.useEffect)(function() {
-        if (props.walletURL && localStorage.getItem("walletURL") !== props.walletURL) {
-            localStorage.setItem("walletURL", props.walletURL);
-        }
-    }, []);
     var handleMessage = function(event) {
         if (!event.data.type) return false;
         if (event.data.type == "webpackOk") return false;
