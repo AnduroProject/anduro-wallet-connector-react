@@ -32,7 +32,25 @@ go to example folder and run below command
 npm install
 ```
 
-[examples]: https://github.com/MarathonDH/anduro-wallet-connector-react/tree/main/example
+## How to run the Anduro Wallet on a local machine
+
+1. Unzip the wallet file. (Anduro-Wallet.zip)
+2. Go to your browser (e.g., Chrome).
+3. Click manage extensions.
+4. Enable developer mode.
+5. Click Load Unpacked
+6. Open(import) the unzipped Anduro-Wallet directory.
+7. Now you can see the Anduro wallet extension in your browser
+8. Copy Anduro wallet Extension id from your Manage extension
+9. Replace with EXTENSION_ID in below Anduro wallet url
+
+## Anduro wallet url
+
+```bash
+chrome-extension://<EXTENSION_ID>/index.html
+```
+
+[examples]: https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example
 
 ## Usage
 
@@ -57,10 +75,7 @@ Connect Anduro wallet using connect function.
 
 **Parameter**
 
-chainId: 1 or 2
-
-1. 1 for Bitcoin
-2. 2 for Sidechain
+chainId: 1 or 2 [1 for Bitcoin, 2 for Sidechain]
 
 ```bash
 import React from 'react';
