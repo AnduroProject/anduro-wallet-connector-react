@@ -194,3 +194,22 @@ const handleSendAction = async () => {
     const result = await send(params);
 }
 ```
+
+### 7. Sign Anduro Wallet
+
+Sign Anduro wallet using sign function.
+
+**Parameter**
+
+message: Message
+
+```bash
+import React from 'react';
+const { sign } = React.useContext<any>(useConnector);
+
+const handleConnectResponse = async () => {
+  const result = await sign({
+   message
+  })
+}
+```
