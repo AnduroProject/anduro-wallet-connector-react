@@ -1,10 +1,10 @@
-"use client";
+"use client"
 import React, { useContext } from "react"
 import { useConnector } from "anduro-wallet-connector"
-import Link from "next/link";
-import { ConnectorVW } from "./UI/connectorVW";
-import { WALLETURL } from "./config/config";
-export default function Home(){
+import Link from "next/link"
+import { ConnectorVW } from "./UI/connectorVW"
+import { WALLETURL } from "./config/config"
+export default function Home() {
   const { networkState, walletState, connect, disconnect } = useContext<any>(useConnector)
   const handleConnectionAction = async () => {
     const result = await connect({
@@ -33,6 +33,9 @@ export default function Home(){
       {walletState.accountPublicKey !== "" && (
         <div className="connect_page">
           <div className="display-flex">
+            <div className="breadcrumb">
+              <Link href="/sign">Sign</Link>
+            </div>
             <div className="breadcrumb">
               <Link href="/send">Send</Link>
             </div>
