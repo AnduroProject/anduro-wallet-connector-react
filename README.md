@@ -1,26 +1,28 @@
 # anduro-wallet-connector
 
-Anduro Wallet Connector is react library for connect, disconnect, send transaction ( BTC & CBTC ), asset creation, asset transfer , mint transfer, convert ( BTC to CBTC ), convert ( CBTC to BTC) in anduro browser wallet extension.
+Anduro Wallet Connector is a React library to enable users to easily connect to the Anduro browser extension.  This library includes the below options:
+  - Connect
+  - Disconnect
+  - Send transaction ( BTC & CBTC )
+  - Asset creation
+  - Asset transfer
+  - Mint transfer
+  - Convert ( BTC to CBTC )
+  - Convert ( CBTC to BTC)
+  - Sign
+
 
 ## Examples
 
-See our [Examples Repo][examples] for example anduro wallet connector react library integration
+See our [Examples](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example) for anduro wallet connector react library integration and
 implementations.
 
-## Before running example, pls follow below things.
+  - [React Example](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example/react)
+  - [Next.js Example](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example/next-js)
 
-Since the chrome extension is not published. please do below steps temporarily to connect wallet from website
+## Before running example, please follow below things.
 
-1. Go to example/react/src/config/walletApi.ts
-2. Replace WALLETURL with your browser wallet url
-
-## Installing example app
-
-go to example folder and run below command
-
-```bash
-npm install
-```
+Since the chrome extension is not published. please do below steps temporarily to connect wallet from your browser
 
 ## How to run the Anduro Wallet on a local machine
 
@@ -40,7 +42,22 @@ npm install
 chrome-extension://<EXTENSION_ID>/index.html
 ```
 
-[examples]: https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example
+## React Example
+
+1. Go to example/react/src/config/walletApi.ts
+2. Replace WALLETURL with your browser wallet url
+
+## Next.js Example
+
+1. Go to example/next-js/src/app/config/config.ts
+2. Replace WALLETURL with your browser wallet url
+
+## Installing example app
+
+  - go to example folder and run below command
+      ```bash
+      npm install
+      ```
 
 ## Usage
 
