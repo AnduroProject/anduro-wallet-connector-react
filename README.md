@@ -1,6 +1,6 @@
 # anduro-wallet-connector
 
-Anduro Wallet Connector is a React library to enable users to easily connect to the Anduro browser extension.  This library includes the below options:
+Anduro Wallet Connector is a React library that will enable users to easily connect to the Anduro Wallet browser extension.  This library includes the below options:
   - Connect
   - Disconnect
   - Send transaction ( BTC & CBTC )
