@@ -16,7 +16,7 @@ export const SignVC = () => {
       <div className="widset_parent">
         <h3 className="title">Sign</h3>
         <div>
-          <form onSubmit={handleSignFormSubmit}>                              
+          <form onSubmit={handleSignFormSubmit}>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
@@ -35,7 +35,9 @@ export const SignVC = () => {
               </div>
             </div>
 
-            <button type="submit" className="btnsubmit">Sign</button>
+            <button type="submit" className="btnsubmit">
+              Sign
+            </button>
           </form>
         </div>
       </div>

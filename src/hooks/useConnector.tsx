@@ -463,7 +463,7 @@ export const UseConnectorProvider = (props: any) => {
    */
   const sign = (params: SignParams) => {
     return new Promise((resolve) => {
-      if (checkWalletConnection(resolve, RequestTypes.sign)) {
+      if (checkWalletConnection(resolve, "")) {
         const url = `${walletURL}?requestType=${RequestTypes.sign}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sign)

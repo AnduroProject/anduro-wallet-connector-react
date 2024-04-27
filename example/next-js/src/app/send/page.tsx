@@ -1,7 +1,8 @@
-"use client";
+/* eslint-disable jsx-a11y/label-has-associated-control */
+"use client"
 import React from "react"
 import { useConnector } from "anduro-wallet-connector"
-export default function SendVC(){
+export default function SendVC() {
   const { send } = React.useContext<any>(useConnector)
   const [amount, setAmount] = React.useState<any>("")
   const [receiverAddress, setReceiverAddress] = React.useState<any>("")

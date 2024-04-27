@@ -20,11 +20,15 @@
   },
   "plugins": ["react", "jsx-a11y", "prettier"],
   "rules": {
-    "no-unused-vars": 0
+    "no-unused-vars": 0,
+    "no-html-link-for-pages": 0
   },
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "next": {
+      "rootDir": "example/next-js/src/app/"
     },
     "import/resolver": {
       "node": {
