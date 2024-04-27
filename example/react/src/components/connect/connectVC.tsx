@@ -16,7 +16,6 @@ export const ConnectorVC = () => {
 
     localStorage.setItem("isWalletConnected", "true")
     setIsWalletConnected("true")
-
   }
   const handleNetworkInfo = async () => {
     const result = await networkInfo()

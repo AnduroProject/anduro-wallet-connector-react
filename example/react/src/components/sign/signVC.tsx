@@ -20,12 +20,13 @@ export const SignVC = () => {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
-                  <label>Message :</label>
+                  <label htmlFor="message">Message :</label>
                 </div>
               </div>
               <div className="col-sm-12 col-md-12 col-lg-7">
                 <div className="input_padd">
                   <input
+                    id="message"
                     type="text"
                     placeholder="Message"
                     value={message}

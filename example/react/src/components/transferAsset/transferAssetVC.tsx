@@ -23,12 +23,13 @@ export const TransferAssetVC = () => {
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-5">
               <div className="label-text-align">
-                <label>Receiver Address :</label>
+                <label htmlFor="receiver_address">Receiver Address :</label>
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-7">
               <div className="input_padd">
                 <input
+                  id="receiver_address"
                   type="text"
                   placeholder="Receiver Address"
                   value={receiverAddress}
@@ -40,12 +41,13 @@ export const TransferAssetVC = () => {
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-5">
               <div className="label-text-align">
-                <label>Supply :</label>
+                <label htmlFor="supply">Supply :</label>
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-7">
               <div className="input_padd">
                 <input
+                  id="supply"
                   type="text"
                   placeholder="Supply"
                   value={supply}
@@ -57,12 +59,13 @@ export const TransferAssetVC = () => {
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-5">
               <div className="label-text-align">
-                <label>Asset ID : *</label>
+                <label htmlFor="asset_id">Asset ID : *</label>
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-7">
               <div className="input_padd">
                 <input
+                  id="asset_id"
                   type="number"
                   placeholder="Asset ID"
                   value={assetId}

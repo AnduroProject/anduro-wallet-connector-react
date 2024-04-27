@@ -567,7 +567,7 @@ var UseConnectorProvider = function(props) {
     };
     var sign = function(params) {
         return new Promise(function(resolve) {
-            if (checkWalletConnection(resolve, "sign" /* sign */ )) {
+            if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(walletURL, "?requestType=", "sign" /* sign */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign" /* sign */ );
