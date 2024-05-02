@@ -9,7 +9,7 @@ export const ConnectorVC = () => {
   const [isWalletConnected, setIsWalletConnected] = React.useState<string>("false")
   const handleConnectionAction = async () => {
     const result = await connect({
-      chainId: 2,
+      chainId: 4,
       walletURL: WALLETURL,
     })
     console.log("*******Connect Result", result)
