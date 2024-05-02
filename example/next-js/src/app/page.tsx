@@ -14,14 +14,15 @@ export default function Home() {
       walletURL: WALLETURL,
     })
     console.log("*******Connect Result", result)
-
-    localStorage.setItem("isWalletConnected", "true")
-    setIsWalletConnected("true")
+    if (result.status === true) {
+      localStorage.setItem("isWalletConnected", "true")
+      setIsWalletConnected("true")
+    }
   }
   const handleNetworkInfo = async () => {
     const result = await networkInfo()
     console.log("*******handle NetworkInfo Result", result)
-    if (result.status) {
+    if (result.status === true) {
       localStorage.setItem("isWalletConnected", "true")
       setIsWalletConnected("true")
     } else {
@@ -32,9 +33,10 @@ export default function Home() {
   const handleDisconnectionAction = async () => {
     const result = await disconnect()
     console.log("*******Disconnect Result", result)
-
-    localStorage.removeItem("isWalletConnected")
-    setIsWalletConnected("false")
+    if (result.status === true) {
+      localStorage.removeItem("isWalletConnected")
+      setIsWalletConnected("false")
+    }
   }
   React.useEffect(() => {
     console.log("Connector Network Information", networkState)
