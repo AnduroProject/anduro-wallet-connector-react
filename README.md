@@ -232,7 +232,7 @@ const { sign } = React.useContext<any>(useConnector);
 
 const handleConnectResponse = async () => {
   const result = await sign({
-   message
+   message: "sign message"
   })
 }
 ```
