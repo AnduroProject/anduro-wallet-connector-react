@@ -1,7 +1,7 @@
-"use client";
+"use client"
 import React from "react"
 import { useConnector } from "anduro-wallet-connector"
-export default function CreateAssetVC(){
+export default function CreateAssetVC() {
   const { createasset } = React.useContext<any>(useConnector)
   const [receiverAddress, setReceiverAddress] = React.useState<any>("")
 
@@ -52,12 +52,13 @@ export default function CreateAssetVC(){
               <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-5">
                   <div className="label-text-align">
-                    <label>Name :</label>
+                    <label htmlFor="name">Name :</label>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-12 col-lg-7">
                   <div className="input_padd">
                     <input
+                      id="name"
                       type="text"
                       placeholder="Name"
                       value={name}
@@ -69,12 +70,13 @@ export default function CreateAssetVC(){
               <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-5">
                   <div className="label-text-align">
-                    <label>Symbol :</label>
+                    <label htmlFor="symbol">Symbol :</label>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-12 col-lg-7">
                   <div className="input_padd">
                     <input
+                      id="symbol"
                       type="text"
                       placeholder="Symbol"
                       value={symbol}
@@ -86,12 +88,13 @@ export default function CreateAssetVC(){
               <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-5">
                   <div className="label-text-align">
-                    <label>Image URL :</label>
+                    <label htmlFor="image_url">Image URL :</label>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-12 col-lg-7">
                   <div className="input_padd">
                     <input
+                      id="image_url"
                       type="text"
                       placeholder="Image URL"
                       value={imageUrl}
@@ -107,12 +110,13 @@ export default function CreateAssetVC(){
               <div className="row">
                 <div className="col-sm-12 col-md-12 col-lg-5">
                   <div className="label-text-align">
-                    <label>Receiver Address :</label>
+                    <label htmlFor="receiver_address">Receiver Address :</label>
                   </div>
                 </div>
                 <div className="col-sm-12 col-md-12 col-lg-7">
                   <div className="input_padd">
                     <input
+                      id="receiver_address"
                       type="text"
                       placeholder="Receiver Address"
                       value={receiverAddress}
@@ -126,12 +130,13 @@ export default function CreateAssetVC(){
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-5">
               <div className="label-text-align">
-                <label>Supply :</label>
+                <label htmlFor="supply">Supply :</label>
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-7">
               <div className="input_padd">
                 <input
+                  id="supply"
                   type="text"
                   placeholder="Supply"
                   value={supply}
@@ -144,12 +149,13 @@ export default function CreateAssetVC(){
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
-                  <label>Asset ID : *</label>
+                  <label htmlFor="asset_id">Asset ID : *</label>
                 </div>
               </div>
               <div className="col-sm-12 col-md-12 col-lg-7">
                 <div className="input_padd">
                   <input
+                    id="asset_id"
                     type="number"
                     placeholder="Asset ID"
                     value={assetId}

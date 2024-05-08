@@ -12,6 +12,9 @@ interface NetworkState {
 interface connectParams {
     chainId: number;
 }
+interface SignParams {
+    message?: string;
+}
 interface createTransactionParams {
     transactionType?: string;
     amount?: number;
@@ -42,6 +45,8 @@ type UseConnectorContextContextType = {
     networkState: NetworkState;
     walletState: WalletState;
     connect: (params: connectParams) => object;
+    networkInfo: () => object;
+    sign: (params: SignParams) => object;
     transferasset: (params: TransferAssetParams) => object;
     createasset: (params: CreateassetParams) => object;
     send: (params: createTransactionParams) => object;

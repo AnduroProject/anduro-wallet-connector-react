@@ -19,5 +19,5 @@ export const handleErrorResponse = (error: any = null) => {
  * @param result
  */
 export const handleSuccessResponse = (result: any = null) => {
-  return { status: true, result, error: null }
+  return { status: true, result: result.result ? result.result : result, error: null }
 }

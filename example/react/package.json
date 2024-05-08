@@ -10,7 +10,10 @@
     "@types/node": "^16.18.91",
     "@types/react": "^18.2.71",
     "@types/react-dom": "^18.2.22",
-    "anduro-wallet-connector": "git@github.com/AnduroProject/anduro-wallet-connector-react",
+    "anduro-wallet-connector": "git@github.com/AnduroProject/anduro-wallet-connector-react#sign-option",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
@@ -18,17 +21,17 @@
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,scss,md,json}' --config ./.prettierrc"
   },
   "browserslist": {
     "production": [

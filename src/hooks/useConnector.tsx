@@ -22,6 +22,9 @@ interface NetworkState {
 interface connectParams {
   chainId: number
 }
+interface SignParams {
+  message?: string
+}
 interface createTransactionParams {
   transactionType?: string
   amount?: number
@@ -57,6 +60,7 @@ enum RequestTypes {
   send = "send",
   createAsset = "create-asset",
   transferAsset = "transfer-asset",
+  sign = "sign",
 }
 
 enum ResponseTypes {
@@ -79,6 +83,8 @@ type UseConnectorContextContextType = {
   networkState: NetworkState
   walletState: WalletState
   connect: (params: connectParams) => object
+  networkInfo: () => object
+  sign: (params: SignParams) => object
   transferasset: (params: TransferAssetParams) => object
   createasset: (params: CreateassetParams) => object
   send: (params: createTransactionParams) => object
@@ -90,6 +96,7 @@ export const UseConnectorProvider = (props: any) => {
   const [childWindow, setChildWindow] = useState<any>(null)
   const [requestType, setRequestType] = useState<RequestTypes>()
   const [transactionData, setTransactionData] = useState<createTransactionParams>({})
+  const [signData, setSignData] = useState<SignParams>({})
   const [requestData, setRequestData] = React.useState<any>(null)
   const [createAssetData, setCreateAssetData] = React.useState<CreateassetParams>({})
   const [transferAssetData, setTransferAssetData] = React.useState<TransferAssetParams>({})
@@ -127,8 +134,13 @@ export const UseConnectorProvider = (props: any) => {
 
     if (childWindow) childWindow.close()
 
-    if (!event.data.status)
-      return handleErrorResponse(event.data.error ? event.data.error : event.data)
+    if (!event.data.status) {
+      if (resolvePromise) {
+        return resolvePromise(handleErrorResponse(event.data.error ? event.data.error : event.data))
+      } else {
+        return handleErrorResponse(event.data.error ? event.data.error : event.data)
+      }
+    }
 
     switch (event.data.type) {
       case ResponseTypes.connectionResponse:
@@ -146,6 +158,7 @@ export const UseConnectorProvider = (props: any) => {
       case ResponseTypes.disconnectResponse:
         updateNetworkInformation({ chainId: null, networkType: "" })
         updateWalletInformation("disconnected", "")
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
       default:
         if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
@@ -202,6 +215,12 @@ export const UseConnectorProvider = (props: any) => {
         supply: transferAssetData.supply,
         receiverAddress: transferAssetData.receiverAddress,
         assetId: transferAssetData.assetId,
+      })
+    } else if (requestType === RequestTypes.sign) {
+      sendMessageToChildWindow({
+        requestType: requestType,
+        chainId: networkState.chainId,
+        message: signData.message,
       })
     }
   }
@@ -263,6 +282,18 @@ export const UseConnectorProvider = (props: any) => {
     })
   }
 
+  /**
+   * The following function used for initialize wallet and get network info
+   */
+  const networkInfo = async () => {
+    return new Promise((resolve) => {
+      const url = `${walletURL}?requestType=${RequestTypes.networkinfo}`
+      let childWindow = openWalletWindow(url)
+      setRequestType(RequestTypes.networkinfo)
+      setChildWindow(childWindow)
+      resolvePromise = resolve
+    })
+  }
   /**
    * The following function used for disconnecting anduro wallet extension
    */
@@ -424,6 +455,25 @@ export const UseConnectorProvider = (props: any) => {
     })
   }
 
+  /**
+   * The following function used for sign process
+   *
+   * @param message The sign message
+   *
+   */
+  const sign = (params: SignParams) => {
+    return new Promise((resolve) => {
+      if (checkWalletConnection(resolve, "")) {
+        const url = `${walletURL}?requestType=${RequestTypes.sign}`
+        let childWindow = openWalletWindow(url)
+        setRequestType(RequestTypes.sign)
+        setChildWindow(childWindow)
+        setSignData(params)
+        resolvePromise = resolve
+      }
+    })
+  }
+
   const { children } = props
   return (
     <useConnector.Provider
@@ -431,10 +481,12 @@ export const UseConnectorProvider = (props: any) => {
         walletState,
         networkState,
         connect,
+        networkInfo,
         disconnect,
         send,
         createasset,
         transferasset,
+        sign,
       }}
     >
       {children}

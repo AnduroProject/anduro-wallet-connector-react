@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React from "react"
 export const ConnectorVW = (props: any) => {
   const { title, buttonName, handleClickAction } = props

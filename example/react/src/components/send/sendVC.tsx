@@ -33,12 +33,13 @@ export const SendVC = () => {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
-                  <label>Amount : *</label>
+                  <label htmlFor="amount">Amount : *</label>
                 </div>
               </div>
               <div className="col-sm-12 col-md-12 col-lg-7">
                 <div className="input_padd">
                   <input
+                    id="amount"
                     type="number"
                     placeholder="Amount"
                     value={amount}
@@ -50,12 +51,13 @@ export const SendVC = () => {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
-                  <label>Receiver Address :</label>
+                  <label htmlFor="receiver_address">Receiver Address :</label>
                 </div>
               </div>
               <div className="col-sm-12 col-md-12 col-lg-7">
                 <div className="input_padd">
                   <input
+                    id="receiver_address"
                     type="text"
                     placeholder="Receiver Address"
                     value={receiverAddress}
@@ -67,12 +69,13 @@ export const SendVC = () => {
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
-                  <label>Fee rate (VB) :</label>
+                  <label htmlFor="feerate">Fee rate (VB) :</label>
                 </div>
               </div>
               <div className="col-sm-12 col-md-12 col-lg-7">
                 <div className="input_padd">
                   <input
+                    id="feerate"
                     type="number"
                     placeholder="Fee rate (VB)"
                     value={feerate}
