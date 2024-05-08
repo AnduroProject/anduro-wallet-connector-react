@@ -1,6 +1,6 @@
 {
-  "name": "@anduroproject/anduro-wallet-connector",
-  "version": "1.0.1",
+  "name": "@anduroproject/anduro-wallet-connector-react",
+  "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": false,
