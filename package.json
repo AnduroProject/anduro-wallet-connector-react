@@ -1,5 +1,5 @@
 {
-  "name": "@anduroproject/anduro-wallet-connector",
+  "name": "@Anduroproject/anduro-wallet-connector",
   "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
