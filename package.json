@@ -1,6 +1,6 @@
 {
-  "name": "@Anduroproject/anduro-wallet-connector-react",
-  "version": "1.0.3",
+  "name": "anduro-wallet-connector-react",
+  "version": "1.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": false,
@@ -30,10 +30,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AnduroProject/anduro-wallet-connector-react/tree/whitelabel-source"
+    "url": "git+https://github.com/AnduroProject/anduro-wallet-connector-react"
   },
-  "homepage": "https://github.com/AnduroProject/anduro-wallet-connector-react/tree/whitelabel-source#readme",
+  "homepage": "https://github.com/AnduroProject/anduro-wallet-connector-react#readme",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   }
 }
