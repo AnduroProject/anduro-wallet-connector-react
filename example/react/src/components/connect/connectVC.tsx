@@ -4,8 +4,15 @@ import { useConnector } from "anduro-wallet-connector"
 import { Link } from "react-router-dom"
 import { WALLETURL } from "../../config/walletApi"
 export const ConnectorVC = () => {
-  const { networkState, walletState, connect, disconnect, networkInfo, signTransaction } =
-    useContext<any>(useConnector)
+  const {
+    networkState,
+    walletState,
+    connect,
+    disconnect,
+    networkInfo,
+    signTransaction,
+    sendTransaction,
+  } = useContext<any>(useConnector)
   const [isWalletConnected, setIsWalletConnected] = React.useState<string>("false")
   const handleConnectionAction = async () => {
     const result = await connect({
@@ -55,6 +62,13 @@ export const ConnectorVC = () => {
       hex,
     })
     console.log("===== SIGN RESULT EXAMPLE ======", signResult)
+    sendTransactions(signResult.result.signedHex)
+  }
+  const sendTransactions = async (signedHex: string) => {
+    const sendResult = await sendTransaction({
+      hex: signedHex,
+    })
+    console.log("===== SEND RESULT EXAMPLE ======", sendResult)
   }
   return (
     <div>

@@ -620,7 +620,8 @@ var UseConnectorProvider = function(props) {
             createasset: createasset,
             transferasset: transferasset,
             sign: sign,
-            signTransaction: signTransaction
+            signTransaction: signTransaction,
+            sendTransaction: sendTransaction
         },
         children: children
     });

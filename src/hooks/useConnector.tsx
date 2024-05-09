@@ -95,6 +95,7 @@ type UseConnectorContextContextType = {
   send: (params: createTransactionParams) => object
   disconnect: () => object
   signTransaction: (params: SignTransactionParams) => object
+  sendTransaction: (params: SignTransactionParams) => object
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(null)
 let resolvePromise: any = null
@@ -540,6 +541,7 @@ export const UseConnectorProvider = (props: any) => {
         transferasset,
         sign,
         signTransaction,
+        sendTransaction,
       }}
     >
       {children}
