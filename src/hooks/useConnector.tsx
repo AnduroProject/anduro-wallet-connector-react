@@ -65,6 +65,7 @@ enum RequestTypes {
   transferAsset = "transfer-asset",
   sign = "sign",
   signTransaction = "sign-transaction",
+  sendTransaction = "send-transaction",
 }
 
 enum ResponseTypes {
@@ -228,7 +229,10 @@ export const UseConnectorProvider = (props: any) => {
         chainId: networkState.chainId,
         message: signData.message,
       })
-    } else if (requestType === RequestTypes.signTransaction) {
+    } else if (
+      requestType === RequestTypes.signTransaction ||
+      requestType === RequestTypes.sendTransaction
+    ) {
       sendMessageToChildWindow({
         requestType: requestType,
         chainId: networkState.chainId,
@@ -495,6 +499,24 @@ export const UseConnectorProvider = (props: any) => {
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
         const url = `${walletURL}?requestType=${RequestTypes.signTransaction}`
+        let childWindow = openWalletWindow(url)
+        setRequestType(RequestTypes.signTransaction)
+        setChildWindow(childWindow)
+        setSignTransactionData(params)
+        resolvePromise = resolve
+      }
+    })
+  }
+  /**
+   * The following function used for sign process
+   *
+   * @param hex The signed transaction hex
+   *
+   */
+  const sendTransaction = (params: SignTransactionParams) => {
+    return new Promise((resolve) => {
+      if (checkWalletConnection(resolve, "")) {
+        const url = `${walletURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signTransaction)
         setChildWindow(childWindow)

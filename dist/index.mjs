@@ -348,7 +348,7 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId,
                 message: signData.message
             });
-        } else if (requestType === "sign-transaction" /* signTransaction */ ) {
+        } else if (requestType === "sign-transaction" /* signTransaction */  || requestType === "send-transaction" /* sendTransaction */ ) {
             sendMessageToChildWindow({
                 requestType: requestType,
                 chainId: networkState.chainId,
@@ -518,6 +518,18 @@ var UseConnectorProvider = function(props) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(walletURL, "?requestType=", "sign-transaction" /* signTransaction */ );
+                var childWindow2 = openWalletWindow(url);
+                setRequestType("sign-transaction" /* signTransaction */ );
+                setChildWindow(childWindow2);
+                setSignTransactionData(params);
+                resolvePromise = resolve;
+            }
+        });
+    };
+    var sendTransaction = function(params) {
+        return new Promise(function(resolve) {
+            if (checkWalletConnection(resolve, "")) {
+                var url = "".concat(walletURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign-transaction" /* signTransaction */ );
                 setChildWindow(childWindow2);

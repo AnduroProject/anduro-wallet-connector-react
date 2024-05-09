@@ -10,7 +10,7 @@
     "@types/node": "^16.18.91",
     "@types/react": "^18.2.71",
     "@types/react-dom": "^18.2.22",
-    "anduro-wallet-connector": "git@github.com/AnduroProject/anduro-wallet-connector-react#sign-transaction",
+    "anduro-wallet-connector": "git@github.com/AnduroProject/anduro-wallet-connector-react/tree/sign-transaction",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-prettier": "^5.1.3",
