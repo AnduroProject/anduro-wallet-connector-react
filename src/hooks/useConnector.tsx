@@ -51,6 +51,9 @@ interface TransferAssetParams {
   receiverAddress?: string
   supply?: number
 }
+interface SignTransactionParams {
+  hex: string
+}
 enum RequestTypes {
   connect = "connect",
   disconnected = "disconnect",
@@ -61,6 +64,7 @@ enum RequestTypes {
   createAsset = "create-asset",
   transferAsset = "transfer-asset",
   sign = "sign",
+  signTransaction = "sign-transaction",
 }
 
 enum ResponseTypes {
@@ -89,6 +93,7 @@ type UseConnectorContextContextType = {
   createasset: (params: CreateassetParams) => object
   send: (params: createTransactionParams) => object
   disconnect: () => object
+  signTransaction: (params: SignTransactionParams) => object
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(null)
 let resolvePromise: any = null
@@ -109,6 +114,7 @@ export const UseConnectorProvider = (props: any) => {
     connectionState: "disconnected",
   })
   const [walletURL, setWalletURL] = useState(props.walletURL)
+  const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
   useEffect(() => {
     if (childWindow != null) {
@@ -221,6 +227,12 @@ export const UseConnectorProvider = (props: any) => {
         requestType: requestType,
         chainId: networkState.chainId,
         message: signData.message,
+      })
+    } else if (requestType === RequestTypes.signTransaction) {
+      sendMessageToChildWindow({
+        requestType: requestType,
+        chainId: networkState.chainId,
+        hex: signTransactionData?.hex,
       })
     }
   }
@@ -473,6 +485,24 @@ export const UseConnectorProvider = (props: any) => {
       }
     })
   }
+  /**
+   * The following function used for sign process
+   *
+   * @param hex The raw transaction hex
+   *
+   */
+  const signTransaction = (params: SignTransactionParams) => {
+    return new Promise((resolve) => {
+      if (checkWalletConnection(resolve, "")) {
+        const url = `${walletURL}?requestType=${RequestTypes.signTransaction}`
+        let childWindow = openWalletWindow(url)
+        setRequestType(RequestTypes.signTransaction)
+        setChildWindow(childWindow)
+        setSignTransactionData(params)
+        resolvePromise = resolve
+      }
+    })
+  }
 
   const { children } = props
   return (
@@ -487,6 +517,7 @@ export const UseConnectorProvider = (props: any) => {
         createasset,
         transferasset,
         sign,
+        signTransaction,
       }}
     >
       {children}
