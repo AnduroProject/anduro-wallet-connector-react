@@ -1,24 +1,24 @@
 # anduro-wallet-connector
 
-Anduro Wallet Connector is a React library that will enable users to easily connect to the Anduro Wallet browser extension.  This library includes the below options:
-  - Connect
-  - Disconnect
-  - Send transaction ( BTC & CBTC )
-  - Asset creation
-  - Asset transfer
-  - Mint transfer
-  - Convert ( BTC to CBTC )
-  - Convert ( CBTC to BTC)
-  - Sign
+Anduro Wallet Connector is a React library that will enable users to easily connect to the Anduro Wallet browser extension. This library includes the below options:
 
+- Connect
+- Disconnect
+- Send transaction ( BTC & CBTC )
+- Asset creation
+- Asset transfer
+- Mint transfer
+- Convert ( BTC to CBTC )
+- Convert ( CBTC to BTC)
+- Sign
 
 ## Examples
 
 See our [Examples](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example) for anduro wallet connector react library integration and
 implementations.
 
-  - [React Example](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example/react)
-  - [Next.js Example](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example/next-js)
+- [React Example](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example/react)
+- [Next.js Example](https://github.com/AnduroProject/anduro-wallet-connector-react/tree/main/example/next-js)
 
 ## Before running example, please follow below things.
 
@@ -54,10 +54,10 @@ chrome-extension://<EXTENSION_ID>/index.html
 
 ## Installing example app
 
-  - go to example folder and run below command
-      ```bash
-      npm install
-      ```
+- go to example folder and run below command
+  ```bash
+  npm install
+  ```
 
 ## Usage
 
@@ -88,7 +88,6 @@ chainId: 1 or 2 or 3 or 4
 - 2 for Sidechain mainnet
 - 3 for Bitcoin testnet
 - 4 for Sidechain testnet
-
 
 ```bash
 import React from 'react';

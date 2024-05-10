@@ -242,6 +242,7 @@ var UseConnectorProvider = function(props) {
         connectionState: "disconnected"
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
     var _useState4 = _sliced_to_array(useState(props.walletURL), 2), walletURL = _useState4[0], setWalletURL = _useState4[1];
+    var _useState5 = _sliced_to_array(useState(), 2), signTransactionData = _useState5[0], setSignTransactionData = _useState5[1];
     useEffect(function() {
         if (childWindow != null) {
             window.addEventListener("message", handleMessage);
@@ -346,6 +347,12 @@ var UseConnectorProvider = function(props) {
                 requestType: requestType,
                 chainId: networkState.chainId,
                 message: signData.message
+            });
+        } else if (requestType === "sign-transaction" /* signTransaction */  || requestType === "send-transaction" /* sendTransaction */  || requestType === "sign-and-send-transaction" /* signAndSendTransaction */ ) {
+            sendMessageToChildWindow({
+                requestType: requestType,
+                chainId: networkState.chainId,
+                hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex
             });
         }
     };
@@ -507,6 +514,42 @@ var UseConnectorProvider = function(props) {
             }
         });
     };
+    var signTransaction = function(params) {
+        return new Promise(function(resolve) {
+            if (checkWalletConnection(resolve, "")) {
+                var url = "".concat(walletURL, "?requestType=", "sign-transaction" /* signTransaction */ );
+                var childWindow2 = openWalletWindow(url);
+                setRequestType("sign-transaction" /* signTransaction */ );
+                setChildWindow(childWindow2);
+                setSignTransactionData(params);
+                resolvePromise = resolve;
+            }
+        });
+    };
+    var sendTransaction = function(params) {
+        return new Promise(function(resolve) {
+            if (checkWalletConnection(resolve, "")) {
+                var url = "".concat(walletURL, "?requestType=", "send-transaction" /* sendTransaction */ );
+                var childWindow2 = openWalletWindow(url);
+                setRequestType("send-transaction" /* sendTransaction */ );
+                setChildWindow(childWindow2);
+                setSignTransactionData(params);
+                resolvePromise = resolve;
+            }
+        });
+    };
+    var signAndSendTransaction = function(params) {
+        return new Promise(function(resolve) {
+            if (checkWalletConnection(resolve, "")) {
+                var url = "".concat(walletURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
+                var childWindow2 = openWalletWindow(url);
+                setRequestType("sign-and-send-transaction" /* signAndSendTransaction */ );
+                setChildWindow(childWindow2);
+                setSignTransactionData(params);
+                resolvePromise = resolve;
+            }
+        });
+    };
     var children = props.children;
     return /* @__PURE__ */ jsx(useConnector.Provider, {
         value: {
@@ -518,7 +561,10 @@ var UseConnectorProvider = function(props) {
             send: send,
             createasset: createasset,
             transferasset: transferasset,
-            sign: sign
+            sign: sign,
+            signTransaction: signTransaction,
+            sendTransaction: sendTransaction,
+            signAndSendTransaction: signAndSendTransaction
         },
         children: children
     });

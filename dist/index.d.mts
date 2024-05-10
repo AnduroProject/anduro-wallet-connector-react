@@ -41,6 +41,9 @@ interface TransferAssetParams {
     receiverAddress?: string;
     supply?: number;
 }
+interface SignTransactionParams {
+    hex: string;
+}
 type UseConnectorContextContextType = {
     networkState: NetworkState;
     walletState: WalletState;
@@ -51,6 +54,9 @@ type UseConnectorContextContextType = {
     createasset: (params: CreateassetParams) => object;
     send: (params: createTransactionParams) => object;
     disconnect: () => object;
+    signTransaction: (params: SignTransactionParams) => object;
+    sendTransaction: (params: SignTransactionParams) => object;
+    signAndSendTransaction: (params: SignTransactionParams) => object;
 };
 declare const useConnector: React.Context<UseConnectorContextContextType | null>;
 declare const UseConnectorProvider: (props: any) => react_jsx_runtime.JSX.Element;
