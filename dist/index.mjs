@@ -251,7 +251,8 @@ var UseConnectorProvider = function(props) {
             };
         }
     }, [
-        childWindow
+        childWindow,
+        requestType
     ]);
     var handleMessage = function(event) {
         if (!event.data.type) return false;

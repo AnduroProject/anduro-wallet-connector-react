@@ -127,7 +127,7 @@ export const UseConnectorProvider = (props: any) => {
         window.removeEventListener("message", handleMessage)
       }
     }
-  }, [childWindow])
+  }, [childWindow, requestType])
 
   /**
    * The following function used for listening messages from anduro wallet extension
