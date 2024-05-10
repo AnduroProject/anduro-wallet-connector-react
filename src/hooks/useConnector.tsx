@@ -121,6 +121,7 @@ export const UseConnectorProvider = (props: any) => {
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
   useEffect(() => {
+    console.log("requestType", requestType)
     if (childWindow != null) {
       window.addEventListener("message", handleMessage)
       return () => {

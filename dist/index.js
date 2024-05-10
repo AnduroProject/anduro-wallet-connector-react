@@ -314,6 +314,7 @@ var UseConnectorProvider = function(props) {
     var _ref4 = _sliced_to_array((0, import_react.useState)(props.walletURL), 2), walletURL = _ref4[0], setWalletURL = _ref4[1];
     var _ref5 = _sliced_to_array((0, import_react.useState)(), 2), signTransactionData = _ref5[0], setSignTransactionData = _ref5[1];
     (0, import_react.useEffect)(function() {
+        console.log("requestType", requestType);
         if (childWindow != null) {
             window.addEventListener("message", handleMessage);
             return function() {
