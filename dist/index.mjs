@@ -348,7 +348,9 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId,
                 message: signData.message
             });
-        } else if (requestType === "sign-transaction" /* signTransaction */  || requestType === "send-transaction" /* sendTransaction */ ) {
+        } else if (requestType === "sign-transaction" /* signTransaction */  || requestType === "send-transaction" /* sendTransaction */  || requestType === "sign-and-send-transaction" /* signAndSendTransaction */ ) {
+            console.log("requestType", requestType);
+            console.log("chainId", networkState.chainId);
             sendMessageToChildWindow({
                 requestType: requestType,
                 chainId: networkState.chainId,
@@ -529,7 +531,21 @@ var UseConnectorProvider = function(props) {
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
+                console.log("Send Transaction Request Received 1", "send-transaction" /* sendTransaction */ );
                 var url = "".concat(walletURL, "?requestType=", "send-transaction" /* sendTransaction */ );
+                var childWindow2 = openWalletWindow(url);
+                setRequestType("sign-transaction" /* signTransaction */ );
+                setChildWindow(childWindow2);
+                setSignTransactionData(params);
+                resolvePromise = resolve;
+                console.log("Send Transaction Request Received 2");
+            }
+        });
+    };
+    var signAndSendTransaction = function(params) {
+        return new Promise(function(resolve) {
+            if (checkWalletConnection(resolve, "")) {
+                var url = "".concat(walletURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign-transaction" /* signTransaction */ );
                 setChildWindow(childWindow2);
@@ -551,7 +567,8 @@ var UseConnectorProvider = function(props) {
             transferasset: transferasset,
             sign: sign,
             signTransaction: signTransaction,
-            sendTransaction: sendTransaction
+            sendTransaction: sendTransaction,
+            signAndSendTransaction: signAndSendTransaction
         },
         children: children
     });

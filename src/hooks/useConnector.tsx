@@ -66,6 +66,7 @@ enum RequestTypes {
   sign = "sign",
   signTransaction = "sign-transaction",
   sendTransaction = "send-transaction",
+  signAndSendTransaction = "sign-and-send-transaction",
 }
 
 enum ResponseTypes {
@@ -96,6 +97,7 @@ type UseConnectorContextContextType = {
   disconnect: () => object
   signTransaction: (params: SignTransactionParams) => object
   sendTransaction: (params: SignTransactionParams) => object
+  signAndSendTransaction: (params: SignTransactionParams) => object
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(null)
 let resolvePromise: any = null
@@ -232,8 +234,11 @@ export const UseConnectorProvider = (props: any) => {
       })
     } else if (
       requestType === RequestTypes.signTransaction ||
-      requestType === RequestTypes.sendTransaction
+      requestType === RequestTypes.sendTransaction ||
+      requestType === RequestTypes.signAndSendTransaction
     ) {
+      console.log("requestType", requestType)
+      console.log("chainId", networkState.chainId)
       sendMessageToChildWindow({
         requestType: requestType,
         chainId: networkState.chainId,
@@ -517,15 +522,35 @@ export const UseConnectorProvider = (props: any) => {
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
+        console.log("Send Transaction Request Received 1", RequestTypes.sendTransaction)
         const url = `${walletURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signTransaction)
         setChildWindow(childWindow)
         setSignTransactionData(params)
         resolvePromise = resolve
+        console.log("Send Transaction Request Received 2")
       }
     })
   }
+    /**
+   * The following function used for sign process
+   *
+   * @param hex The signed transaction hex
+   *
+   */
+    const signAndSendTransaction = (params: SignTransactionParams) => {
+      return new Promise((resolve) => {
+        if (checkWalletConnection(resolve, "")) {
+          const url = `${walletURL}?requestType=${RequestTypes.signAndSendTransaction}`
+          let childWindow = openWalletWindow(url)
+          setRequestType(RequestTypes.signTransaction)
+          setChildWindow(childWindow)
+          setSignTransactionData(params)
+          resolvePromise = resolve
+        }
+      })
+    }
 
   const { children } = props
   return (
@@ -542,6 +567,7 @@ export const UseConnectorProvider = (props: any) => {
         sign,
         signTransaction,
         sendTransaction,
+        signAndSendTransaction,
       }}
     >
       {children}

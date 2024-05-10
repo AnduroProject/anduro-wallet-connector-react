@@ -14,6 +14,7 @@ export const ConnectorVC = () => {
     sendTransaction,
   } = useContext<any>(useConnector)
   const [isWalletConnected, setIsWalletConnected] = React.useState<string>("false")
+  const [signedHex, setSignedHex] = React.useState<string>("")
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 2,
@@ -49,22 +50,18 @@ export const ConnectorVC = () => {
     console.log("Connector Network Information", networkState)
     console.log("Connector Wallet Information", walletState)
     setIsWalletConnected(localStorage.getItem("isWalletConnected") || "false")
-    if (networkState.chainId) {
-      console.log("networkState.chainId", networkState.chainId)
-      signTransactions()
-    }
   }, [walletState, networkState])
 
   const signTransactions = async () => {
     const hex =
-      "70736274ff0100710200000001768836234ae0d28d8ad8ee013f7ea9768f5cd34b8120bffa26a2b5f18489368d0100000000fdffffff0200a3e11100000000160014e75b6b71d89cdd2b7e799de080d211c940bacd6c7326b92900000000160014bdb1ca0b2528347e92e2495bac93a56b013cd5c200000000000100fd720102000000000102ca0dbc669b185fe8840b3c576d05c0b6253e23a34bdc4d298757776aa9ae382a0000000000fdffffff09d5ff1ed473844c43d899917ff6fa6a35de7678e20555a7bba4beb71a3c30d40000000000fdffffff024058ee00000000001600148f4df1f8b26e8e43ce12cf21f55b1f8202b53d9f00ca9a3b000000001600145d969d3349963dcb347e55e36ba8316fe95b95040247304402206e122750788b94bd61e54a74349f477e5b563e07acd04b1a818ae3210bfdbc70022060df991b7a3567b8558e098bd14b3deb2d759b009daabe35c5c7cc85269d6fbc0121037372fb9e6c433173764a2fd1d0abb325284da702c7e1e74e5e7e10ad58243934024730440220104eb86323bcb0cf6a39990f484779408803a14548a5a34ec5741a9a04fa6a860220584e9cae3076924dd834206b2493c8185078b206ce36efb09ba76926bb5935c101210244648e38a4514e275a394a7609e0b044ca616fea56ec9c1e21bf17f2308a1d6db3040000000000"
+      "70736274ff01007102000000015fd85295564d3b8c631dc047f6669f4b5c21b889ea79cc768c0ac3214f7c00d70000000000fdffffff020084d71700000000160014bbee98bf44950b31dc0a92d4a29b72f032cd25147345c323000000001600148d879a97d33dd2757b3c8ddc83ca89435e18f25c00000000000100fd7201020000000001028fd098b4a287bde0782f0767141ac1b350088cb6b9a871fb99d0d75d03f3f8b80000000000fdffffff1fad673e6c9f4fde1d9dae8e70f88f64e9b3cc744282a07f287fb0df0fcacdb30000000000fdffffff0200ca9a3b00000000160014f002496bf10d148c32d798cfac94b0e05b26b54d60aae60e0000000016001440d432dec91830f05eb10bc90dac98b4d36d23d80247304402206e7dd06a39f78ac1714cd6e67e5ef215dff71adbdc64c91d083401881d986c1a02204d5765f316912738e21edd59ef3bdfa8a37d863414be3fc58cf82b673572483b01210278e0d1eda921524e51f8c9cdb17895b5f385f51e7a40bcee1ec1f396d455fb9e0247304402202d5efa020507bb6d67c93377508bc79169367afe0c8d9224b6dcbae25e240aee02205beffe466aae08f09af2ee732c02246ad39cfbbd386cc5a12cb192062203115f01210278e0d1eda921524e51f8c9cdb17895b5f385f51e7a40bcee1ec1f396d455fb9ed8010000000000"
     const signResult = await signTransaction({
       hex,
     })
     console.log("===== SIGN RESULT EXAMPLE ======", signResult)
-    sendTransactions(signResult.result.signedHex)
+    setSignedHex(signResult.result.signedHex)
   }
-  const sendTransactions = async (signedHex: string) => {
+  const sendTransactions = async () => {
     const sendResult = await sendTransaction({
       hex: signedHex,
     })
@@ -96,11 +93,23 @@ export const ConnectorVC = () => {
             </div>
           </div>
           {walletState.accountPublicKey !== "" && (
-            <ConnectorVW
-              title="Disconnect Wallet"
-              buttonName="Disconnect"
-              handleClickAction={handleDisconnectionAction}
-            />
+            <div>
+              <ConnectorVW
+                title="Disconnect Wallet"
+                buttonName="Disconnect"
+                handleClickAction={handleDisconnectionAction}
+              />
+              <ConnectorVW
+                title="Sign Transaction"
+                buttonName="Sign"
+                handleClickAction={signTransactions}
+              />
+              <ConnectorVW
+                title="Send Transaction"
+                buttonName="Send Transaction"
+                handleClickAction={sendTransactions}
+              />
+            </div>
           )}
           {walletState.accountPublicKey === "" && (
             <ConnectorVW

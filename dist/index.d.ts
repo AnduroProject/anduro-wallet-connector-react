@@ -56,6 +56,7 @@ type UseConnectorContextContextType = {
     disconnect: () => object;
     signTransaction: (params: SignTransactionParams) => object;
     sendTransaction: (params: SignTransactionParams) => object;
+    signAndSendTransaction: (params: SignTransactionParams) => object;
 };
 declare const useConnector: React.Context<UseConnectorContextContextType | null>;
 declare const UseConnectorProvider: (props: any) => react_jsx_runtime.JSX.Element;
