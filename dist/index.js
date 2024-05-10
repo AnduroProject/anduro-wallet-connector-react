@@ -613,7 +613,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(walletURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
-                setRequestType("sign-transaction" /* signTransaction */ );
+                setRequestType("sign-and-send-transaction" /* signAndSendTransaction */ );
                 setChildWindow(childWindow2);
                 setSignTransactionData(params);
                 resolvePromise = resolve;

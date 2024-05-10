@@ -12,6 +12,7 @@ export const ConnectorVC = () => {
     networkInfo,
     signTransaction,
     sendTransaction,
+    signAndSendTransaction,
   } = useContext<any>(useConnector)
   const [isWalletConnected, setIsWalletConnected] = React.useState<string>("false")
   const [signedHex, setSignedHex] = React.useState<string>("")
@@ -54,7 +55,7 @@ export const ConnectorVC = () => {
 
   const signTransactions = async () => {
     const hex =
-      "70736274ff01007102000000015fd85295564d3b8c631dc047f6669f4b5c21b889ea79cc768c0ac3214f7c00d70000000000fdffffff020084d71700000000160014bbee98bf44950b31dc0a92d4a29b72f032cd25147345c323000000001600148d879a97d33dd2757b3c8ddc83ca89435e18f25c00000000000100fd7201020000000001028fd098b4a287bde0782f0767141ac1b350088cb6b9a871fb99d0d75d03f3f8b80000000000fdffffff1fad673e6c9f4fde1d9dae8e70f88f64e9b3cc744282a07f287fb0df0fcacdb30000000000fdffffff0200ca9a3b00000000160014f002496bf10d148c32d798cfac94b0e05b26b54d60aae60e0000000016001440d432dec91830f05eb10bc90dac98b4d36d23d80247304402206e7dd06a39f78ac1714cd6e67e5ef215dff71adbdc64c91d083401881d986c1a02204d5765f316912738e21edd59ef3bdfa8a37d863414be3fc58cf82b673572483b01210278e0d1eda921524e51f8c9cdb17895b5f385f51e7a40bcee1ec1f396d455fb9e0247304402202d5efa020507bb6d67c93377508bc79169367afe0c8d9224b6dcbae25e240aee02205beffe466aae08f09af2ee732c02246ad39cfbbd386cc5a12cb192062203115f01210278e0d1eda921524e51f8c9cdb17895b5f385f51e7a40bcee1ec1f396d455fb9ed8010000000000"
+      "70736274ff01007102000000014a0575808b77bc99eba3992827e049db48cddeb080ad0a2b849b556ac77421d50100000000fdffffff0200e1f50500000000160014bbee98bf44950b31dc0a92d4a29b72f032cd2514e644c323000000001600148d879a97d33dd2757b3c8ddc83ca89435e18f25c00000000000100de02000000000101ebfa8c87564cd4bbb7fed9c4933e0c850acd102e6c541c6c8370241d5923fd790100000000fdffffff0200a3e11100000000160014bbee98bf44950b31dc0a92d4a29b72f032cd25147326b929000000001600148d879a97d33dd2757b3c8ddc83ca89435e18f25c0247304402202cfb0fd5b3610a264a89a39947bbd04b0decf90a01f10614281f083cf0c7c3bb022057b17a6bdee49fdee0868d93a279f35959b5584eb7458db5e1f451b78cfaff5e012102c1c448c689a79ab73bc07cb2b524bbf7a2a4c2a7fdc3eb3b839b025cda45b72100000000000000"
     const signResult = await signTransaction({
       hex,
     })
@@ -66,6 +67,14 @@ export const ConnectorVC = () => {
       hex: signedHex,
     })
     console.log("===== SEND RESULT EXAMPLE ======", sendResult)
+  }
+  const signAndSendTransactions = async () => {
+    const hex =
+      "70736274ff0100710200000001abfbb20b7564d709e84497a704dbddb42b0e2f925aa4c5431a86d7ffb64d72370100000000fdffffff0200c2eb0b00000000160014bbee98bf44950b31dc0a92d4a29b72f032cd2514e682d717000000001600148d879a97d33dd2757b3c8ddc83ca89435e18f25c00000000000100df020000000001015fd85295564d3b8c631dc047f6669f4b5c21b889ea79cc768c0ac3214f7c00d70000000000fdffffff020084d71700000000160014bbee98bf44950b31dc0a92d4a29b72f032cd25147345c323000000001600148d879a97d33dd2757b3c8ddc83ca89435e18f25c024830450221009c205fe8b64ff75571ca9a2bacd0b0d565d9319ced853be0a76b19979724297f02204ad6e68b8b4231297b770dafd53ada9ed13dcd5451f28441c00e1bc6203ae930012102c1c448c689a79ab73bc07cb2b524bbf7a2a4c2a7fdc3eb3b839b025cda45b72100000000000000"
+    const transactionResult = await signAndSendTransaction({
+      hex,
+    })
+    console.log("===== SIGN AND SEND TRANSACTION RESULT EXAMPLE ======", transactionResult)
   }
   return (
     <div>
@@ -108,6 +117,11 @@ export const ConnectorVC = () => {
                 title="Send Transaction"
                 buttonName="Send Transaction"
                 handleClickAction={sendTransactions}
+              />
+              <ConnectorVW
+                title="Sign and Send Transaction"
+                buttonName="Sign and Send Transaction"
+                handleClickAction={signAndSendTransactions}
               />
             </div>
           )}

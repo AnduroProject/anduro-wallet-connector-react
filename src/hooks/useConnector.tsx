@@ -540,7 +540,7 @@ export const UseConnectorProvider = (props: any) => {
       if (checkWalletConnection(resolve, "")) {
         const url = `${walletURL}?requestType=${RequestTypes.signAndSendTransaction}`
         let childWindow = openWalletWindow(url)
-        setRequestType(RequestTypes.signTransaction)
+        setRequestType(RequestTypes.signAndSendTransaction)
         setChildWindow(childWindow)
         setSignTransactionData(params)
         resolvePromise = resolve
