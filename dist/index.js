@@ -314,7 +314,6 @@ var UseConnectorProvider = function(props) {
     var _ref4 = _sliced_to_array((0, import_react.useState)(props.walletURL), 2), walletURL = _ref4[0], setWalletURL = _ref4[1];
     var _ref5 = _sliced_to_array((0, import_react.useState)(), 2), signTransactionData = _ref5[0], setSignTransactionData = _ref5[1];
     (0, import_react.useEffect)(function() {
-        console.log("requestType", requestType);
         if (childWindow != null) {
             window.addEventListener("message", handleMessage);
             return function() {
@@ -322,8 +321,7 @@ var UseConnectorProvider = function(props) {
             };
         }
     }, [
-        childWindow,
-        requestType
+        childWindow
     ]);
     var handleMessage = function(event) {
         if (!event.data.type) return false;
@@ -359,10 +357,7 @@ var UseConnectorProvider = function(props) {
                 if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
                 break;
             default:
-                if (resolvePromise) {
-                    resolvePromise(handleSuccessResponse(event.data));
-                    setRequestType(null);
-                }
+                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
                 break;
         }
     };
@@ -424,8 +419,6 @@ var UseConnectorProvider = function(props) {
                 message: signData.message
             });
         } else if (requestType === "sign-transaction" /* signTransaction */  || requestType === "send-transaction" /* sendTransaction */  || requestType === "sign-and-send-transaction" /* signAndSendTransaction */ ) {
-            console.log("requestType", requestType);
-            console.log("chainId", networkState.chainId);
             sendMessageToChildWindow({
                 requestType: requestType,
                 chainId: networkState.chainId,
@@ -606,14 +599,12 @@ var UseConnectorProvider = function(props) {
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
-                console.log("Send Transaction Request Received 1", "send-transaction" /* sendTransaction */ );
                 var url = "".concat(walletURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
-                setRequestType("sign-transaction" /* signTransaction */ );
+                setRequestType("send-transaction" /* sendTransaction */ );
                 setChildWindow(childWindow2);
                 setSignTransactionData(params);
                 resolvePromise = resolve;
-                console.log("Send Transaction Request Received 2");
             }
         });
     };

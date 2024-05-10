@@ -103,7 +103,7 @@ export const useConnector = React.createContext<UseConnectorContextContextType |
 let resolvePromise: any = null
 export const UseConnectorProvider = (props: any) => {
   const [childWindow, setChildWindow] = useState<any>(null)
-  const [requestType, setRequestType] = useState<RequestTypes | null>()
+  const [requestType, setRequestType] = useState<RequestTypes>()
   const [transactionData, setTransactionData] = useState<createTransactionParams>({})
   const [signData, setSignData] = useState<SignParams>({})
   const [requestData, setRequestData] = React.useState<any>(null)
@@ -121,14 +121,13 @@ export const UseConnectorProvider = (props: any) => {
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
   useEffect(() => {
-    console.log("requestType", requestType)
     if (childWindow != null) {
       window.addEventListener("message", handleMessage)
       return () => {
         window.removeEventListener("message", handleMessage)
       }
     }
-  }, [childWindow, requestType])
+  }, [childWindow])
 
   /**
    * The following function used for listening messages from anduro wallet extension
@@ -172,10 +171,7 @@ export const UseConnectorProvider = (props: any) => {
         if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
       default:
-        if (resolvePromise) {
-          resolvePromise(handleSuccessResponse(event.data))
-          setRequestType(null)
-        }
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
     }
   }
@@ -241,8 +237,6 @@ export const UseConnectorProvider = (props: any) => {
       requestType === RequestTypes.sendTransaction ||
       requestType === RequestTypes.signAndSendTransaction
     ) {
-      console.log("requestType", requestType)
-      console.log("chainId", networkState.chainId)
       sendMessageToChildWindow({
         requestType: requestType,
         chainId: networkState.chainId,
@@ -526,14 +520,12 @@ export const UseConnectorProvider = (props: any) => {
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
-        console.log("Send Transaction Request Received 1", RequestTypes.sendTransaction)
         const url = `${walletURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
-        setRequestType(RequestTypes.signTransaction)
+        setRequestType(RequestTypes.sendTransaction)
         setChildWindow(childWindow)
         setSignTransactionData(params)
         resolvePromise = resolve
-        console.log("Send Transaction Request Received 2")
       }
     })
   }
