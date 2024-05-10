@@ -103,7 +103,7 @@ export const useConnector = React.createContext<UseConnectorContextContextType |
 let resolvePromise: any = null
 export const UseConnectorProvider = (props: any) => {
   const [childWindow, setChildWindow] = useState<any>(null)
-  const [requestType, setRequestType] = useState<RequestTypes>()
+  const [requestType, setRequestType] = useState<RequestTypes | null>()
   const [transactionData, setTransactionData] = useState<createTransactionParams>({})
   const [signData, setSignData] = useState<SignParams>({})
   const [requestData, setRequestData] = React.useState<any>(null)
@@ -172,7 +172,10 @@ export const UseConnectorProvider = (props: any) => {
         if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
       default:
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
+        if (resolvePromise) {
+          resolvePromise(handleSuccessResponse(event.data))
+          setRequestType(null)
+        }
         break
     }
   }
@@ -534,24 +537,24 @@ export const UseConnectorProvider = (props: any) => {
       }
     })
   }
-    /**
+  /**
    * The following function used for sign process
    *
    * @param hex The signed transaction hex
    *
    */
-    const signAndSendTransaction = (params: SignTransactionParams) => {
-      return new Promise((resolve) => {
-        if (checkWalletConnection(resolve, "")) {
-          const url = `${walletURL}?requestType=${RequestTypes.signAndSendTransaction}`
-          let childWindow = openWalletWindow(url)
-          setRequestType(RequestTypes.signTransaction)
-          setChildWindow(childWindow)
-          setSignTransactionData(params)
-          resolvePromise = resolve
-        }
-      })
-    }
+  const signAndSendTransaction = (params: SignTransactionParams) => {
+    return new Promise((resolve) => {
+      if (checkWalletConnection(resolve, "")) {
+        const url = `${walletURL}?requestType=${RequestTypes.signAndSendTransaction}`
+        let childWindow = openWalletWindow(url)
+        setRequestType(RequestTypes.signTransaction)
+        setChildWindow(childWindow)
+        setSignTransactionData(params)
+        resolvePromise = resolve
+      }
+    })
+  }
 
   const { children } = props
   return (

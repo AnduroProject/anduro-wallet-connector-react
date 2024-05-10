@@ -359,7 +359,10 @@ var UseConnectorProvider = function(props) {
                 if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
                 break;
             default:
-                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
+                if (resolvePromise) {
+                    resolvePromise(handleSuccessResponse(event.data));
+                    setRequestType(null);
+                }
                 break;
         }
     };
