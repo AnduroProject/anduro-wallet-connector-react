@@ -548,9 +548,9 @@ var UseConnectorProvider = function(props) {
     };
     var createasset = function(params) {
         if (!params.transactionType) return handleErrorResponse(ERROR_MESSAGES.transactionTypeRequired);
-        if (!params.name) return handleErrorResponse(ERROR_MESSAGES.nameRequired);
-        if (!params.symbol) return handleErrorResponse(ERROR_MESSAGES.symbolRequired);
-        if (!params.imageUrl) return handleErrorResponse(ERROR_MESSAGES.imageUrlRequired);
+        if (params.transactionType === "create" && !params.name) return handleErrorResponse(ERROR_MESSAGES.nameRequired);
+        if (params.transactionType === "create" && !params.symbol) return handleErrorResponse(ERROR_MESSAGES.symbolRequired);
+        if (params.transactionType === "create" && !params.imageUrl) return handleErrorResponse(ERROR_MESSAGES.imageUrlRequired);
         if (!params.supply) return handleErrorResponse(ERROR_MESSAGES.supplyRequired);
         if (params.assetType === 0 && !params.precision) return handleErrorResponse(ERROR_MESSAGES.precisionRequired);
         if (params.assetType === void 0 || params.assetType === null) return handleErrorResponse(ERROR_MESSAGES.assetTypeRequired);
