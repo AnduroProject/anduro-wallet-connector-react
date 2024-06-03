@@ -31,13 +31,17 @@ export const CreateAssetVC = () => {
     })
     console.log("*******Create and Mint asset Result", result)
   }
+  const handleAssetTypeSwitch = (value: any) => {
+    setCreateAssetTransactionType(value)
+    setAssetType(0)
+  }
   return (
     <div className="widset_parent">
       <h3 className="title">{createAssetTransactionType} Asset</h3>
       <div>
         <form onSubmit={handleCreateAssetFormSubmit}>
           <div className="input_padd">
-            <select onChange={(event) => setCreateAssetTransactionType(event.target.value)}>
+            <select onChange={(event) => handleAssetTypeSwitch(event.target.value)}>
               <option value="create">Create</option>
               <option value="mint">Mint</option>
             </select>
@@ -128,7 +132,7 @@ export const CreateAssetVC = () => {
               </div>
             </>
           )}
-          {(assetType === 0 || createAssetTransactionType === "mint") && (
+          {assetType === 0 && createAssetTransactionType !== "mint" && (
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">

@@ -439,7 +439,7 @@ export const UseConnectorProvider = (props: any) => {
 
     if (!params.supply) return handleErrorResponse(ERROR_MESSAGES.supplyRequired)
 
-    if (params.assetType === 0 && !params.precision)
+    if (params.assetType === 0 && params.transactionType === "create" && !params.precision)
       return handleErrorResponse(ERROR_MESSAGES.precisionRequired)
 
     if (params.assetType === undefined || params.assetType === null)

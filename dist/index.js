@@ -552,7 +552,7 @@ var UseConnectorProvider = function(props) {
         if (params.transactionType === "create" && !params.symbol) return handleErrorResponse(ERROR_MESSAGES.symbolRequired);
         if (params.transactionType === "create" && !params.imageUrl) return handleErrorResponse(ERROR_MESSAGES.imageUrlRequired);
         if (!params.supply) return handleErrorResponse(ERROR_MESSAGES.supplyRequired);
-        if (params.assetType === 0 && !params.precision) return handleErrorResponse(ERROR_MESSAGES.precisionRequired);
+        if (params.assetType === 0 && params.transactionType === "create" && !params.precision) return handleErrorResponse(ERROR_MESSAGES.precisionRequired);
         if (params.assetType === void 0 || params.assetType === null) return handleErrorResponse(ERROR_MESSAGES.assetTypeRequired);
         return new Promise(function(resolve) {
             if (params.transactionType && checkWalletConnection(resolve, params.transactionType)) {
