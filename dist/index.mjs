@@ -323,8 +323,7 @@ var UseConnectorProvider = function(props) {
                     data: "",
                     type: ""
                 },
-                symbol: createAssetData.symbol,
-                precision: createAssetData.precision
+                symbol: createAssetData.symbol
             };
             sendMessageToChildWindow({
                 requestType: requestType,
@@ -335,7 +334,8 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId,
                 supply: createAssetData.supply,
                 receiverAddress: createAssetData.receiverAddress,
-                assetId: createAssetData.assetId
+                assetId: createAssetData.assetId,
+                precision: createAssetData.precision
             });
         } else if (requestType === "transfer-asset" /* transferAsset */ ) {
             sendMessageToChildWindow({

@@ -208,7 +208,6 @@ export const UseConnectorProvider = (props: any) => {
         supply: createAssetData.supply,
         imagebase64Data: { data: "", type: "" },
         symbol: createAssetData.symbol,
-        precision: createAssetData.precision,
       }
       sendMessageToChildWindow({
         requestType: requestType,
@@ -220,6 +219,7 @@ export const UseConnectorProvider = (props: any) => {
         supply: createAssetData.supply,
         receiverAddress: createAssetData.receiverAddress,
         assetId: createAssetData.assetId,
+        precision: createAssetData.precision,
       })
     } else if (requestType === RequestTypes.transferAsset) {
       sendMessageToChildWindow({
