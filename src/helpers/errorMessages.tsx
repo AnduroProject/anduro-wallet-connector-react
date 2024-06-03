@@ -21,4 +21,5 @@ export const ERROR_MESSAGES = {
   assetTypeInvalid: `${FAIL_PROCESS}, Invalid Asset Type`,
   assetIdRequired: `${FAIL_PROCESS}, Asset Id is required`,
   receiverAddressRequired: `${FAIL_PROCESS}, Receiver Address is required`,
+  precisionRequired: `${FAIL_PROCESS}, Precision is required.`,
 }

@@ -239,7 +239,6 @@ const handleConnectResponse = async () => {
 }
 ```
 
-
 ### 8. Sign Transactions
 
 Sign the PSBT raw hex using the signTransaction function.
@@ -263,7 +262,6 @@ const { signTransaction } = React.useContext<any>(useConnector);
     }
   }
 ```
-
 
 ### 9. Send Transactions
 

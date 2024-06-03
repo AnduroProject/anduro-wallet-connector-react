@@ -184,7 +184,8 @@ var ERROR_MESSAGES = {
     assetTypeRequired: "".concat(FAIL_PROCESS, ", Asset Type is required"),
     assetTypeInvalid: "".concat(FAIL_PROCESS, ", Invalid Asset Type"),
     assetIdRequired: "".concat(FAIL_PROCESS, ", Asset Id is required"),
-    receiverAddressRequired: "".concat(FAIL_PROCESS, ", Receiver Address is required")
+    receiverAddressRequired: "".concat(FAIL_PROCESS, ", Receiver Address is required"),
+    precisionRequired: "".concat(FAIL_PROCESS, ", Precision is required.")
 };
 // src/helpers/handleResponse.tsx
 var handleErrorResponse = function() {
@@ -313,6 +314,7 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId
             });
         } else if (requestType === "create-asset" /* createAsset */ ) {
+            console.log("createAssetData", createAssetData);
             var formValues = {
                 headline: createAssetData.name,
                 imageUrl: createAssetData.imageUrl,
@@ -321,7 +323,8 @@ var UseConnectorProvider = function(props) {
                     data: "",
                     type: ""
                 },
-                symbol: createAssetData.symbol
+                symbol: createAssetData.symbol,
+                precision: createAssetData.precision
             };
             sendMessageToChildWindow({
                 requestType: requestType,
@@ -475,6 +478,7 @@ var UseConnectorProvider = function(props) {
         if (!params.symbol) return handleErrorResponse(ERROR_MESSAGES.symbolRequired);
         if (!params.imageUrl) return handleErrorResponse(ERROR_MESSAGES.imageUrlRequired);
         if (!params.supply) return handleErrorResponse(ERROR_MESSAGES.supplyRequired);
+        if (params.assetType === 0 && !params.precision) return handleErrorResponse(ERROR_MESSAGES.precisionRequired);
         if (params.assetType === void 0 || params.assetType === null) return handleErrorResponse(ERROR_MESSAGES.assetTypeRequired);
         return new Promise(function(resolve) {
             if (params.transactionType && checkWalletConnection(resolve, params.transactionType)) {

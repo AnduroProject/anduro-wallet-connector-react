@@ -45,6 +45,7 @@ interface CreateassetParams {
   transactionType?: string
   receiverAddress?: string | undefined
   assetId?: number | undefined
+  precision?: number | undefined
 }
 interface TransferAssetParams {
   assetId?: number
@@ -200,12 +201,14 @@ export const UseConnectorProvider = (props: any) => {
         chainId: networkState.chainId,
       })
     } else if (requestType === RequestTypes.createAsset) {
+      console.log("createAssetData", createAssetData)
       const formValues = {
         headline: createAssetData.name,
         imageUrl: createAssetData.imageUrl,
         supply: createAssetData.supply,
         imagebase64Data: { data: "", type: "" },
         symbol: createAssetData.symbol,
+        precision: createAssetData.precision,
       }
       sendMessageToChildWindow({
         requestType: requestType,
@@ -432,6 +435,9 @@ export const UseConnectorProvider = (props: any) => {
     if (!params.imageUrl) return handleErrorResponse(ERROR_MESSAGES.imageUrlRequired)
 
     if (!params.supply) return handleErrorResponse(ERROR_MESSAGES.supplyRequired)
+
+    if (params.assetType === 0 && !params.precision)
+      return handleErrorResponse(ERROR_MESSAGES.precisionRequired)
 
     if (params.assetType === undefined || params.assetType === null)
       return handleErrorResponse(ERROR_MESSAGES.assetTypeRequired)

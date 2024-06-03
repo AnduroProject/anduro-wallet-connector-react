@@ -66,6 +66,10 @@ function _non_iterable_rest() {
 function _sliced_to_array(arr, i) {
     return _array_with_holes(arr) || _iterable_to_array_limit(arr, i) || _unsupported_iterable_to_array(arr, i) || _non_iterable_rest();
 }
+function _type_of(obj) {
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
+}
 function _unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
     if (typeof o === "string") return _array_like_to_array(o, minLen);
@@ -182,7 +186,7 @@ var __export = function(target, all) {
     });
 };
 var __copyProps = function(to, from, except, desc) {
-    if (from && typeof from === "object" || typeof from === "function") {
+    if (from && (typeof from === "undefined" ? "undefined" : _type_of(from)) === "object" || typeof from === "function") {
         var _iteratorNormalCompletion = true, _didIteratorError = false, _iteratorError = undefined;
         try {
             var _loop = function() {
@@ -254,7 +258,8 @@ var ERROR_MESSAGES = {
     assetTypeRequired: "".concat(FAIL_PROCESS, ", Asset Type is required"),
     assetTypeInvalid: "".concat(FAIL_PROCESS, ", Invalid Asset Type"),
     assetIdRequired: "".concat(FAIL_PROCESS, ", Asset Id is required"),
-    receiverAddressRequired: "".concat(FAIL_PROCESS, ", Receiver Address is required")
+    receiverAddressRequired: "".concat(FAIL_PROCESS, ", Receiver Address is required"),
+    precisionRequired: "".concat(FAIL_PROCESS, ", Precision is required.")
 };
 // src/helpers/handleResponse.tsx
 var handleErrorResponse = function() {
@@ -383,6 +388,7 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId
             });
         } else if (requestType === "create-asset" /* createAsset */ ) {
+            console.log("createAssetData", createAssetData);
             var formValues = {
                 headline: createAssetData.name,
                 imageUrl: createAssetData.imageUrl,
@@ -391,7 +397,8 @@ var UseConnectorProvider = function(props) {
                     data: "",
                     type: ""
                 },
-                symbol: createAssetData.symbol
+                symbol: createAssetData.symbol,
+                precision: createAssetData.precision
             };
             sendMessageToChildWindow({
                 requestType: requestType,
@@ -545,6 +552,7 @@ var UseConnectorProvider = function(props) {
         if (!params.symbol) return handleErrorResponse(ERROR_MESSAGES.symbolRequired);
         if (!params.imageUrl) return handleErrorResponse(ERROR_MESSAGES.imageUrlRequired);
         if (!params.supply) return handleErrorResponse(ERROR_MESSAGES.supplyRequired);
+        if (params.assetType === 0 && !params.precision) return handleErrorResponse(ERROR_MESSAGES.precisionRequired);
         if (params.assetType === void 0 || params.assetType === null) return handleErrorResponse(ERROR_MESSAGES.assetTypeRequired);
         return new Promise(function(resolve) {
             if (params.transactionType && checkWalletConnection(resolve, params.transactionType)) {

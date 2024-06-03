@@ -13,6 +13,7 @@ export const CreateAssetVC = () => {
   const [createAssetTransactionType, setCreateAssetTransactionType] =
     React.useState<string>("create")
   const [assetId, setAssetId] = React.useState<number>(0)
+  const [precision, setPrecision] = React.useState<any>(8)
 
   const handleCreateAssetFormSubmit = async (event: any) => {
     event.preventDefault()
@@ -26,6 +27,7 @@ export const CreateAssetVC = () => {
       transactionType: createAssetTransactionType,
       receiverAddress,
       assetId,
+      precision,
     })
     console.log("*******Create and Mint asset Result", result)
   }
@@ -43,7 +45,7 @@ export const CreateAssetVC = () => {
           {createAssetTransactionType === "create" && (
             <div>
               <div className="input_padd">
-                <select onChange={(event) => setAssetType(event.target.value)}>
+                <select onChange={(event) => setAssetType(parseInt(event.target.value))}>
                   <option value={0}>0 Token</option>
                   <option value={1}>1 NFT</option>
                 </select>
@@ -125,6 +127,26 @@ export const CreateAssetVC = () => {
                 </div>
               </div>
             </>
+          )}
+          {(assetType === 0 || createAssetTransactionType === "mint") && (
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-5">
+                <div className="label-text-align">
+                  <label htmlFor="supply">Decimal :</label>
+                </div>
+              </div>
+              <div className="col-sm-12 col-md-12 col-lg-7">
+                <div className="input_padd">
+                  <input
+                    id="supply"
+                    type="text"
+                    placeholder="Supply"
+                    value={precision}
+                    onChange={(event) => setPrecision(event.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
           )}
           <div className="row">
             <div className="col-sm-12 col-md-12 col-lg-5">
