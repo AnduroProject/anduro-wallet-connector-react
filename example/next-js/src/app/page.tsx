@@ -3,7 +3,6 @@ import React, { useContext } from "react"
 import { useConnector } from "anduro-wallet-connector"
 import Link from "next/link"
 import { ConnectorVW } from "./UI/connectorVW"
-import { WALLETURL } from "./config/config"
 export default function Home() {
   const { networkState, walletState, connect, disconnect, networkInfo } =
     useContext<any>(useConnector)
@@ -11,7 +10,6 @@ export default function Home() {
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 4,
-      walletURL: WALLETURL,
     })
     console.log("*******Connect Result", result)
     if (result.status === true) {

@@ -41,11 +41,10 @@ Initialize Anduro Wallet Connector with your wallet extension id via the options
 ```bash
 import { UseConnectorProvider } from 'anduro-wallet-connector';
 import React from 'react';
-import { WALLETURL } from "./config/walletApi";
 
 function App () {
   return (
-    <UseConnectorProvider walletURL={WALLETURL}/>
+    <UseConnectorProvider/>
   );
 }
 ```

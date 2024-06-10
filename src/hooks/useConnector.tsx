@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react"
 import { ERROR_MESSAGES } from "../helpers/errorMessages"
 import { handleErrorResponse, handleSuccessResponse } from "../helpers/handleResponse"
 import { openWalletWindow } from "../helpers/handleWalletWindow"
+import { WALLETURL } from "../config/walletApi"
 
 interface WalletState {
   accountPublicKey: string
@@ -118,7 +119,6 @@ export const UseConnectorProvider = (props: any) => {
     accountPublicKey: "",
     connectionState: "disconnected",
   })
-  const [walletURL, setWalletURL] = useState(props.walletURL)
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
   useEffect(() => {
@@ -292,9 +292,8 @@ export const UseConnectorProvider = (props: any) => {
    */
   const connect = async (params: connectParams) => {
     return new Promise((resolve) => {
-      const url = `${walletURL}?requestType=${RequestTypes.connect}`
+      const url = `${WALLETURL}?requestType=${RequestTypes.connect}`
       let childWindow = openWalletWindow(url)
-      setWalletURL(walletURL)
       setRequestType(RequestTypes.connect)
       setChildWindow(childWindow)
       setRequestData({
@@ -310,7 +309,7 @@ export const UseConnectorProvider = (props: any) => {
    */
   const networkInfo = async () => {
     return new Promise((resolve) => {
-      const url = `${walletURL}?requestType=${RequestTypes.networkinfo}`
+      const url = `${WALLETURL}?requestType=${RequestTypes.networkinfo}`
       let childWindow = openWalletWindow(url)
       setRequestType(RequestTypes.networkinfo)
       setChildWindow(childWindow)
@@ -322,7 +321,7 @@ export const UseConnectorProvider = (props: any) => {
    */
   const disconnect = () => {
     return new Promise((resolve) => {
-      const url = `${walletURL}?requestType=${RequestTypes.disconnected}`
+      const url = `${WALLETURL}?requestType=${RequestTypes.disconnected}`
       let childWindow = openWalletWindow(url)
       setRequestType(RequestTypes.disconnected)
       setChildWindow(childWindow)
@@ -354,7 +353,7 @@ export const UseConnectorProvider = (props: any) => {
 
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "") && params.transactionType) {
-        const url = `${walletURL}?requestType=${RequestTypes.send}`
+        const url = `${WALLETURL}?requestType=${RequestTypes.send}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.send)
         setChildWindow(childWindow)
@@ -447,7 +446,7 @@ export const UseConnectorProvider = (props: any) => {
 
     return new Promise((resolve) => {
       if (params.transactionType && checkWalletConnection(resolve, params.transactionType)) {
-        const url = `${walletURL}?requestType=${RequestTypes.createAsset}`
+        const url = `${WALLETURL}?requestType=${RequestTypes.createAsset}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.createAsset)
         setChildWindow(childWindow)
@@ -474,7 +473,7 @@ export const UseConnectorProvider = (props: any) => {
 
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "transfer")) {
-        const url = `${walletURL}?requestType=${RequestTypes.transferAsset}`
+        const url = `${WALLETURL}?requestType=${RequestTypes.transferAsset}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.transferAsset)
         setChildWindow(childWindow)
@@ -493,7 +492,7 @@ export const UseConnectorProvider = (props: any) => {
   const sign = (params: SignParams) => {
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
-        const url = `${walletURL}?requestType=${RequestTypes.sign}`
+        const url = `${WALLETURL}?requestType=${RequestTypes.sign}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sign)
         setChildWindow(childWindow)
@@ -511,7 +510,7 @@ export const UseConnectorProvider = (props: any) => {
   const signTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
-        const url = `${walletURL}?requestType=${RequestTypes.signTransaction}`
+        const url = `${WALLETURL}?requestType=${RequestTypes.signTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signTransaction)
         setChildWindow(childWindow)
@@ -529,7 +528,7 @@ export const UseConnectorProvider = (props: any) => {
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
-        const url = `${walletURL}?requestType=${RequestTypes.sendTransaction}`
+        const url = `${WALLETURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sendTransaction)
         setChildWindow(childWindow)
@@ -547,7 +546,7 @@ export const UseConnectorProvider = (props: any) => {
   const signAndSendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
-        const url = `${walletURL}?requestType=${RequestTypes.signAndSendTransaction}`
+        const url = `${WALLETURL}?requestType=${RequestTypes.signAndSendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signAndSendTransaction)
         setChildWindow(childWindow)

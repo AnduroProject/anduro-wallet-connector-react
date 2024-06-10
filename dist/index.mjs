@@ -222,6 +222,8 @@ var openWalletWindow = function(url) {
     }
     return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
 };
+// src/config/walletApi.ts
+var WALLETURL = "chrome-extension://khebhoaoppjeidmdkpdglmlhghnooijn/index.html";
 // src/hooks/useConnector.tsx
 import { jsx } from "react/jsx-runtime";
 var useConnector = React.createContext(null);
@@ -242,8 +244,7 @@ var UseConnectorProvider = function(props) {
         accountPublicKey: "",
         connectionState: "disconnected"
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
-    var _useState4 = _sliced_to_array(useState(props.walletURL), 2), walletURL = _useState4[0], setWalletURL = _useState4[1];
-    var _useState5 = _sliced_to_array(useState(), 2), signTransactionData = _useState5[0], setSignTransactionData = _useState5[1];
+    var _useState4 = _sliced_to_array(useState(), 2), signTransactionData = _useState4[0], setSignTransactionData = _useState4[1];
     useEffect(function() {
         if (childWindow != null) {
             window.addEventListener("message", handleMessage);
@@ -380,9 +381,8 @@ var UseConnectorProvider = function(props) {
                 return [
                     2,
                     new Promise(function(resolve) {
-                        var url = "".concat(walletURL, "?requestType=", "connect" /* connect */ );
+                        var url = "".concat(WALLETURL, "?requestType=", "connect" /* connect */ );
                         var childWindow2 = openWalletWindow(url);
-                        setWalletURL(walletURL);
                         setRequestType("connect" /* connect */ );
                         setChildWindow(childWindow2);
                         setRequestData({
@@ -404,7 +404,7 @@ var UseConnectorProvider = function(props) {
                 return [
                     2,
                     new Promise(function(resolve) {
-                        var url = "".concat(walletURL, "?requestType=", "networkinfo" /* networkinfo */ );
+                        var url = "".concat(WALLETURL, "?requestType=", "networkinfo" /* networkinfo */ );
                         var childWindow2 = openWalletWindow(url);
                         setRequestType("networkinfo" /* networkinfo */ );
                         setChildWindow(childWindow2);
@@ -419,7 +419,7 @@ var UseConnectorProvider = function(props) {
     }();
     var disconnect = function() {
         return new Promise(function(resolve) {
-            var url = "".concat(walletURL, "?requestType=", "disconnect" /* disconnected */ );
+            var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ );
             var childWindow2 = openWalletWindow(url);
             setRequestType("disconnect" /* disconnected */ );
             setChildWindow(childWindow2);
@@ -433,7 +433,7 @@ var UseConnectorProvider = function(props) {
         if (!validateSendTransactionType(params.transactionType)) return handleErrorResponse(ERROR_MESSAGES.transactionTypeInvalid);
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "") && params.transactionType) {
-                var url = "".concat(walletURL, "?requestType=", "send" /* send */ );
+                var url = "".concat(WALLETURL, "?requestType=", "send" /* send */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("send" /* send */ );
                 setChildWindow(childWindow2);
@@ -482,7 +482,7 @@ var UseConnectorProvider = function(props) {
         if (params.assetType === void 0 || params.assetType === null) return handleErrorResponse(ERROR_MESSAGES.assetTypeRequired);
         return new Promise(function(resolve) {
             if (params.transactionType && checkWalletConnection(resolve, params.transactionType)) {
-                var url = "".concat(walletURL, "?requestType=", "create-asset" /* createAsset */ );
+                var url = "".concat(WALLETURL, "?requestType=", "create-asset" /* createAsset */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("create-asset" /* createAsset */ );
                 setChildWindow(childWindow2);
@@ -497,7 +497,7 @@ var UseConnectorProvider = function(props) {
         if (!params.supply) return handleErrorResponse(ERROR_MESSAGES.supplyRequired);
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "transfer")) {
-                var url = "".concat(walletURL, "?requestType=", "transfer-asset" /* transferAsset */ );
+                var url = "".concat(WALLETURL, "?requestType=", "transfer-asset" /* transferAsset */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("transfer-asset" /* transferAsset */ );
                 setChildWindow(childWindow2);
@@ -509,7 +509,7 @@ var UseConnectorProvider = function(props) {
     var sign = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
-                var url = "".concat(walletURL, "?requestType=", "sign" /* sign */ );
+                var url = "".concat(WALLETURL, "?requestType=", "sign" /* sign */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign" /* sign */ );
                 setChildWindow(childWindow2);
@@ -521,7 +521,7 @@ var UseConnectorProvider = function(props) {
     var signTransaction = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
-                var url = "".concat(walletURL, "?requestType=", "sign-transaction" /* signTransaction */ );
+                var url = "".concat(WALLETURL, "?requestType=", "sign-transaction" /* signTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign-transaction" /* signTransaction */ );
                 setChildWindow(childWindow2);
@@ -533,7 +533,7 @@ var UseConnectorProvider = function(props) {
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
-                var url = "".concat(walletURL, "?requestType=", "send-transaction" /* sendTransaction */ );
+                var url = "".concat(WALLETURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("send-transaction" /* sendTransaction */ );
                 setChildWindow(childWindow2);
@@ -545,7 +545,7 @@ var UseConnectorProvider = function(props) {
     var signAndSendTransaction = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
-                var url = "".concat(walletURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
+                var url = "".concat(WALLETURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign-and-send-transaction" /* signAndSendTransaction */ );
                 setChildWindow(childWindow2);
