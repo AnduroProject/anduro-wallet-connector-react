@@ -18,7 +18,7 @@ export const ConnectorVC = () => {
   const [signedHex, setSignedHex] = React.useState<string>("")
   const handleConnectionAction = async () => {
     const result = await connect({
-      chainId: 2,
+      chainId: 3,
       walletURL: WALLETURL,
     })
     console.log("*******Connect Result", result)
