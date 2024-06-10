@@ -124,15 +124,15 @@ Create Asset in Anduro wallet using create asset function.
 
 name: The asset's name  
 symbol: The asset's symbol  
-imageUrl: The asset's image URL
-supply: The asset's total supply
+imageUrl: The asset's image URL  
+supply: The asset's total supply  
 properties: The asset's trait data
 assetType:
 
 1. 0 for creating tokens.
 2. 1 for creating NFT.\
-   transactionType: transactionType: create OR mint\
-   receiverAddress: (Optional) Required for mint transactions
+   transactionType: create OR mint\
+   receiverAddress: (Optional) Required for mint transactions\
    assetId: (Optional) Required for mint transactions
 
 ```bash
@@ -198,9 +198,9 @@ const { networkState, walletState } = React.useContext<any>(useConnector);
 
 transactionType:\
 1.normal - Send BTC / CBTC \
-2.pegin - Convert BTC to CBTC ,\
+2.pegin - Convert BTC to CBTC \
 3.pegout - Convert CBTC to BTC\
-amount: transaction amount.\
+amount: transaction amount\
 receiverAddress: (Optional) Receiver address ( Sidechain address / bitcoin address )\
 feeRate: (Optional) Fee rate per virtual byte
 
