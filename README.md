@@ -39,22 +39,6 @@ Since the chrome extension is not published. please do below steps temporarily t
 8. Copy Anduro wallet Extension id from your Manage extension
 9. Replace with EXTENSION_ID in below Anduro wallet url
 
-## Anduro wallet url
-
-```bash
-chrome-extension://<EXTENSION_ID>/index.html
-```
-
-## React Example
-
-1. Go to example/react/src/config/walletApi.ts
-2. Replace WALLETURL with your browser wallet url
-
-## Next.js Example
-
-1. Go to example/next-js/src/app/config/config.ts
-2. Replace WALLETURL with your browser wallet url
-
 ## Installing example app
 
 - go to example folder and run below command
@@ -69,10 +53,11 @@ Initialize Anduro Wallet Connector with your wallet extension id via the options
 ```bash
 import { UseConnectorProvider } from 'anduro-wallet-connector';
 import React from 'react';
+import { WALLETURL } from "./config/walletApi";
 
 function App () {
   return (
-    <UseConnectorProvider walletURL={Anduro wallet url}/>
+    <UseConnectorProvider walletURL={WALLETURL}/>
   );
 }
 ```
