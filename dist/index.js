@@ -297,7 +297,7 @@ var openWalletWindow = function(url) {
     return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
 };
 // src/config/walletApi.ts
-var WALLETURL = "chrome-extension://icplodojmfdeaihdjdlgophfhnjieejc/index.html";
+var WALLETURL = "chrome-extension://dmgjhlplglggfdbgajblcnbgfnmkneho/index.html";
 // src/hooks/useConnector.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var useConnector = import_react.default.createContext(null);
