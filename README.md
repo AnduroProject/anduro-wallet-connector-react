@@ -25,7 +25,7 @@ implementations.
 
 ## Before running example, please follow below things.
 
-Since the chrome extension is not published. please do below steps temporarily to connect wallet from your browser
+Install the Anduro Wallet Chrome extension from the Chrome web store. - https://chromewebstore.google.com/detail/anduro-wallet/khebhoaoppjeidmdkpdglmlhghnooijn
 
 ## Installing example app
 
@@ -36,7 +36,7 @@ Since the chrome extension is not published. please do below steps temporarily t
 
 ## Usage
 
-Initialize Anduro Wallet Connector with your wallet extension id via the options parameter:
+Initialize Anduro Wallet Connector:
 
 ```bash
 import { UseConnectorProvider } from 'anduro-wallet-connector';
