@@ -1,5 +1,5 @@
 import React from "react"
-import { useConnector } from "anduro-wallet-connector"
+import { useConnector } from "anduro-wallet-connector-react"
 export const TransferAssetVC = () => {
   const { transferasset } = React.useContext<any>(useConnector)
   const [supply, setSupply] = React.useState<any>("")

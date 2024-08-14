@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { ConnectorVW } from "../../UI/connectorVW"
-import { useConnector } from "anduro-wallet-connector"
+import { useConnector } from "anduro-wallet-connector-react"
 import { Link } from "react-router-dom"
 export const ConnectorVC = () => {
   const {

@@ -1,5 +1,5 @@
 import React from "react"
-import { useConnector } from "anduro-wallet-connector"
+import { useConnector } from "anduro-wallet-connector-react"
 export const SignVC = () => {
   const { sign } = React.useContext<any>(useConnector)
   const [message, setMessage] = React.useState<string>("")
