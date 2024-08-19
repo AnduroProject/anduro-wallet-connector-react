@@ -82,6 +82,7 @@ enum ResponseTypes {
 enum TransactionTypes {
   bitcoin = "bitcoin",
   sidechain = "sidechain",
+  alys = "alys",
   normal = "normal",
   pegin = "pegin",
   pegout = "pegout",
@@ -401,11 +402,13 @@ export const UseConnectorProvider = (props: any) => {
     if (transactionType === TransactionTypes.normal) {
       status = true
     } else if (transactionType === TransactionTypes.pegin) {
-      console.log("networkState.networkType", networkState.networkType)
-      console.log("TransactionTypes.bitcoin", TransactionTypes.bitcoin)
-      status = networkState.networkType === TransactionTypes.bitcoin
+      status =
+        networkState.networkType === TransactionTypes.bitcoin ||
+        networkState.networkType === TransactionTypes.alys
     } else if (transactionType === TransactionTypes.pegout) {
-      status = networkState.networkType === TransactionTypes.sidechain
+      status =
+        networkState.networkType === TransactionTypes.sidechain ||
+        networkState.networkType === TransactionTypes.alys
     }
     return status
   }

@@ -540,11 +540,9 @@ var UseConnectorProvider = function(props) {
         if (transactionType === "normal" /* normal */ ) {
             status = true;
         } else if (transactionType === "pegin" /* pegin */ ) {
-            console.log("networkState.networkType", networkState.networkType);
-            console.log("TransactionTypes.bitcoin", "bitcoin" /* bitcoin */ );
-            status = networkState.networkType === "bitcoin" /* bitcoin */ ;
+            status = networkState.networkType === "bitcoin" /* bitcoin */  || networkState.networkType === "alys" /* alys */ ;
         } else if (transactionType === "pegout" /* pegout */ ) {
-            status = networkState.networkType === "sidechain" /* sidechain */ ;
+            status = networkState.networkType === "sidechain" /* sidechain */  || networkState.networkType === "alys" /* alys */ ;
         }
         return status;
     };
