@@ -466,6 +466,8 @@ var UseConnectorProvider = function(props) {
         if (transactionType === "normal" /* normal */ ) {
             status = true;
         } else if (transactionType === "pegin" /* pegin */ ) {
+            console.log("networkState.networkType", networkState.networkType);
+            console.log("TransactionTypes.bitcoin", "bitcoin" /* bitcoin */ );
             status = networkState.networkType === "bitcoin" /* bitcoin */ ;
         } else if (transactionType === "pegout" /* pegout */ ) {
             status = networkState.networkType === "sidechain" /* sidechain */ ;
