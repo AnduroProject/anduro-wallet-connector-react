@@ -402,9 +402,7 @@ export const UseConnectorProvider = (props: any) => {
     if (transactionType === TransactionTypes.normal) {
       status = true
     } else if (transactionType === TransactionTypes.pegin) {
-      status =
-        networkState.networkType === TransactionTypes.bitcoin ||
-        networkState.networkType === TransactionTypes.alys
+      status = networkState.networkType === TransactionTypes.bitcoin
     } else if (transactionType === TransactionTypes.pegout) {
       status =
         networkState.networkType === TransactionTypes.sidechain ||
