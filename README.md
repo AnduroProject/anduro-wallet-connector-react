@@ -61,8 +61,10 @@ chainId: 1 or 2 or 3 or 4
 
 - 1 for Bitcoin mainnet
 - 2 for Sidechain mainnet
-- 3 for Bitcoin testnet
-- 4 for Sidechain testnet
+- 3 for Alys mainnet
+- 4 for Bitcoin testnet
+- 5 for Sidechain testnet
+- 6 for Alys testnet
 
 ```bash
 import React from 'react';
