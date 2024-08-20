@@ -78,14 +78,17 @@ export const ConnectorVC = () => {
   }
   return (
     <div>
-      {walletState.accountPublicKey === "" && isWalletConnected === "false" && (
-        <ConnectorVW
-          title="Connect wallet"
-          buttonName="Connect"
-          handleClickAction={handleConnectionAction}
-        />
-      )}
-      {(walletState.accountPublicKey !== "" || isWalletConnected === "true") && (
+      {(walletState.accountPublicKey === "" || walletState.address === "") &&
+        isWalletConnected === "false" && (
+          <ConnectorVW
+            title="Connect wallet"
+            buttonName="Connect"
+            handleClickAction={handleConnectionAction}
+          />
+        )}
+      {(walletState.accountPublicKey !== "" ||
+        walletState.address !== "" ||
+        isWalletConnected === "true") && (
         <div className="connect_page">
           <div className="display-flex">
             <div className="breadcrumb">
@@ -101,7 +104,7 @@ export const ConnectorVC = () => {
               <Link to="/transfer">Transfer</Link>
             </div>
           </div>
-          {walletState.accountPublicKey !== "" && (
+          {(walletState.accountPublicKey !== "" || walletState.address !== "") && (
             <div>
               <ConnectorVW
                 title="Disconnect Wallet"
@@ -125,7 +128,7 @@ export const ConnectorVC = () => {
               />
             </div>
           )}
-          {walletState.accountPublicKey === "" && (
+          {(walletState.accountPublicKey === "" || walletState.address === "") && (
             <ConnectorVW
               title="Connect wallet"
               buttonName="Initialize"
