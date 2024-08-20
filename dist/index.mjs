@@ -242,7 +242,8 @@ var UseConnectorProvider = function(props) {
     }), 2), networkState = _React_useState3[0], setNetworkState = _React_useState3[1];
     var _React_useState4 = _sliced_to_array(React.useState({
         accountPublicKey: "",
-        connectionState: "disconnected"
+        connectionState: "disconnected",
+        address: ""
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
     var _useState4 = _sliced_to_array(useState(), 2), signTransactionData = _useState4[0], setSignTransactionData = _useState4[1];
     useEffect(function() {
@@ -270,7 +271,7 @@ var UseConnectorProvider = function(props) {
         switch(event.data.type){
             case "connection-response" /* connectionResponse */ :
                 updateNetworkInformation(event.data.result);
-                updateWalletInformation("connected", event.data.result.accountPublicKey);
+                updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address);
                 resolvePromise(handleSuccessResponse(event.data));
                 break;
             case "account-not-created" /* accountNotCreated */ :
@@ -278,14 +279,14 @@ var UseConnectorProvider = function(props) {
                 break;
             case "networkinfo-response" /* networkinfoResponse */ :
                 updateNetworkInformation(event.data.result);
-                updateWalletInformation("conneted", event.data.result.accountPublicKey);
+                updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address);
                 break;
             case "disconnect-response" /* disconnectResponse */ :
                 updateNetworkInformation({
                     chainId: null,
                     networkType: ""
                 });
-                updateWalletInformation("disconnected", "");
+                updateWalletInformation("disconnected", "", "");
                 if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
                 break;
             default:
@@ -369,10 +370,11 @@ var UseConnectorProvider = function(props) {
             networkType: params.networkType
         });
     };
-    var updateWalletInformation = function(connectionState, accountPublicKey) {
+    var updateWalletInformation = function(connectionState, accountPublicKey, address) {
         setWalletState({
             accountPublicKey: accountPublicKey,
-            connectionState: connectionState
+            connectionState: connectionState,
+            address: address
         });
     };
     var connect = function() {
@@ -388,7 +390,7 @@ var UseConnectorProvider = function(props) {
                         setRequestData({
                             chainId: params.chainId
                         });
-                        updateWalletInformation("connecting", "");
+                        updateWalletInformation("connecting", "", "");
                         resolvePromise = resolve;
                     })
                 ];
@@ -423,7 +425,7 @@ var UseConnectorProvider = function(props) {
             var childWindow2 = openWalletWindow(url);
             setRequestType("disconnect" /* disconnected */ );
             setChildWindow(childWindow2);
-            updateWalletInformation("disconnecting", "");
+            updateWalletInformation("disconnecting", "", "");
             resolvePromise = resolve;
         });
     };

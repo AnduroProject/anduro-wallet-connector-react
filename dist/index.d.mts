@@ -4,6 +4,7 @@ import React from 'react';
 interface WalletState {
     accountPublicKey: string;
     connectionState: string;
+    address: string;
 }
 interface NetworkState {
     chainId: any;
