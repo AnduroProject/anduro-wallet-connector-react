@@ -15,6 +15,7 @@ import { WALLETURL } from "../config/walletApi"
 interface WalletState {
   accountPublicKey: string
   connectionState: string
+  address: string
 }
 interface NetworkState {
   chainId: any
@@ -82,6 +83,7 @@ enum ResponseTypes {
 enum TransactionTypes {
   bitcoin = "bitcoin",
   sidechain = "sidechain",
+  alys = "alys",
   normal = "normal",
   pegin = "pegin",
   pegout = "pegout",
@@ -118,6 +120,7 @@ export const UseConnectorProvider = (props: any) => {
   const [walletState, setWalletState] = React.useState<WalletState>({
     accountPublicKey: "",
     connectionState: "disconnected",
+    address: "",
   })
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
@@ -156,7 +159,11 @@ export const UseConnectorProvider = (props: any) => {
     switch (event.data.type) {
       case ResponseTypes.connectionResponse:
         updateNetworkInformation(event.data.result)
-        updateWalletInformation("connected", event.data.result.accountPublicKey)
+        updateWalletInformation(
+          "connected",
+          event.data.result.accountPublicKey,
+          event.data.result.address,
+        )
         resolvePromise(handleSuccessResponse(event.data))
         break
       case RequestTypes.accountNotCreated:
@@ -164,11 +171,15 @@ export const UseConnectorProvider = (props: any) => {
         break
       case ResponseTypes.networkinfoResponse:
         updateNetworkInformation(event.data.result)
-        updateWalletInformation("conneted", event.data.result.accountPublicKey)
+        updateWalletInformation(
+          "connected",
+          event.data.result.accountPublicKey,
+          event.data.result.address,
+        )
         break
       case ResponseTypes.disconnectResponse:
         updateNetworkInformation({ chainId: null, networkType: "" })
-        updateWalletInformation("disconnected", "")
+        updateWalletInformation("disconnected", "", "")
         if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
       default:
@@ -277,10 +288,15 @@ export const UseConnectorProvider = (props: any) => {
    * @param accountPublicKey The Anduro wallet account public key
    *
    */
-  const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
+  const updateWalletInformation = (
+    connectionState: string,
+    accountPublicKey: string,
+    address: string,
+  ) => {
     setWalletState({
       accountPublicKey: accountPublicKey,
       connectionState: connectionState,
+      address: address,
     })
   }
 
@@ -299,7 +315,7 @@ export const UseConnectorProvider = (props: any) => {
       setRequestData({
         chainId: params.chainId,
       })
-      updateWalletInformation("connecting", "")
+      updateWalletInformation("connecting", "", "")
       resolvePromise = resolve
     })
   }
@@ -325,7 +341,7 @@ export const UseConnectorProvider = (props: any) => {
       let childWindow = openWalletWindow(url)
       setRequestType(RequestTypes.disconnected)
       setChildWindow(childWindow)
-      updateWalletInformation("disconnecting", "")
+      updateWalletInformation("disconnecting", "", "")
       resolvePromise = resolve
     })
   }
@@ -403,7 +419,9 @@ export const UseConnectorProvider = (props: any) => {
     } else if (transactionType === TransactionTypes.pegin) {
       status = networkState.networkType === TransactionTypes.bitcoin
     } else if (transactionType === TransactionTypes.pegout) {
-      status = networkState.networkType === TransactionTypes.sidechain
+      status =
+        networkState.networkType === TransactionTypes.sidechain ||
+        networkState.networkType === TransactionTypes.alys
     }
     return status
   }
