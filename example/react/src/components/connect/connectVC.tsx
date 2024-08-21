@@ -94,9 +94,9 @@ export const ConnectorVC = () => {
             <div className="breadcrumb">
               <Link to="/send">Send</Link>
             </div>
-            <div className="breadcrumb">
+            {/* <div className="breadcrumb">
               <Link to="/createasset">Create Asset</Link>
-            </div>
+            </div> */}
             <div className="breadcrumb">
               <Link to="/transfer">Transfer</Link>
             </div>
