@@ -17,7 +17,7 @@ export const ConnectorVC = () => {
   const [signedHex, setSignedHex] = React.useState<string>("")
   const handleConnectionAction = async () => {
     const result = await connect({
-      chainId: 1,
+      chainId: 3,
     })
     console.log("*******Connect Result", result)
     if (result.status === true) {
@@ -97,9 +97,9 @@ export const ConnectorVC = () => {
             <div className="breadcrumb">
               <Link to="/send">Send</Link>
             </div>
-            {/* <div className="breadcrumb">
-              <Link to="/createasset">Create Asset</Link>
-            </div> */}
+            <div className="breadcrumb">
+              <Link to="/sendAlys">Send Alys</Link>
+            </div>
             <div className="breadcrumb">
               <Link to="/transfer">Transfer</Link>
             </div>
