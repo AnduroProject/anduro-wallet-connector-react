@@ -495,7 +495,7 @@ var UseConnectorProvider = function(props) {
     }();
     var disconnect = function() {
         return new Promise(function(resolve) {
-            var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ );
+            var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ , "&from=").concat(window.location.href);
             var childWindow2 = openWalletWindow(url);
             setRequestType("disconnect" /* disconnected */ );
             setChildWindow(childWindow2);
