@@ -57,7 +57,7 @@ Connect Anduro wallet using connect function.
 
 **Parameter**
 
-chainId: 1 or 2 or 3 or 4
+chainId: 1 or 2 or 3 or 4 or 5 or 6
 
 - 1 for Bitcoin mainnet
 - 2 for Sidechain mainnet
