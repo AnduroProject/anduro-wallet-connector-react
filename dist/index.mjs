@@ -220,7 +220,7 @@ var openWalletWindow = function(url) {
         x = viewportwidth - 300;
         y = 0;
     }
-    return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(0, ", height=", 0, ", right=0, top=").concat(y, ", left=").concat(x));
+    return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(1, ", height=", 1, ", right=0, top=").concat(y, ", left=").concat(x));
 };
 // src/config/walletApi.ts
 var WALLETURL = "http://localhost:3001/";
