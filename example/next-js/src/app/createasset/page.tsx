@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { useConnector } from "anduro-wallet-connector"
+import { useConnector } from "anduro-wallet-connector-react"
 export default function CreateAssetVC() {
   const { createasset } = React.useContext<any>(useConnector)
   const [receiverAddress, setReceiverAddress] = React.useState<any>("")

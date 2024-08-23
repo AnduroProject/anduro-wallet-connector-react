@@ -10,7 +10,7 @@
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,scss,md,json}' --config ./.prettierrc"
   },
   "dependencies": {
-    "anduro-wallet-connector": "git@github.com/AnduroProject/anduro-wallet-connector-react#sign-option",
+    "anduro-wallet-connector-react": "git@github.com:AnduroProject/anduro-wallet-connector-react/tree/v2-impacts",
     "eslint-plugin-prettier": "^5.1.3",
     "next": "14.2.2",
     "react": "^18.2.0",
