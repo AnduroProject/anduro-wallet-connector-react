@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { useConnector } from "anduro-wallet-connector"
+import { useConnector } from "anduro-wallet-connector-react"
 export default function SendVC() {
   const { send } = React.useContext<any>(useConnector)
   const [amount, setAmount] = React.useState<any>("")
