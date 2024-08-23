@@ -70,6 +70,7 @@ enum RequestTypes {
   signTransaction = "sign-transaction",
   sendTransaction = "send-transaction",
   signAndSendTransaction = "sign-and-send-transaction",
+  sendAlys = "send-alys"
 }
 
 enum ResponseTypes {
@@ -102,6 +103,7 @@ type UseConnectorContextContextType = {
   signTransaction: (params: SignTransactionParams) => object
   sendTransaction: (params: SignTransactionParams) => object
   signAndSendTransaction: (params: SignTransactionParams) => object
+  signAlysTransaction: (params: SignTransactionParams) => object
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(null)
 let resolvePromise: any = null
@@ -255,6 +257,12 @@ export const UseConnectorProvider = (props: any) => {
         requestType: requestType,
         chainId: networkState.chainId,
         hex: signTransactionData?.hex,
+      })
+    }  else if (requestType === RequestTypes.sendAlys) {
+      sendMessageToChildWindow({
+        requestType: requestType,
+        chainId: networkState.chainId,
+        message: signData.message,
       })
     }
   }
@@ -519,6 +527,7 @@ export const UseConnectorProvider = (props: any) => {
       }
     })
   }
+  
   /**
    * The following function used for sign process
    *
@@ -531,6 +540,25 @@ export const UseConnectorProvider = (props: any) => {
         const url = `${WALLETURL}?requestType=${RequestTypes.signTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signTransaction)
+        setChildWindow(childWindow)
+        setSignTransactionData(params)
+        resolvePromise = resolve
+      }
+    })
+  }
+
+   /**
+   * The following function used for sign process
+   *
+   * @param hex The raw transaction hex
+   *
+   */
+   const signAlysTransaction = (params: SignTransactionParams) => {
+    return new Promise((resolve) => {
+      if (checkWalletConnection(resolve, "")) {
+        const url = `${WALLETURL}?requestType=${RequestTypes.sendAlys}`
+        let childWindow = openWalletWindow(url)
+        setRequestType(RequestTypes.sendAlys)
         setChildWindow(childWindow)
         setSignTransactionData(params)
         resolvePromise = resolve
@@ -590,6 +618,7 @@ export const UseConnectorProvider = (props: any) => {
         signTransaction,
         sendTransaction,
         signAndSendTransaction,
+        signAlysTransaction
       }}
     >
       {children}
