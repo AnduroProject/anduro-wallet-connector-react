@@ -433,6 +433,12 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId,
                 hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex
             });
+        } else if (requestType === "send-alys" /* sendAlys */ ) {
+            sendMessageToChildWindow({
+                requestType: requestType,
+                chainId: networkState.chainId,
+                message: signData.message
+            });
         }
     };
     var sendMessageToChildWindow = function(data) {
@@ -606,6 +612,18 @@ var UseConnectorProvider = function(props) {
             }
         });
     };
+    var signAlysTransaction = function(params) {
+        return new Promise(function(resolve) {
+            if (checkWalletConnection(resolve, "")) {
+                var url = "".concat(WALLETURL, "?requestType=", "send-alys" /* sendAlys */ );
+                var childWindow2 = openWalletWindow(url);
+                setRequestType("send-alys" /* sendAlys */ );
+                setChildWindow(childWindow2);
+                setSignTransactionData(params);
+                resolvePromise = resolve;
+            }
+        });
+    };
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
@@ -644,7 +662,8 @@ var UseConnectorProvider = function(props) {
             sign: sign,
             signTransaction: signTransaction,
             sendTransaction: sendTransaction,
-            signAndSendTransaction: signAndSendTransaction
+            signAndSendTransaction: signAndSendTransaction,
+            signAlysTransaction: signAlysTransaction
         },
         children: children
     });
