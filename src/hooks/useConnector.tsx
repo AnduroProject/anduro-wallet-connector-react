@@ -246,7 +246,7 @@ export const UseConnectorProvider = (props: any) => {
       sendMessageToChildWindow({
         requestType: requestType,
         chainId: networkState.chainId,
-        message: signData.message,
+        hex: signTransactionData?.hex,
       })
     } else if (
       requestType === RequestTypes.signTransaction ||

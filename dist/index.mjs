@@ -351,7 +351,7 @@ var UseConnectorProvider = function(props) {
             sendMessageToChildWindow({
                 requestType: requestType,
                 chainId: networkState.chainId,
-                message: signData.message
+                hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex
             });
         } else if (requestType === "sign-transaction" /* signTransaction */  || requestType === "send-transaction" /* sendTransaction */  || requestType === "sign-and-send-transaction" /* signAndSendTransaction */ ) {
             sendMessageToChildWindow({
