@@ -337,7 +337,7 @@ export const UseConnectorProvider = (props: any) => {
    */
   const disconnect = () => {
     return new Promise((resolve) => {
-      const url = `${WALLETURL}?requestType=${RequestTypes.disconnected}&from=${window.location.href}`
+      const url = `${WALLETURL}?requestType=${RequestTypes.disconnected}&from=${window.location.origin}`
       let childWindow = openWalletWindow(url)
       setRequestType(RequestTypes.disconnected)
       setChildWindow(childWindow)
