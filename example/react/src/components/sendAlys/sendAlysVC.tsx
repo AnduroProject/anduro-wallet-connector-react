@@ -1,37 +1,37 @@
-"use client"
 import React from "react"
 import { useConnector } from "anduro-wallet-connector-react"
-export default function SignVC() {
-  const { sign } = React.useContext<any>(useConnector)
-  const [message, setMessage] = React.useState<any>("")
+export const SendAlysVC = () => {
+  const { signAlysTransaction } = React.useContext<any>(useConnector)
+  const [transactionhex, setTransactionHex] = React.useState<string>("")
 
   const handleSignFormSubmit = async (event: any) => {
     event.preventDefault()
-    const result = await sign({
-      message: message,
+    const result = await signAlysTransaction({
+      hex: transactionhex,
     })
     console.log("*******Sign Result", result)
   }
+  console.log("transactionhex : ", transactionhex)
   return (
     <div>
       <div className="widset_parent">
-        <h3 className="title">Sign</h3>
+        <h3 className="title">Send Alys</h3>
         <div>
           <form onSubmit={handleSignFormSubmit}>
             <div className="row">
               <div className="col-sm-12 col-md-12 col-lg-5">
                 <div className="label-text-align">
-                  <label htmlFor="message">Message :</label>
+                  <label htmlFor="message">Transaction Hex :</label>
                 </div>
               </div>
               <div className="col-sm-12 col-md-12 col-lg-7">
                 <div className="input_padd">
-                  <input
+                  <textarea
                     id="message"
-                    type="text"
-                    placeholder="Message"
-                    value={message}
-                    onChange={(event) => setMessage(event.target.value)}
+                    // type="text"
+                    placeholder="transaction hex"
+                    value={transactionhex}
+                    onChange={(event) => setTransactionHex(event.target.value)}
                   />
                 </div>
               </div>

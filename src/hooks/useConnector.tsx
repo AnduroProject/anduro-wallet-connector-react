@@ -6,7 +6,7 @@ File Created : 04/03/2024
 CopyRights : 
 Purpose : This is the file that is used to handle connect , disconnect and manage anduro wallet.
 */
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { ERROR_MESSAGES } from "../helpers/errorMessages"
 import { handleErrorResponse, handleSuccessResponse } from "../helpers/handleResponse"
 import { openWalletWindow } from "../helpers/handleWalletWindow"
@@ -15,6 +15,7 @@ import { WALLETURL } from "../config/walletApi"
 interface WalletState {
   accountPublicKey: string
   connectionState: string
+  address: string
 }
 interface NetworkState {
   chainId: any
@@ -69,6 +70,7 @@ enum RequestTypes {
   signTransaction = "sign-transaction",
   sendTransaction = "send-transaction",
   signAndSendTransaction = "sign-and-send-transaction",
+  sendAlys = "send-alys"
 }
 
 enum ResponseTypes {
@@ -82,6 +84,7 @@ enum ResponseTypes {
 enum TransactionTypes {
   bitcoin = "bitcoin",
   sidechain = "sidechain",
+  alys = "alys",
   normal = "normal",
   pegin = "pegin",
   pegout = "pegout",
@@ -100,6 +103,7 @@ type UseConnectorContextContextType = {
   signTransaction: (params: SignTransactionParams) => object
   sendTransaction: (params: SignTransactionParams) => object
   signAndSendTransaction: (params: SignTransactionParams) => object
+  signAlysTransaction: (params: SignTransactionParams) => object
 }
 export const useConnector = React.createContext<UseConnectorContextContextType | null>(null)
 let resolvePromise: any = null
@@ -118,6 +122,7 @@ export const UseConnectorProvider = (props: any) => {
   const [walletState, setWalletState] = React.useState<WalletState>({
     accountPublicKey: "",
     connectionState: "disconnected",
+    address: "",
   })
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
@@ -156,7 +161,11 @@ export const UseConnectorProvider = (props: any) => {
     switch (event.data.type) {
       case ResponseTypes.connectionResponse:
         updateNetworkInformation(event.data.result)
-        updateWalletInformation("connected", event.data.result.accountPublicKey)
+        updateWalletInformation(
+          "connected",
+          event.data.result.accountPublicKey,
+          event.data.result.address,
+        )
         resolvePromise(handleSuccessResponse(event.data))
         break
       case RequestTypes.accountNotCreated:
@@ -164,11 +173,15 @@ export const UseConnectorProvider = (props: any) => {
         break
       case ResponseTypes.networkinfoResponse:
         updateNetworkInformation(event.data.result)
-        updateWalletInformation("conneted", event.data.result.accountPublicKey)
+        updateWalletInformation(
+          "connected",
+          event.data.result.accountPublicKey,
+          event.data.result.address,
+        )
         break
       case ResponseTypes.disconnectResponse:
         updateNetworkInformation({ chainId: null, networkType: "" })
-        updateWalletInformation("disconnected", "")
+        updateWalletInformation("disconnected", "", "")
         if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
       default:
@@ -245,6 +258,12 @@ export const UseConnectorProvider = (props: any) => {
         chainId: networkState.chainId,
         hex: signTransactionData?.hex,
       })
+    }  else if (requestType === RequestTypes.sendAlys) {
+      sendMessageToChildWindow({
+        requestType: requestType,
+        chainId: networkState.chainId,
+        hex: signTransactionData?.hex,
+      })
     }
   }
   /**
@@ -277,10 +296,15 @@ export const UseConnectorProvider = (props: any) => {
    * @param accountPublicKey The Anduro wallet account public key
    *
    */
-  const updateWalletInformation = (connectionState: string, accountPublicKey: string) => {
+  const updateWalletInformation = (
+    connectionState: string,
+    accountPublicKey: string,
+    address: string,
+  ) => {
     setWalletState({
       accountPublicKey: accountPublicKey,
       connectionState: connectionState,
+      address: address,
     })
   }
 
@@ -299,7 +323,7 @@ export const UseConnectorProvider = (props: any) => {
       setRequestData({
         chainId: params.chainId,
       })
-      updateWalletInformation("connecting", "")
+      updateWalletInformation("connecting", "", "")
       resolvePromise = resolve
     })
   }
@@ -321,11 +345,11 @@ export const UseConnectorProvider = (props: any) => {
    */
   const disconnect = () => {
     return new Promise((resolve) => {
-      const url = `${WALLETURL}?requestType=${RequestTypes.disconnected}`
+      const url = `${WALLETURL}?requestType=${RequestTypes.disconnected}&from=${window.location.origin}`
       let childWindow = openWalletWindow(url)
       setRequestType(RequestTypes.disconnected)
       setChildWindow(childWindow)
-      updateWalletInformation("disconnecting", "")
+      updateWalletInformation("disconnecting", "", "")
       resolvePromise = resolve
     })
   }
@@ -403,7 +427,9 @@ export const UseConnectorProvider = (props: any) => {
     } else if (transactionType === TransactionTypes.pegin) {
       status = networkState.networkType === TransactionTypes.bitcoin
     } else if (transactionType === TransactionTypes.pegout) {
-      status = networkState.networkType === TransactionTypes.sidechain
+      status =
+        networkState.networkType === TransactionTypes.sidechain ||
+        networkState.networkType === TransactionTypes.alys
     }
     return status
   }
@@ -501,6 +527,7 @@ export const UseConnectorProvider = (props: any) => {
       }
     })
   }
+  
   /**
    * The following function used for sign process
    *
@@ -514,6 +541,27 @@ export const UseConnectorProvider = (props: any) => {
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signTransaction)
         setChildWindow(childWindow)
+        setSignTransactionData(params)
+        resolvePromise = resolve
+      }
+    })
+  }
+
+   /**
+   * The following function used for sign process
+   *
+   * @param hex The raw transaction hex
+   *
+   */
+   const signAlysTransaction = (params: SignTransactionParams) => {
+    console.log("params----------------", params)
+    return new Promise((resolve) => {
+      if (checkWalletConnection(resolve, "")) {
+        const url = `${WALLETURL}?requestType=${RequestTypes.sendAlys}`
+        let childWindow = openWalletWindow(url)
+        setRequestType(RequestTypes.sendAlys)
+        setChildWindow(childWindow)
+        console.log("params-------------------- : ", params)
         setSignTransactionData(params)
         resolvePromise = resolve
       }
@@ -572,6 +620,7 @@ export const UseConnectorProvider = (props: any) => {
         signTransaction,
         sendTransaction,
         signAndSendTransaction,
+        signAlysTransaction
       }}
     >
       {children}

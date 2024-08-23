@@ -3,6 +3,7 @@ import { SendVC } from "../components/send/sendVC"
 import { CreateAssetVC } from "../components/createAsset/createAssetVC"
 import { TransferAssetVC } from "../components/transferAsset/transferAssetVC"
 import { SignVC } from "../components/sign/signVC"
+import { SendAlysVC } from "../components/sendAlys/sendAlysVC"
 const routes = [
   {
     path: "/",
@@ -28,6 +29,11 @@ const routes = [
     path: "/sign",
     exact: true,
     component: SignVC,
+  },
+  {
+    path: "/sendAlys",
+    exact: true,
+    component: SendAlysVC,
   },
 ]
 

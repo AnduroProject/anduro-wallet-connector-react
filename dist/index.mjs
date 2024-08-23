@@ -242,7 +242,8 @@ var UseConnectorProvider = function(props) {
     }), 2), networkState = _React_useState3[0], setNetworkState = _React_useState3[1];
     var _React_useState4 = _sliced_to_array(React.useState({
         accountPublicKey: "",
-        connectionState: "disconnected"
+        connectionState: "disconnected",
+        address: ""
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
     var _useState4 = _sliced_to_array(useState(), 2), signTransactionData = _useState4[0], setSignTransactionData = _useState4[1];
     useEffect(function() {
@@ -270,7 +271,7 @@ var UseConnectorProvider = function(props) {
         switch(event.data.type){
             case "connection-response" /* connectionResponse */ :
                 updateNetworkInformation(event.data.result);
-                updateWalletInformation("connected", event.data.result.accountPublicKey);
+                updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address);
                 resolvePromise(handleSuccessResponse(event.data));
                 break;
             case "account-not-created" /* accountNotCreated */ :
@@ -278,14 +279,14 @@ var UseConnectorProvider = function(props) {
                 break;
             case "networkinfo-response" /* networkinfoResponse */ :
                 updateNetworkInformation(event.data.result);
-                updateWalletInformation("conneted", event.data.result.accountPublicKey);
+                updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address);
                 break;
             case "disconnect-response" /* disconnectResponse */ :
                 updateNetworkInformation({
                     chainId: null,
                     networkType: ""
                 });
-                updateWalletInformation("disconnected", "");
+                updateWalletInformation("disconnected", "", "");
                 if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
                 break;
             default:
@@ -358,6 +359,12 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId,
                 hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex
             });
+        } else if (requestType === "send-alys" /* sendAlys */ ) {
+            sendMessageToChildWindow({
+                requestType: requestType,
+                chainId: networkState.chainId,
+                hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex
+            });
         }
     };
     var sendMessageToChildWindow = function(data) {
@@ -369,10 +376,11 @@ var UseConnectorProvider = function(props) {
             networkType: params.networkType
         });
     };
-    var updateWalletInformation = function(connectionState, accountPublicKey) {
+    var updateWalletInformation = function(connectionState, accountPublicKey, address) {
         setWalletState({
             accountPublicKey: accountPublicKey,
-            connectionState: connectionState
+            connectionState: connectionState,
+            address: address
         });
     };
     var connect = function() {
@@ -388,7 +396,7 @@ var UseConnectorProvider = function(props) {
                         setRequestData({
                             chainId: params.chainId
                         });
-                        updateWalletInformation("connecting", "");
+                        updateWalletInformation("connecting", "", "");
                         resolvePromise = resolve;
                     })
                 ];
@@ -419,11 +427,11 @@ var UseConnectorProvider = function(props) {
     }();
     var disconnect = function() {
         return new Promise(function(resolve) {
-            var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ );
+            var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ , "&from=").concat(window.location.origin);
             var childWindow2 = openWalletWindow(url);
             setRequestType("disconnect" /* disconnected */ );
             setChildWindow(childWindow2);
-            updateWalletInformation("disconnecting", "");
+            updateWalletInformation("disconnecting", "", "");
             resolvePromise = resolve;
         });
     };
@@ -468,7 +476,7 @@ var UseConnectorProvider = function(props) {
         } else if (transactionType === "pegin" /* pegin */ ) {
             status = networkState.networkType === "bitcoin" /* bitcoin */ ;
         } else if (transactionType === "pegout" /* pegout */ ) {
-            status = networkState.networkType === "sidechain" /* sidechain */ ;
+            status = networkState.networkType === "sidechain" /* sidechain */  || networkState.networkType === "alys" /* alys */ ;
         }
         return status;
     };
@@ -530,6 +538,20 @@ var UseConnectorProvider = function(props) {
             }
         });
     };
+    var signAlysTransaction = function(params) {
+        console.log("params----------------", params);
+        return new Promise(function(resolve) {
+            if (checkWalletConnection(resolve, "")) {
+                var url = "".concat(WALLETURL, "?requestType=", "send-alys" /* sendAlys */ );
+                var childWindow2 = openWalletWindow(url);
+                setRequestType("send-alys" /* sendAlys */ );
+                setChildWindow(childWindow2);
+                console.log("params-------------------- : ", params);
+                setSignTransactionData(params);
+                resolvePromise = resolve;
+            }
+        });
+    };
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
@@ -568,7 +590,8 @@ var UseConnectorProvider = function(props) {
             sign: sign,
             signTransaction: signTransaction,
             sendTransaction: sendTransaction,
-            signAndSendTransaction: signAndSendTransaction
+            signAndSendTransaction: signAndSendTransaction,
+            signAlysTransaction: signAlysTransaction
         },
         children: children
     });

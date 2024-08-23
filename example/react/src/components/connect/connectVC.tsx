@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { ConnectorVW } from "../../UI/connectorVW"
-import { useConnector } from "anduro-wallet-connector"
+import { useConnector } from "anduro-wallet-connector-react"
 import { Link } from "react-router-dom"
 export const ConnectorVC = () => {
   const {
@@ -53,7 +53,7 @@ export const ConnectorVC = () => {
 
   const signTransactions = async () => {
     const hex =
-      "70736274ff01007102000000010b19d8363aa4026390d46e49b4c454da11e16d3af5a1a40cbc517f53a95e90870000000000fdffffff0200e1f50500000000160014eb21c968ebba6d2f4b651969fde78434090fc8bdecb1a43500000000160014a868c2c1d0b209ed561b714eee1e0a0c08d5737a00000000000100de02000000000101c7529142d68f990302a65922d3f8fbccae4a0fcea9aaae42d43a8eebb3f3d42c0000000000fdffffff0200ca9a3b00000000160014548a63aea10446588b59868a68f87343cde6586e5b7be60e00000000160014a2e2fab26c3a24c64bb94e4405896c1f311fcc1302473044022047777dd71ff26babb3eeab67db31f1191bd3c38596617977c5b4599130e9bf3302203a91fe0db726aaabaa85664731e448e9da90d5c8b544b6907244d631c63e4b770121031ba6b86cdfd45a5f10cbd2c76063cb64ad773bd6760ead1487fbf6377f208bd0b7060000000000"
+      "70736274ff0100710200000001c7555b35f02abac2c94d85c8e5881b7e52e551ce0f2023b166ecd0157b1f94ee0200000000fdffffff0280c3c901000000001600142a9fa52a51e5330f953c3227941b8cc084b9bd654e04d139000000001600148bb0cb4de87b5d6fa805dc7a950b443389a75a34000000000001011f5bc89a3b000000001600142a9fa52a51e5330f953c3227941b8cc084b9bd65000000"
     const signResult = await signTransaction({
       hex,
     })
@@ -78,14 +78,17 @@ export const ConnectorVC = () => {
   }
   return (
     <div>
-      {walletState.accountPublicKey === "" && isWalletConnected === "false" && (
-        <ConnectorVW
-          title="Connect wallet"
-          buttonName="Connect"
-          handleClickAction={handleConnectionAction}
-        />
-      )}
-      {(walletState.accountPublicKey !== "" || isWalletConnected === "true") && (
+      {(walletState.accountPublicKey === "" || walletState.address === "") &&
+        isWalletConnected === "false" && (
+          <ConnectorVW
+            title="Connect wallet"
+            buttonName="Connect"
+            handleClickAction={handleConnectionAction}
+          />
+        )}
+      {(walletState.accountPublicKey !== "" ||
+        walletState.address !== "" ||
+        isWalletConnected === "true") && (
         <div className="connect_page">
           <div className="display-flex">
             <div className="breadcrumb">
@@ -95,13 +98,13 @@ export const ConnectorVC = () => {
               <Link to="/send">Send</Link>
             </div>
             <div className="breadcrumb">
-              <Link to="/createasset">Create Asset</Link>
+              <Link to="/sendAlys">Send Alys</Link>
             </div>
             <div className="breadcrumb">
               <Link to="/transfer">Transfer</Link>
             </div>
           </div>
-          {walletState.accountPublicKey !== "" && (
+          {(walletState.accountPublicKey !== "" || walletState.address !== "") && (
             <div>
               <ConnectorVW
                 title="Disconnect Wallet"
@@ -125,7 +128,7 @@ export const ConnectorVC = () => {
               />
             </div>
           )}
-          {walletState.accountPublicKey === "" && (
+          {(walletState.accountPublicKey === "" || walletState.address === "") && (
             <ConnectorVW
               title="Connect wallet"
               buttonName="Initialize"

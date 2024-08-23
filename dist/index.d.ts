@@ -4,6 +4,7 @@ import React from 'react';
 interface WalletState {
     accountPublicKey: string;
     connectionState: string;
+    address: string;
 }
 interface NetworkState {
     chainId: any;
@@ -58,6 +59,7 @@ type UseConnectorContextContextType = {
     signTransaction: (params: SignTransactionParams) => object;
     sendTransaction: (params: SignTransactionParams) => object;
     signAndSendTransaction: (params: SignTransactionParams) => object;
+    signAlysTransaction: (params: SignTransactionParams) => object;
 };
 declare const useConnector: React.Context<UseConnectorContextContextType | null>;
 declare const UseConnectorProvider: (props: any) => react_jsx_runtime.JSX.Element;
