@@ -6,7 +6,7 @@ File Created : 04/03/2024
 CopyRights : 
 Purpose : This is the file that is used to handle connect , disconnect and manage anduro wallet.
 */
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { ERROR_MESSAGES } from "../helpers/errorMessages"
 import { handleErrorResponse, handleSuccessResponse } from "../helpers/handleResponse"
 import { openWalletWindow } from "../helpers/handleWalletWindow"
@@ -338,19 +338,11 @@ export const UseConnectorProvider = (props: any) => {
   const disconnect = () => {
     return new Promise((resolve) => {
       const url = `${WALLETURL}?requestType=${RequestTypes.disconnected}`
-      const data = {
-        requestType,
-        siteurl: window.location.origin,
-        chainId: requestData ? requestData.chainId : 0,
-      }
-      console.log("---DATA---", data)
-      console.log("---URL---", url)
-      window.postMessage(data, url)
-      // let childWindow = openWalletWindow(url)
-      // setRequestType(RequestTypes.disconnected)
-      // setChildWindow(childWindow)
-      // updateWalletInformation("disconnecting", "", "")
-      // resolvePromise = resolve
+      let childWindow = openWalletWindow(url)
+      setRequestType(RequestTypes.disconnected)
+      setChildWindow(childWindow)
+      updateWalletInformation("disconnecting", "", "")
+      resolvePromise = resolve
     })
   }
 

@@ -422,14 +422,11 @@ var UseConnectorProvider = function(props) {
     var disconnect = function() {
         return new Promise(function(resolve) {
             var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ );
-            var data = {
-                requestType: requestType,
-                siteurl: window.location.origin,
-                chainId: requestData ? requestData.chainId : 0
-            };
-            console.log("---DATA---", data);
-            console.log("---URL---", url);
-            window.postMessage(data, url);
+            var childWindow2 = openWalletWindow(url);
+            setRequestType("disconnect" /* disconnected */ );
+            setChildWindow(childWindow2);
+            updateWalletInformation("disconnecting", "", "");
+            resolvePromise = resolve;
         });
     };
     var send = function(params) {
