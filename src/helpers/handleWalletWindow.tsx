@@ -28,6 +28,6 @@ export const openWalletWindow = (url: any) => {
   return window.open(
     url,
     "_blank",
-    `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${inputWidth}, height=${inputHeight}, right=0, top=${y}, left=${x} ${`display=none`}`,
+    `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${0}, height=${0}, right=0, top=${y}, left=${x}`,
   )
 }
