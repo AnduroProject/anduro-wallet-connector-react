@@ -338,11 +338,19 @@ export const UseConnectorProvider = (props: any) => {
   const disconnect = () => {
     return new Promise((resolve) => {
       const url = `${WALLETURL}?requestType=${RequestTypes.disconnected}`
-      let childWindow = openWalletWindow(url)
-      setRequestType(RequestTypes.disconnected)
-      setChildWindow(childWindow)
-      updateWalletInformation("disconnecting", "", "")
-      resolvePromise = resolve
+      const data = {
+        requestType,
+        siteurl: window.location.origin,
+        chainId: requestData ? requestData.chainId : 0,
+      }
+      console.log("---DATA---", data)
+      console.log("---URL---", url)
+      window.postMessage(data, url)
+      // let childWindow = openWalletWindow(url)
+      // setRequestType(RequestTypes.disconnected)
+      // setChildWindow(childWindow)
+      // updateWalletInformation("disconnecting", "", "")
+      // resolvePromise = resolve
     })
   }
 
