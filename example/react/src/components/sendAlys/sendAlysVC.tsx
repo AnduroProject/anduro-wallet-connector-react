@@ -11,6 +11,7 @@ export const SendAlysVC = () => {
     })
     console.log("*******Sign Result", result)
   }
+  console.log("transactionhex : ", transactionhex)
   return (
     <div>
       <div className="widset_parent">

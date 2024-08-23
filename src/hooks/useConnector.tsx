@@ -554,12 +554,14 @@ export const UseConnectorProvider = (props: any) => {
    *
    */
    const signAlysTransaction = (params: SignTransactionParams) => {
+    console.log("params----------------", params)
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
         const url = `${WALLETURL}?requestType=${RequestTypes.sendAlys}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sendAlys)
         setChildWindow(childWindow)
+        console.log("params-------------------- : ", params)
         setSignTransactionData(params)
         resolvePromise = resolve
       }

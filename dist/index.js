@@ -613,12 +613,14 @@ var UseConnectorProvider = function(props) {
         });
     };
     var signAlysTransaction = function(params) {
+        console.log("params----------------", params);
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-alys" /* sendAlys */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("send-alys" /* sendAlys */ );
                 setChildWindow(childWindow2);
+                console.log("params-------------------- : ", params);
                 setSignTransactionData(params);
                 resolvePromise = resolve;
             }
