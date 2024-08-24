@@ -70,7 +70,7 @@ enum RequestTypes {
   signTransaction = "sign-transaction",
   sendTransaction = "send-transaction",
   signAndSendTransaction = "sign-and-send-transaction",
-  sendAlys = "send-alys"
+  sendAlys = "send-alys",
 }
 
 enum ResponseTypes {
@@ -258,7 +258,7 @@ export const UseConnectorProvider = (props: any) => {
         chainId: networkState.chainId,
         hex: signTransactionData?.hex,
       })
-    }  else if (requestType === RequestTypes.sendAlys) {
+    } else if (requestType === RequestTypes.sendAlys) {
       sendMessageToChildWindow({
         requestType: requestType,
         chainId: networkState.chainId,
@@ -527,7 +527,7 @@ export const UseConnectorProvider = (props: any) => {
       }
     })
   }
-  
+
   /**
    * The following function used for sign process
    *
@@ -547,13 +547,13 @@ export const UseConnectorProvider = (props: any) => {
     })
   }
 
-   /**
+  /**
    * The following function used for sign process
    *
    * @param hex The raw transaction hex
    *
    */
-   const signAlysTransaction = (params: SignTransactionParams) => {
+  const signAlysTransaction = (params: SignTransactionParams) => {
     console.log("params----------------", params)
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
@@ -620,7 +620,7 @@ export const UseConnectorProvider = (props: any) => {
         signTransaction,
         sendTransaction,
         signAndSendTransaction,
-        signAlysTransaction
+        signAlysTransaction,
       }}
     >
       {children}
