@@ -578,7 +578,14 @@ var UseConnectorProvider = function(props) {
         });
     };
     var validateTransactionVersion = function(version) {
-        if (networkState.networkType === "bitcoin" /* bitcoin */  && version !== 2 || networkState.networkType === "sidechain" /* sidechain */  && version !== 2 && version !== 9 && version !== 11) {
+        console.log("BTC NETWORK", networkState.networkType === "bitcoin" /* bitcoin */ );
+        console.log("VERSION", version);
+        if (networkState.networkType === "bitcoin" /* bitcoin */  && version !== 2) {
+            console.log("============== CHECK 1 ==============");
+            handleErrorResponse("transaction version is not supported");
+            return false;
+        } else if (networkState.networkType === "sidechain" /* sidechain */  && version !== 2 && version !== 9 && version !== 11) {
+            console.log("============== CHECK 2 ==============");
             handleErrorResponse("transaction version is not supported");
             return false;
         }

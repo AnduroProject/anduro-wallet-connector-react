@@ -606,13 +606,19 @@ export const UseConnectorProvider = (props: any) => {
     })
   }
   const validateTransactionVersion = (version: number): boolean => {
-    if (
-      (networkState.networkType === TransactionTypes.bitcoin && version !== 2) ||
-      (networkState.networkType === TransactionTypes.sidechain &&
-        version !== 2 &&
-        version !== 9 &&
-        version !== 11)
+    console.log("BTC NETWORK", networkState.networkType === TransactionTypes.bitcoin)
+    console.log("VERSION", version)
+    if (networkState.networkType === TransactionTypes.bitcoin && version !== 2) {
+      console.log("============== CHECK 1 ==============")
+      handleErrorResponse("transaction version is not supported")
+      return false
+    } else if (
+      networkState.networkType === TransactionTypes.sidechain &&
+      version !== 2 &&
+      version !== 9 &&
+      version !== 11
     ) {
+      console.log("============== CHECK 2 ==============")
       handleErrorResponse("transaction version is not supported")
       return false
     }
