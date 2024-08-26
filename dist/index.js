@@ -629,7 +629,9 @@ var UseConnectorProvider = function(props) {
     };
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
-            if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
+            var isValidVersion = validateTransactionVersion(params.version || 2);
+            console.log("1 isValidVersion", isValidVersion);
+            if (checkWalletConnection(resolve, "") || !isValidVersion) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("send-transaction" /* sendTransaction */ );
@@ -641,7 +643,9 @@ var UseConnectorProvider = function(props) {
     };
     var signAndSendTransaction = function(params) {
         return new Promise(function(resolve) {
-            if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
+            var isValidVersion = validateTransactionVersion(params.version || 2);
+            console.log("2 isValidVersion", isValidVersion);
+            if (checkWalletConnection(resolve, "") || !isValidVersion) {
                 var url = "".concat(WALLETURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign-and-send-transaction" /* signAndSendTransaction */ );
