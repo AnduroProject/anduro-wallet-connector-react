@@ -629,8 +629,7 @@ export const UseConnectorProvider = (props: any) => {
     } else if (
       networkState.networkType === TransactionTypes.sidechain &&
       version !== 2 &&
-      version !== 9 &&
-      version !== 11
+      version !== 9
     ) {
       handleErrorResponse("transaction version is not supported")
       return false
