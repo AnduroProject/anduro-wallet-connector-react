@@ -431,7 +431,8 @@ var UseConnectorProvider = function(props) {
             sendMessageToChildWindow({
                 requestType: requestType,
                 chainId: networkState.chainId,
-                hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex
+                hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex,
+                version: (signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.version) ? signTransactionData.version : 2
             });
         } else if (requestType === "send-alys" /* sendAlys */ ) {
             sendMessageToChildWindow({

@@ -56,6 +56,7 @@ interface TransferAssetParams {
 }
 interface SignTransactionParams {
   hex: string
+  version?: number
 }
 enum RequestTypes {
   connect = "connect",
@@ -257,6 +258,7 @@ export const UseConnectorProvider = (props: any) => {
         requestType: requestType,
         chainId: networkState.chainId,
         hex: signTransactionData?.hex,
+        version: signTransactionData?.version ? signTransactionData.version : 2,
       })
     } else if (requestType === RequestTypes.sendAlys) {
       sendMessageToChildWindow({
