@@ -5,9 +5,7 @@ Anduro Wallet Connector is a React library that will enable users to easily conn
 - Connect
 - Disconnect
 - Send transaction ( BTC & CBTC )
-- Asset creation
 - Asset transfer
-- Mint transfer
 - Convert ( BTC to CBTC )
 - Convert ( CBTC to BTC)
 - Sign
