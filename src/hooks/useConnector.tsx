@@ -577,7 +577,9 @@ export const UseConnectorProvider = (props: any) => {
    */
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
+      const isValidVersion: boolean = validateTransactionVersion(params.version || 2)
+      console.log("1 isValidVersion", isValidVersion)
+      if (checkWalletConnection(resolve, "") || !isValidVersion) {
         const url = `${WALLETURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sendTransaction)
@@ -595,7 +597,9 @@ export const UseConnectorProvider = (props: any) => {
    */
   const signAndSendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
+      const isValidVersion: boolean = validateTransactionVersion(params.version || 2)
+      console.log("2 isValidVersion", isValidVersion)
+      if (checkWalletConnection(resolve, "") || !isValidVersion) {
         const url = `${WALLETURL}?requestType=${RequestTypes.signAndSendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signAndSendTransaction)
