@@ -555,7 +555,7 @@ var UseConnectorProvider = function(props) {
     };
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
-            if (checkWalletConnection(resolve, "")) {
+            if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("send-transaction" /* sendTransaction */ );
@@ -567,7 +567,7 @@ var UseConnectorProvider = function(props) {
     };
     var signAndSendTransaction = function(params) {
         return new Promise(function(resolve) {
-            if (checkWalletConnection(resolve, "")) {
+            if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
                 var url = "".concat(WALLETURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign-and-send-transaction" /* signAndSendTransaction */ );
@@ -576,6 +576,13 @@ var UseConnectorProvider = function(props) {
                 resolvePromise = resolve;
             }
         });
+    };
+    var validateTransactionVersion = function(version) {
+        if (networkState.networkType === "bitcoin" /* bitcoin */  && version !== 2 || networkState.networkType === "sidechain" /* sidechain */  && version !== 2 && version !== 9 && version !== 11) {
+            handleErrorResponse("transaction version is not supported");
+            return false;
+        }
+        return true;
     };
     var children = props.children;
     return /* @__PURE__ */ jsx(useConnector.Provider, {
