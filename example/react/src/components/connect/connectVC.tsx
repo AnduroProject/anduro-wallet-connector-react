@@ -136,7 +136,6 @@ export const ConnectorVC = () => {
                 <select onChange={(event) => setVersion(Number(event.target.value))}>
                   <option value={2}>Normal-2</option>
                   <option value={9}>Premium-9</option>
-                  <option value={11}>Transfer-11</option>
                 </select>
               </div>
               <ConnectorVW

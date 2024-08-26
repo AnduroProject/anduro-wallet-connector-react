@@ -578,7 +578,6 @@ export const UseConnectorProvider = (props: any) => {
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
       const isValidVersion: boolean = validateTransactionVersion(params.version || 2)
-      console.log("1 isValidVersion", isValidVersion)
       if (!isValidVersion) {
         resolve({
           status: false,
@@ -606,7 +605,6 @@ export const UseConnectorProvider = (props: any) => {
   const signAndSendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
       const isValidVersion: boolean = validateTransactionVersion(params.version || 2)
-      console.log("2 isValidVersion", isValidVersion)
       if (!isValidVersion) {
         resolve({
           status: false,
@@ -626,10 +624,7 @@ export const UseConnectorProvider = (props: any) => {
     })
   }
   const validateTransactionVersion = (version: number): boolean => {
-    console.log("BTC NETWORK", networkState.networkType === TransactionTypes.bitcoin)
-    console.log("VERSION", version)
     if (networkState.networkType === TransactionTypes.bitcoin && version !== 2) {
-      console.log("============== CHECK 1 ==============")
       return false
     } else if (
       networkState.networkType === TransactionTypes.sidechain &&
@@ -637,7 +632,6 @@ export const UseConnectorProvider = (props: any) => {
       version !== 9 &&
       version !== 11
     ) {
-      console.log("============== CHECK 2 ==============")
       handleErrorResponse("transaction version is not supported")
       return false
     }
