@@ -654,8 +654,7 @@ var UseConnectorProvider = function(props) {
     var validateTransactionVersion = function(type, resolve) {
         var transactionTypes = [
             "normal",
-            "premium",
-            "asset"
+            "premium"
         ];
         if (!transactionTypes.includes(type)) {
             resolve({

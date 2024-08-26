@@ -142,11 +142,6 @@ export const ConnectorVC = () => {
                 handleClickAction={() => sendTransactions("premium")}
               />
               <ConnectorVW
-                title="Send Asset Transaction"
-                buttonName="Send Asset Transaction"
-                handleClickAction={() => sendTransactions("asset")}
-              />
-              <ConnectorVW
                 title="Sign and Send Normal Transaction"
                 buttonName="Sign and Send Normal Transaction"
                 handleClickAction={() => signAndSendTransactions("normal")}
@@ -155,11 +150,6 @@ export const ConnectorVC = () => {
                 title="Sign and Send Premium Transaction"
                 buttonName="Sign and Send Premium Transaction"
                 handleClickAction={() => signAndSendTransactions("premium")}
-              />
-              <ConnectorVW
-                title="Sign and Send Asset Transaction"
-                buttonName="Sign and Send Asset Transaction"
-                handleClickAction={() => signAndSendTransactions("asset")}
               />
             </div>
           )}

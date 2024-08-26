@@ -612,7 +612,7 @@ export const UseConnectorProvider = (props: any) => {
     })
   }
   const validateTransactionVersion = (type: string, resolve: any): boolean => {
-    const transactionTypes: string[] = ["normal", "premium", "asset"]
+    const transactionTypes: string[] = ["normal", "premium"]
     if (!transactionTypes.includes(type)) {
       resolve({
         status: false,
