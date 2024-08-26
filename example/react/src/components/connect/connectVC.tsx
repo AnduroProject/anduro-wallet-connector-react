@@ -16,6 +16,7 @@ export const ConnectorVC = () => {
   const [isWalletConnected, setIsWalletConnected] = React.useState<string>("false")
   const [signedHex, setSignedHex] = React.useState<string>("")
   const [rawHex, setRawHex] = React.useState<string>("")
+  const [version, setVersion] = React.useState<number>(2)
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 4,
@@ -67,7 +68,7 @@ export const ConnectorVC = () => {
   const sendTransactions = async () => {
     const sendResult = await sendTransaction({
       hex: signedHex,
-      version: 9,
+      version,
     })
     console.log("===== SEND RESULT EXAMPLE ======", sendResult)
   }
@@ -77,7 +78,7 @@ export const ConnectorVC = () => {
     const hex = rawHex
     const transactionResult = await signAndSendTransaction({
       hex,
-      version: 9,
+      version,
     })
     console.log("===== SIGN AND SEND TRANSACTION RESULT EXAMPLE ======", transactionResult)
   }
@@ -132,6 +133,13 @@ export const ConnectorVC = () => {
                 buttonName="Sign"
                 handleClickAction={signTransactions}
               />
+              <div className="input_padd">
+                <select onChange={(event) => setVersion(Number(event.target.value))}>
+                  <option value={2}>Normal-2</option>
+                  <option value={9}>Premium-9</option>
+                  <option value={11}>Transfer-11</option>
+                </select>
+              </div>
               <ConnectorVW
                 title="Send Transaction"
                 buttonName="Send Transaction"
