@@ -16,7 +16,6 @@ export const ConnectorVC = () => {
   const [isWalletConnected, setIsWalletConnected] = React.useState<string>("false")
   const [signedHex, setSignedHex] = React.useState<string>("")
   const [rawHex, setRawHex] = React.useState<string>("")
-  const [version, setVersion] = React.useState<number>(2)
   const handleConnectionAction = async () => {
     const result = await connect({
       chainId: 4,
@@ -65,19 +64,19 @@ export const ConnectorVC = () => {
       setSignedHex(signResult.result.signedHex)
     }
   }
-  const sendTransactions = async () => {
+  const sendTransactions = async (type: string) => {
     const sendResult = await sendTransaction({
       hex: signedHex,
-      version,
+      transactionType: type,
     })
     console.log("===== SEND RESULT EXAMPLE ======", sendResult)
   }
-  const signAndSendTransactions = async () => {
+  const signAndSendTransactions = async (type: string) => {
     // const hex =
     //   "70736274ff01007102000000015e6d75cc8e6fb4b307bfb880262e186538ae103c131634bbebf26dcdd68f1a930100000000fdffffff020065cd1d00000000160014eb21c968ebba6d2f4b651969fde78434090fc8bdec2dcd1d00000000160014a868c2c1d0b209ed561b714eee1e0a0c08d5737a00000000000100de02000000000101f026669f3cfbef1168b9393074f35b3c165530070a2b522ef22c3f42cd7967410000000000fdffffff02dbf76759000000001600149c7b72d8b076c382bbc23d0aa4b6d10832d6665800ca9a3b00000000160014548a63aea10446588b59868a68f87343cde6586e0247304402206c3b60c6461ef3d24a1d8b09caf25a56cc474638cfc983c3ea7fc00043b7e7cf022025894d45aea71fe9e9595ce9ecfd5c8bb89dd205874d4d3b1220f364d48f2c1b0121031ba6b86cdfd45a5f10cbd2c76063cb64ad773bd6760ead1487fbf6377f208bd0b7060000000000"
     const transactionResult = await signAndSendTransaction({
       hex: rawHex,
-      version,
+      transactionType: type,
     })
     console.log("===== SIGN AND SEND TRANSACTION RESULT EXAMPLE ======", transactionResult)
   }
@@ -132,21 +131,35 @@ export const ConnectorVC = () => {
                 buttonName="Sign"
                 handleClickAction={signTransactions}
               />
-              <div className="input_padd">
-                <select onChange={(event) => setVersion(Number(event.target.value))}>
-                  <option value={2}>Normal-2</option>
-                  <option value={9}>Premium-9</option>
-                </select>
-              </div>
               <ConnectorVW
-                title="Send Transaction"
-                buttonName="Send Transaction"
-                handleClickAction={sendTransactions}
+                title="Send Normal Transaction"
+                buttonName="Send Normal Transaction"
+                handleClickAction={() => sendTransactions("normal")}
               />
               <ConnectorVW
-                title="Sign and Send Transaction"
-                buttonName="Sign and Send Transaction"
-                handleClickAction={signAndSendTransactions}
+                title="Send Premium Transaction"
+                buttonName="Send Premium Transaction"
+                handleClickAction={() => sendTransactions("premium")}
+              />
+              <ConnectorVW
+                title="Send Asset Transaction"
+                buttonName="Send Asset Transaction"
+                handleClickAction={() => sendTransactions("asset")}
+              />
+              <ConnectorVW
+                title="Sign and Send Normal Transaction"
+                buttonName="Sign and Send Normal Transaction"
+                handleClickAction={() => signAndSendTransactions("normal")}
+              />
+              <ConnectorVW
+                title="Sign and Send Premium Transaction"
+                buttonName="Sign and Send Premium Transaction"
+                handleClickAction={() => signAndSendTransactions("premium")}
+              />
+              <ConnectorVW
+                title="Sign and Send Asset Transaction"
+                buttonName="Sign and Send Asset Transaction"
+                handleClickAction={() => signAndSendTransactions("asset")}
               />
             </div>
           )}

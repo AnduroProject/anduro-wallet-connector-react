@@ -56,7 +56,7 @@ interface TransferAssetParams {
 }
 interface SignTransactionParams {
   hex: string
-  version?: number
+  transactionType: string
 }
 enum RequestTypes {
   connect = "connect",
@@ -258,7 +258,7 @@ export const UseConnectorProvider = (props: any) => {
         requestType: requestType,
         chainId: networkState.chainId,
         hex: signTransactionData?.hex,
-        version: signTransactionData?.version ? signTransactionData.version : 2,
+        transactionType: signTransactionData?.transactionType,
       })
     } else if (requestType === RequestTypes.sendAlys) {
       sendMessageToChildWindow({
@@ -577,16 +577,10 @@ export const UseConnectorProvider = (props: any) => {
    */
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      const isValidVersion: boolean = validateTransactionVersion(params.version || 2)
-      if (!isValidVersion) {
-        resolve({
-          status: false,
-          result: null,
-          error: ERROR_MESSAGES.transactionVersionIsNotSupported,
-        })
-        return
-      }
-      if (checkWalletConnection(resolve, "") || !isValidVersion) {
+      if (
+        checkWalletConnection(resolve, "") &&
+        validateTransactionVersion(params.transactionType, resolve)
+      ) {
         const url = `${WALLETURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sendTransaction)
@@ -604,16 +598,10 @@ export const UseConnectorProvider = (props: any) => {
    */
   const signAndSendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      const isValidVersion: boolean = validateTransactionVersion(params.version || 2)
-      if (!isValidVersion) {
-        resolve({
-          status: false,
-          result: null,
-          error: ERROR_MESSAGES.transactionVersionIsNotSupported,
-        })
-        return
-      }
-      if (checkWalletConnection(resolve, "") || !isValidVersion) {
+      if (
+        checkWalletConnection(resolve, "") &&
+        validateTransactionVersion(params.transactionType, resolve)
+      ) {
         const url = `${WALLETURL}?requestType=${RequestTypes.signAndSendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signAndSendTransaction)
@@ -623,15 +611,14 @@ export const UseConnectorProvider = (props: any) => {
       }
     })
   }
-  const validateTransactionVersion = (version: number): boolean => {
-    if (networkState.networkType === TransactionTypes.bitcoin && version !== 2) {
-      return false
-    } else if (
-      networkState.networkType === TransactionTypes.sidechain &&
-      version !== 2 &&
-      version !== 9
-    ) {
-      handleErrorResponse("transaction version is not supported")
+  const validateTransactionVersion = (type: string, resolve: any): boolean => {
+    const transactionTypes: string[] = ["normal", "premium", "asset"]
+    if (!transactionTypes.includes(type)) {
+      resolve({
+        status: false,
+        result: null,
+        error: ERROR_MESSAGES.transactionTypeInvalid,
+      })
       return false
     }
     return true
