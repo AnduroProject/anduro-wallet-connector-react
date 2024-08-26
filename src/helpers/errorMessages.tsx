@@ -22,4 +22,5 @@ export const ERROR_MESSAGES = {
   assetIdRequired: `${FAIL_PROCESS}, Asset Id is required`,
   receiverAddressRequired: `${FAIL_PROCESS}, Receiver Address is required`,
   precisionRequired: `${FAIL_PROCESS}, Precision is required.`,
+  transactionVersionIsNotSupported: "transaction version is not supported",
 }

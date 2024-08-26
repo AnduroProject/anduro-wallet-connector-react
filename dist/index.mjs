@@ -185,7 +185,8 @@ var ERROR_MESSAGES = {
     assetTypeInvalid: "".concat(FAIL_PROCESS, ", Invalid Asset Type"),
     assetIdRequired: "".concat(FAIL_PROCESS, ", Asset Id is required"),
     receiverAddressRequired: "".concat(FAIL_PROCESS, ", Receiver Address is required"),
-    precisionRequired: "".concat(FAIL_PROCESS, ", Precision is required.")
+    precisionRequired: "".concat(FAIL_PROCESS, ", Precision is required."),
+    transactionVersionIsNotSupported: "transaction version is not supported"
 };
 // src/helpers/handleResponse.tsx
 var handleErrorResponse = function() {
@@ -557,6 +558,14 @@ var UseConnectorProvider = function(props) {
         return new Promise(function(resolve) {
             var isValidVersion = validateTransactionVersion(params.version || 2);
             console.log("1 isValidVersion", isValidVersion);
+            if (!isValidVersion) {
+                resolve({
+                    status: false,
+                    result: null,
+                    error: ERROR_MESSAGES.transactionVersionIsNotSupported
+                });
+                return;
+            }
             if (checkWalletConnection(resolve, "") || !isValidVersion) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
@@ -571,6 +580,14 @@ var UseConnectorProvider = function(props) {
         return new Promise(function(resolve) {
             var isValidVersion = validateTransactionVersion(params.version || 2);
             console.log("2 isValidVersion", isValidVersion);
+            if (!isValidVersion) {
+                resolve({
+                    status: false,
+                    result: null,
+                    error: ERROR_MESSAGES.transactionVersionIsNotSupported
+                });
+                return;
+            }
             if (checkWalletConnection(resolve, "") || !isValidVersion) {
                 var url = "".concat(WALLETURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
@@ -586,7 +603,6 @@ var UseConnectorProvider = function(props) {
         console.log("VERSION", version);
         if (networkState.networkType === "bitcoin" /* bitcoin */  && version !== 2) {
             console.log("============== CHECK 1 ==============");
-            handleErrorResponse("transaction version is not supported");
             return false;
         } else if (networkState.networkType === "sidechain" /* sidechain */  && version !== 2 && version !== 9 && version !== 11) {
             console.log("============== CHECK 2 ==============");
