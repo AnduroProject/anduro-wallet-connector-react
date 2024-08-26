@@ -577,7 +577,7 @@ export const UseConnectorProvider = (props: any) => {
    */
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      if (checkWalletConnection(resolve, "")) {
+      if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
         const url = `${WALLETURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sendTransaction)
@@ -595,7 +595,7 @@ export const UseConnectorProvider = (props: any) => {
    */
   const signAndSendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      if (checkWalletConnection(resolve, "")) {
+      if (checkWalletConnection(resolve, "") || !validateTransactionVersion(params.version || 2)) {
         const url = `${WALLETURL}?requestType=${RequestTypes.signAndSendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signAndSendTransaction)
@@ -604,6 +604,19 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise = resolve
       }
     })
+  }
+  const validateTransactionVersion = (version: number): boolean => {
+    if (
+      (networkState.networkType === TransactionTypes.bitcoin && version !== 2) ||
+      (networkState.networkType === TransactionTypes.sidechain &&
+        version !== 2 &&
+        version !== 9 &&
+        version !== 11)
+    ) {
+      handleErrorResponse("transaction version is not supported")
+      return false
+    }
+    return true
   }
 
   const { children } = props
