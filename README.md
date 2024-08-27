@@ -250,11 +250,30 @@ hex: PSBT raw hex
 ```bash
 import React from 'react';
 const { sendAlys } = React.useContext<any>(useConnector);
-
+const {unsignedHex, setUnsignedHex} = React.useState<string>("")
   const sendAlys = async () => {
-    const hex =
-      "70736274ff01007102000000015e6d75cc8e6fb4b307bfb880262e186538ae103c131634bbebf26dcdd68f1a930100000000fdffffff020065cd1d00000000160014eb21c968ebba6d2f4b651969fde78434090fc8bdec2dcd1d00000000160014a868c2c1d0b209ed561b714eee1e0a0c08d5737a00000000000100de02000000000101f026669f3cfbef1168b9393074f35b3c165530070a2b522ef22c3f42cd7967410000000000fdffffff02dbf76759000000001600149c7b72d8b076c382bbc23d0aa4b6d10832d6665800ca9a3b00000000160014548a63aea10446588b59868a68f87343cde6586e0247304402206c3b60c6461ef3d24a1d8b09caf25a56cc474638cfc983c3ea7fc00043b7e7cf022025894d45aea71fe9e9595ce9ecfd5c8bb89dd205874d4d3b1220f364d48f2c1b0121031ba6b86cdfd45a5f10cbd2c76063cb64ad773bd6760ead1487fbf6377f208bd0b7060000000000"
+    const hex = unsignedHex
     const transactionResult = await sendAlys({
+      hex,
+    })
+  }
+```
+
+### 11. Sign Message 
+
+Sign Message to get hex .
+
+**Parameter**
+
+message: string
+
+```bash
+import React from 'react';
+const { sign } = React.useContext<any>(useConnector);
+const {message, setMessage} = React.useState<string>("")
+  const sendAlys = async () => {
+    const hex = message
+    const signResult = await sign({
       hex,
     })
   }
