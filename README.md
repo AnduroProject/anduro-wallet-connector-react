@@ -5,15 +5,14 @@ Anduro Wallet Connector is a React library that will enable users to easily conn
 - Connect
 - Disconnect
 - Send transaction ( BTC & CBTC )
-- Asset creation
 - Asset transfer
-- Mint transfer
 - Convert ( BTC to CBTC )
 - Convert ( CBTC to BTC)
-- Sign
+- Sign 
 - Sign transaction
 - Send transaction
 - Sign and send transaction
+- Send Alys transaction
 
 ## Examples
 
@@ -90,47 +89,7 @@ const handleDisConnectResponse = async () => {
 }
 ```
 
-### 3. Create Asset
-
-Create Asset in Anduro wallet using create asset function.
-
-**Parameters**
-
-name: The asset's name  
-symbol: The asset's symbol  
-imageUrl: The asset's image URL  
-supply: The asset's total supply  
-properties: The asset's trait data
-assetType:
-
-1. 0 for creating tokens.
-2. 1 for creating NFT.\
-   transactionType: create OR mint\
-   receiverAddress: (Optional) Required for mint transactions\
-   assetId: (Optional) Required for mint transactions
-
-```bash
-import { useConnector } from 'anduro-wallet-connector';
-import React from 'react';
-
-const {createasset} = React.useContext<any>(useConnector);
-
-const handleCreateAssetAction = async () => {
-  const result = await createasset({
-    name: "Anduro",
-    symbol: "Anduro",
-    imageUrl: "https://anduro.png/",
-    supply: 100,
-    properties: [{type: "#1 Type", value: "#1 Value"}],
-    assetType: 0,
-    transactionType: "create",
-    receiverAddress: "ccrt1qy6302x6qm8084tfwuf2hagfe8ndvpevg3u5n2j",
-    assetId: 1,
-  })
-}
-```
-
-### 4. Transfer Asset
+### 3. Transfer Asset
 
 Create Asset transfer in anduro wallet using transfer asset function
 
@@ -155,7 +114,7 @@ const handleTransferFunction = async () => {
 }
 ```
 
-### 5. Network and wallet informations
+### 4. Network and wallet informations
 
 We provide network and wallet information
 
@@ -166,7 +125,7 @@ import React from 'react';
 const { networkState, walletState } = React.useContext<any>(useConnector);
 ```
 
-### 6. Send / Convert ( BTC and CBTC )
+### 5. Send / Convert ( BTC and CBTC )
 
 **Parameters**
 
@@ -194,7 +153,7 @@ const handleSendAction = async () => {
 }
 ```
 
-### 7. Sign Anduro Wallet
+### 6. Sign Message
 
 Sign Anduro wallet using sign function.
 
@@ -213,7 +172,7 @@ const handleConnectResponse = async () => {
 }
 ```
 
-### 8. Sign Transactions
+### 7. Sign Transactions
 
 Sign the PSBT raw hex using the signTransaction function.
 
@@ -224,41 +183,68 @@ hex: PSBT raw hex
 ```bash
 import React from 'react';
 const { signTransaction } = React.useContext<any>(useConnector);
+const [rawHex, setRawHex] = React.useState<string>("");
 
   const signTransactions = async () => {
-    const hex =
-      "70736274ff01007102000000010b19d8363aa4026390d46e49b4c454da11e16d3af5a1a40cbc517f53a95e90870000000000fdffffff0200e1f50500000000160014eb21c968ebba6d2f4b651969fde78434090fc8bdecb1a43500000000160014a868c2c1d0b209ed561b714eee1e0a0c08d5737a00000000000100de02000000000101c7529142d68f990302a65922d3f8fbccae4a0fcea9aaae42d43a8eebb3f3d42c0000000000fdffffff0200ca9a3b00000000160014548a63aea10446588b59868a68f87343cde6586e5b7be60e00000000160014a2e2fab26c3a24c64bb94e4405896c1f311fcc1302473044022047777dd71ff26babb3eeab67db31f1191bd3c38596617977c5b4599130e9bf3302203a91fe0db726aaabaa85664731e448e9da90d5c8b544b6907244d631c63e4b770121031ba6b86cdfd45a5f10cbd2c76063cb64ad773bd6760ead1487fbf6377f208bd0b7060000000000"
     const signResult = await signTransaction({
-      hex,
+      hex: rawHex,
     })
+    console.log("===== SIGN RESULT EXAMPLE ======", signResult)
     if (signResult.status) {
       setSignedHex(signResult.result.signedHex)
     }
   }
 ```
 
-### 9. Send Transactions
+### 8. Send Transactions
 
 Send a signed PSBT hex to the connected chain using the sendTransaction function.
 
 **Parameter**
 
 hex: PSBT signed hex
+type: normal OR premium
 
 ```bash
 import React from 'react';
 const { sendTransaction } = React.useContext<any>(useConnector);
+const [signedHex, setSignedHex] = React.useState<string>("")
 
-  const sendTransactions = async () => {
+  const sendTransactions = async (type: string) => {
     const sendResult = await sendTransaction({
       hex: signedHex,
+      transactionType: type,
     })
+    console.log("===== SEND RESULT EXAMPLE ======", sendResult)
   }
 ```
 
-### 10. Sign And Send Transactions
+### 9. Sign And Send Transactions
 
 Sign and send a transaction to the connected chain using the signAndSendTransaction function.
+
+**Parameter**
+
+hex: PSBT raw hex
+type: normal OR premium
+
+```bash
+import React from 'react';
+const { signAndSendTransaction } = React.useContext<any>(useConnector);
+const [rawHex, setRawHex] = React.useState<string>("");
+
+  const signAndSendTransactions = async (type: string) => {
+    const transactionResult = await signAndSendTransaction({
+      hex: rawHex,
+      transactionType: type,
+    })
+    console.log("===== SIGN AND SEND TRANSACTION RESULT EXAMPLE ======", transactionResult)
+  }
+```
+
+### 10. Send Alys transaction
+
+Send Alys Transaction to be connected chain using the send Alys Transaction function .
 
 **Parameter**
 
@@ -266,13 +252,13 @@ hex: PSBT raw hex
 
 ```bash
 import React from 'react';
-const { signAndSendTransaction } = React.useContext<any>(useConnector);
-
-  const signAndSendTransactions = async () => {
-    const hex =
-      "70736274ff01007102000000015e6d75cc8e6fb4b307bfb880262e186538ae103c131634bbebf26dcdd68f1a930100000000fdffffff020065cd1d00000000160014eb21c968ebba6d2f4b651969fde78434090fc8bdec2dcd1d00000000160014a868c2c1d0b209ed561b714eee1e0a0c08d5737a00000000000100de02000000000101f026669f3cfbef1168b9393074f35b3c165530070a2b522ef22c3f42cd7967410000000000fdffffff02dbf76759000000001600149c7b72d8b076c382bbc23d0aa4b6d10832d6665800ca9a3b00000000160014548a63aea10446588b59868a68f87343cde6586e0247304402206c3b60c6461ef3d24a1d8b09caf25a56cc474638cfc983c3ea7fc00043b7e7cf022025894d45aea71fe9e9595ce9ecfd5c8bb89dd205874d4d3b1220f364d48f2c1b0121031ba6b86cdfd45a5f10cbd2c76063cb64ad773bd6760ead1487fbf6377f208bd0b7060000000000"
-    const transactionResult = await signAndSendTransaction({
+const { sendAlys } = React.useContext<any>(useConnector);
+const [unsignedHex, setUnsignedHex] = React.useState<string>("")
+  const sendAlys = async () => {
+    const hex = unsignedHex
+    const transactionResult = await sendAlys({
       hex,
     })
   }
 ```
+

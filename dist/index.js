@@ -431,7 +431,8 @@ var UseConnectorProvider = function(props) {
             sendMessageToChildWindow({
                 requestType: requestType,
                 chainId: networkState.chainId,
-                hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex
+                hex: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.hex,
+                transactionType: signTransactionData === null || signTransactionData === void 0 ? void 0 : signTransactionData.transactionType
             });
         } else if (requestType === "send-alys" /* sendAlys */ ) {
             sendMessageToChildWindow({
@@ -628,7 +629,7 @@ var UseConnectorProvider = function(props) {
     };
     var sendTransaction = function(params) {
         return new Promise(function(resolve) {
-            if (checkWalletConnection(resolve, "")) {
+            if (checkWalletConnection(resolve, "") && validateTransactionVersion(params.transactionType, resolve)) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("send-transaction" /* sendTransaction */ );
@@ -640,7 +641,7 @@ var UseConnectorProvider = function(props) {
     };
     var signAndSendTransaction = function(params) {
         return new Promise(function(resolve) {
-            if (checkWalletConnection(resolve, "")) {
+            if (checkWalletConnection(resolve, "") && validateTransactionVersion(params.transactionType, resolve)) {
                 var url = "".concat(WALLETURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
                 setRequestType("sign-and-send-transaction" /* signAndSendTransaction */ );
@@ -649,6 +650,21 @@ var UseConnectorProvider = function(props) {
                 resolvePromise = resolve;
             }
         });
+    };
+    var validateTransactionVersion = function(type, resolve) {
+        var transactionTypes = [
+            "normal",
+            "premium"
+        ];
+        if (!transactionTypes.includes(type)) {
+            resolve({
+                status: false,
+                result: null,
+                error: ERROR_MESSAGES.transactionTypeInvalid
+            });
+            return false;
+        }
+        return true;
     };
     var children = props.children;
     return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(useConnector.Provider, {
