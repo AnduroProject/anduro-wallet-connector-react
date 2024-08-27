@@ -5,6 +5,7 @@ interface WalletState {
     accountPublicKey: string;
     connectionState: string;
     address: string;
+    accountXpubKey: string;
 }
 interface NetworkState {
     chainId: any;
