@@ -147,7 +147,6 @@ export const UseConnectorProvider = (props: any) => {
   const handleMessage = (event: any) => {
     if (!event.data.type) return false
 
-    console.log("event.data", event.data)
     if (
       event.data.type == "webpackOk" ||
       (event.data.error && event.data.error.type === "webpackInvalid")

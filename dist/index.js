@@ -297,7 +297,7 @@ var openWalletWindow = function(url) {
     return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
 };
 // src/config/walletApi.ts
-var WALLETURL = "http://localhost:3001/";
+var WALLETURL = "chrome-extension://khebhoaoppjeidmdkpdglmlhghnooijn/index.html";
 // src/hooks/useConnector.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var useConnector = import_react.default.createContext(null);
@@ -333,7 +333,6 @@ var UseConnectorProvider = function(props) {
     ]);
     var handleMessage = function(event) {
         if (!event.data.type) return false;
-        console.log("event.data", event.data);
         if (event.data.type == "webpackOk" || event.data.error && event.data.error.type === "webpackInvalid") return false;
         if (event.data.type === "wallet-loaded" /* walletLoaded */ ) return handlewalletLoadedMessage();
         if (childWindow) childWindow.close();

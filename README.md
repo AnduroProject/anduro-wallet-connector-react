@@ -157,19 +157,19 @@ const handleNetworkInfo = async () => {
 
 ```response
 {
-  error: null,
-  result: "The site has been removed.",
-  status: true
+error: null,
+result: {chainId: 4, networkType: 'bitcoin', accountPublicKey: '0389aadab03634bea18eea715f86aed1a9e7282fb700965898089fe0d8e1a1e2fb', xpubKey: 'tpubDEL7N3DKtxLx5ZNpD9EWJcPWFRQBdzL7u9Y34N1CgwCyCW…xhdz13womU7fPsy8Cq8rLN2hAzUQxa5V2pYNskFPzpgic3Sfh', address: 'tb1qg9064fqm9wx6grja2j2us6szhg046hdzud9va6'},
+status: true
 }
 ```
 
 #### Response data types
 
-| Parameter | Type             | Description                       |
-| :-------- | :--------------- | :-------------------------------- |
-| `error`   | `string OR null` | error for the disconnect request  |
-| `result`  | `string OR null` | result for the disconnect request |
-| `status`  | `boolean`        | status for the disconnect request |
+| Parameter | Type             | Description                        |
+| :-------- | :--------------- | :--------------------------------- |
+| `error`   | `string OR null` | error for the networkInfo request  |
+| `result`  | `Object OR null` | result for the networkInfo request |
+| `status`  | `boolean`        | status for the networkInfo request |
 
 ### 3. Transfer Asset
 
