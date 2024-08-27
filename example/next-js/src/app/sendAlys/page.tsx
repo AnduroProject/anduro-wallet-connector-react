@@ -1,6 +1,7 @@
+"use client"
 import React from "react"
 import { useConnector } from "anduro-wallet-connector-react"
-export const SendAlysVC = () => {
+export default function SendAlysVC() {
   const { signAlysTransaction } = React.useContext<any>(useConnector)
   const [transactionhex, setTransactionHex] = React.useState<string>("")
 

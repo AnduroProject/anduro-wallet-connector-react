@@ -45,6 +45,7 @@ interface TransferAssetParams {
 }
 interface SignTransactionParams {
     hex: string;
+    transactionType: string;
 }
 type UseConnectorContextContextType = {
     networkState: NetworkState;

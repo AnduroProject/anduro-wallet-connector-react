@@ -16,9 +16,10 @@ export default function Home() {
   } = useContext<any>(useConnector)
   const [isWalletConnected, setIsWalletConnected] = React.useState<string>("false")
   const [signedHex, setSignedHex] = React.useState<string>("")
+  const [rawHex, setRawHex] = React.useState<string>("")
   const handleConnectionAction = async () => {
     const result = await connect({
-      chainId: 1,
+      chainId: 4,
     })
     console.log("*******Connect Result", result)
     if (result.status === true) {
@@ -52,27 +53,25 @@ export default function Home() {
   }, [walletState, networkState])
 
   const signTransactions = async () => {
-    const hex =
-      "70736274ff01009a02000000028bf1e9f7f9ef7c48abd8f4dcdc789ee180c98aec939937caf92575d1fedf8fdf0000000000fdffffff8bf1e9f7f9ef7c48abd8f4dcdc789ee180c98aec939937caf92575d1fedf8fdf0100000000fdffffff02a0860100000000001600146b41afa7b10c280bf47a0cc210ce993a799d20ba0242993b0000000016001487c0e3fde4222b9e5f9bb2e442d67a9f37cd2dbc000000000001011f1027000000000000160014c7213dd2f66ff6513861559a41f617d1ce4374870001011f63a29a3b000000001600146b41afa7b10c280bf47a0cc210ce993a799d20ba000000"
     const signResult = await signTransaction({
-      hex,
+      hex: rawHex,
     })
     console.log("===== SIGN RESULT EXAMPLE ======", signResult)
     if (signResult.status) {
       setSignedHex(signResult.result.signedHex)
     }
   }
-  const sendTransactions = async () => {
+  const sendTransactions = async (type: string) => {
     const sendResult = await sendTransaction({
       hex: signedHex,
+      transactionType: type,
     })
     console.log("===== SEND RESULT EXAMPLE ======", sendResult)
   }
-  const signAndSendTransactions = async () => {
-    const hex =
-      "70736274ff01009a020000000257d93fc1eb5a9c62741e250a348a28b63d74e1f0cb7e78b7ee995b8f41b62bda0000000000fdffffffc631ad618014d7f4a9636e0f80cc5c51d99a2da93c5c612032cf607ce0dde4ea0100000000fdffffff0200c2eb0b000000001600146b41afa7b10c280bf47a0cc210ce993a799d20bacf8db02f0000000016001487c0e3fde4222b9e5f9bb2e442d67a9f37cd2dbc000000000001011fa0860100000000001600146b41afa7b10c280bf47a0cc210ce993a799d20ba0001011f00ca9a3b000000001600146b41afa7b10c280bf47a0cc210ce993a799d20ba000000"
+  const signAndSendTransactions = async (type: string) => {
     const transactionResult = await signAndSendTransaction({
-      hex,
+      hex: rawHex,
+      transactionType: type,
     })
     console.log("===== SIGN AND SEND TRANSACTION RESULT EXAMPLE ======", transactionResult)
   }
@@ -97,6 +96,9 @@ export default function Home() {
             <div className="breadcrumb">
               <Link href="/transferasset">Transfer</Link>
             </div>
+            <div className="breadcrumb">
+              <Link href="/sendAlys">Send Alys</Link>
+            </div>
           </div>
           {walletState.accountPublicKey !== "" && (
             <>
@@ -105,6 +107,16 @@ export default function Home() {
                 buttonName="Disconnect"
                 handleClickAction={handleDisconnectionAction}
               />
+              <div className="widset_parent">
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="RAW HEX"
+                  value={rawHex}
+                  onChange={(event) => setRawHex(event.target.value)}
+                  className="hex_input"
+                />
+              </div>
               <ConnectorVW
                 title="Sign Transaction"
                 buttonName="Sign"
@@ -112,13 +124,23 @@ export default function Home() {
               />
               <ConnectorVW
                 title="Send Transaction"
-                buttonName="Send Transaction"
-                handleClickAction={sendTransactions}
+                buttonName="Send Normal Transaction"
+                handleClickAction={() => sendTransactions("normal")}
+              />
+              <ConnectorVW
+                title="Send Transaction"
+                buttonName="Send Premium Transaction"
+                handleClickAction={() => sendTransactions("premium")}
               />
               <ConnectorVW
                 title="Sign and Send Transaction"
-                buttonName="Sign and Send Transaction"
-                handleClickAction={signAndSendTransactions}
+                buttonName="Sign and Send Normal Transaction"
+                handleClickAction={() => signAndSendTransactions("normal")}
+              />
+              <ConnectorVW
+                title="Sign and Send Transaction"
+                buttonName="Sign and Send Premium Transaction"
+                handleClickAction={() => signAndSendTransactions("premium")}
               />
             </>
           )}
