@@ -153,7 +153,7 @@ const handleSendAction = async () => {
 }
 ```
 
-### 6. Sign Anduro Wallet
+### 6. Sign Message
 
 Sign Anduro wallet using sign function.
 
@@ -253,30 +253,10 @@ hex: PSBT raw hex
 ```bash
 import React from 'react';
 const { sendAlys } = React.useContext<any>(useConnector);
-const {unsignedHex, setUnsignedHex} = React.useState<string>("")
+const [unsignedHex, setUnsignedHex] = React.useState<string>("")
   const sendAlys = async () => {
     const hex = unsignedHex
     const transactionResult = await sendAlys({
-      hex,
-    })
-  }
-```
-
-### 11. Sign Message
-
-Sign Message to get hex .
-
-**Parameter**
-
-message: string
-
-```bash
-import React from 'react';
-const { sign } = React.useContext<any>(useConnector);
-const {message, setMessage} = React.useState<string>("")
-  const sendAlys = async () => {
-    const hex = message
-    const signResult = await sign({
       hex,
     })
   }
