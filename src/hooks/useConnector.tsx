@@ -16,6 +16,7 @@ interface WalletState {
   accountPublicKey: string
   connectionState: string
   address: string
+  accountXpubKey: string
 }
 interface NetworkState {
   chainId: any
@@ -124,6 +125,7 @@ export const UseConnectorProvider = (props: any) => {
     accountPublicKey: "",
     connectionState: "disconnected",
     address: "",
+    accountXpubKey: "",
   })
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
@@ -166,6 +168,7 @@ export const UseConnectorProvider = (props: any) => {
           "connected",
           event.data.result.accountPublicKey,
           event.data.result.address,
+          event.data.result.xpubKey,
         )
         resolvePromise(handleSuccessResponse(event.data))
         break
@@ -178,11 +181,12 @@ export const UseConnectorProvider = (props: any) => {
           "connected",
           event.data.result.accountPublicKey,
           event.data.result.address,
+          event.data.result.xpubKey,
         )
         break
       case ResponseTypes.disconnectResponse:
         updateNetworkInformation({ chainId: null, networkType: "" })
-        updateWalletInformation("disconnected", "", "")
+        updateWalletInformation("disconnected", "", "", "")
         if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
       default:
@@ -302,11 +306,13 @@ export const UseConnectorProvider = (props: any) => {
     connectionState: string,
     accountPublicKey: string,
     address: string,
+    xpubKey: string,
   ) => {
     setWalletState({
       accountPublicKey: accountPublicKey,
       connectionState: connectionState,
       address: address,
+      accountXpubKey: xpubKey,
     })
   }
 
@@ -325,7 +331,7 @@ export const UseConnectorProvider = (props: any) => {
       setRequestData({
         chainId: params.chainId,
       })
-      updateWalletInformation("connecting", "", "")
+      updateWalletInformation("connecting", "", "", "")
       resolvePromise = resolve
     })
   }
@@ -351,7 +357,7 @@ export const UseConnectorProvider = (props: any) => {
       let childWindow = openWalletWindow(url)
       setRequestType(RequestTypes.disconnected)
       setChildWindow(childWindow)
-      updateWalletInformation("disconnecting", "", "")
+      updateWalletInformation("disconnecting", "", "", "")
       resolvePromise = resolve
     })
   }
