@@ -497,7 +497,6 @@ const [unsignedHex, setUnsignedHex] = React.useState<string>("")
     })
   }
 ```
-
 #### Request data types
 
 | Parameter | Type     | Description                   |
