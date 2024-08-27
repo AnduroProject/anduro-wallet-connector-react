@@ -50,20 +50,24 @@ function App () {
 
 we will use the <UseConnectorProvider /> component to connect anduro wallet extension.
 
+## Anduro Wallet supported Chains list
+
+Please refer below table for supported chain list
+
+| ID  | Chain        | Network Type |
+| :-- | :----------- | :----------- |
+| `1` | `Bitcoin`    | `mainnet`    |
+| `2` | `Coordinate` | `mainnet`    |
+| `3` | `Alys`       | `mainnet`    |
+| `4` | `Bitcoin`    | `testnet`    |
+| `5` | `Coordinate` | `testnet`    |
+| `6` | `Alys`       | `testnet`    |
+
 ### 1. Connect Anduro Wallet
 
 Connect Anduro wallet using connect function.
 
-**Parameter**
-
-chainId: 1 or 2 or 3 or 4 or 5 or 6
-
-- 1 for Bitcoin mainnet
-- 2 for Sidechain mainnet
-- 3 for Alys mainnet
-- 4 for Bitcoin testnet
-- 5 for Sidechain testnet
-- 6 for Alys testnet
+#### Request
 
 ```bash
 import React from 'react';
@@ -71,14 +75,40 @@ const { connect } = React.useContext<any>(useConnector);
 
 const handleConnectResponse = async () => {
   const result = await connect({
-   chainId
+   chainId: 4,
   })
 }
 ```
 
+#### Request data types
+
+| Parameter | Type     | Description                                                                      |
+| :-------- | :------- | :------------------------------------------------------------------------------- |
+| `chainId` | `number` | **Required**. Please refer to the to the supported chain list table for chainID. |
+
+#### Response
+
+```response
+{
+  error: null,
+  result: "wallet connected successfully.",
+  status: true
+}
+```
+
+#### Response data types
+
+| Parameter | Type             | Description                       |
+| :-------- | :--------------- | :-------------------------------- |
+| `error`   | `string OR null` | error for the connection request  |
+| `result`  | `string OR null` | result for the connection request |
+| `status`  | `boolean`        | status for the connection request |
+
 ### 2. Disconnect Anduro Wallet
 
 Disconnect Anduro wallet using disconnect function.
+
+#### Request
 
 ```bash
 import React from 'react';
@@ -89,15 +119,27 @@ const handleDisConnectResponse = async () => {
 }
 ```
 
+#### Response
+
+```response
+{
+  error: null,
+  result: "The site has been removed.",
+  status: true
+}
+```
+
+#### Response data types
+
+| Parameter | Type             | Description                       |
+| :-------- | :--------------- | :-------------------------------- |
+| `error`   | `string OR null` | error for the disconnect request  |
+| `result`  | `string OR null` | result for the disconnect request |
+| `status`  | `boolean`        | status for the disconnect request |
+
 ### 3. Transfer Asset
 
 Create Asset transfer in anduro wallet using transfer asset function
-
-**Parameters**
-
-assetId: The asset ID \
-receiverAddress: Receiver Address \
-supply: supply to transfer
 
 ```bash
 import { useConnector } from 'anduro-wallet-connector';
@@ -111,6 +153,24 @@ const handleTransferFunction = async () => {
     receiverAddress: "ccrt1qy6302x6qm8084tfwuf2hagfe8ndvpevg3u5n2j",
     supply: 10,
   })
+}
+```
+
+#### Request data types
+
+| Parameter         | Type     | Description                      |
+| :---------------- | :------- | :------------------------------- |
+| `assetId`         | `number` | **Required** . The asset ID      |
+| `receiverAddress` | `string` | **Required**. Receiver Address   |
+| `supply`          | `number` | **Required**. supply to transfer |
+
+#### Response
+
+```response
+{
+  error: null,
+  result: "The site has been removed.",
+  status: true
 }
 ```
 

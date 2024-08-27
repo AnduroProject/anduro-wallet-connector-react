@@ -18,7 +18,7 @@ export const ConnectorVC = () => {
   const [rawHex, setRawHex] = React.useState<string>("")
   const handleConnectionAction = async () => {
     const result = await connect({
-      chainId: 2,
+      chainId: 5,
     })
     console.log("*******Connect Result", result)
     if (result.status === true) {
