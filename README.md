@@ -225,16 +225,6 @@ walletState: {"accountPublicKey":"03fb98b76e6fc5225a9e00bd56d2c1bf3949dbf09eef62
 
 ### 5. Send / Convert ( BTC and CBTC )
 
-**Parameters**
-
-transactionType:\
-1.normal - Send BTC / CBTC \
-2.pegin - Convert BTC to CBTC \
-3.pegout - Convert CBTC to BTC\
-amount: transaction amount\
-receiverAddress: (Optional) Receiver address ( Sidechain address / bitcoin address )\
-feeRate: (Optional) Fee rate per virtual byte
-
 ```bash
 import { useConnector } from 'anduro-wallet-connector';
 import React from 'react';
@@ -258,7 +248,7 @@ const handleSendAction = async () => {
 | `transactionType` | `string` | **Required** . normal(Send BTC / CBTC) OR pegin(Convert BTC to CBTC) OR pegout(Convert CBTC to BTC) |
 | `amount`          | `number` | **Required**. Amount to transfer in BTC                                                             |
 | `receiverAddress` | `string` | **Required**. for normal transaction. **Optional**. for peg transaction                             |
-| `feeRate`         | `number` | **Optional**. fee rate per byte                                                                     |
+| `feeRate`         | `number` | **Optional**. Fee rate per virtual byte                                                             |
 
 #### Response
 
@@ -462,10 +452,6 @@ const [rawHex, setRawHex] = React.useState<string>("");
 
 Send Alys Transaction to be connected chain using the send Alys Transaction function .
 
-**Parameter**
-
-hex: PSBT raw hex
-
 ```bash
 import React from 'react';
 const { sendAlys } = React.useContext<any>(useConnector);
@@ -477,3 +463,30 @@ const [unsignedHex, setUnsignedHex] = React.useState<string>("")
     })
   }
 ```
+
+#### Request data types
+
+| Parameter | Type     | Description                   |
+| :-------- | :------- | :---------------------------- |
+| `hex`     | `string` | **Required** . serialized hex |
+
+#### Response
+
+```response
+{
+  error: null,
+  result:
+  {
+    txid: "0x811165a6cc8d80b5771359556dfd149f4cb19f03284a76b987c821ce01f3a80d"
+  },
+  status: true
+}
+```
+
+#### Response data types
+
+| Parameter | Type             | Description                        |
+| :-------- | :--------------- | :--------------------------------- |
+| `error`   | `string OR null` | error for the transaction request  |
+| `result`  | `Object OR null` | result for the transaction request |
+| `status`  | `boolean`        | status for the transaction request |
