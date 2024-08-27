@@ -4,7 +4,7 @@ Anduro Wallet Connector is a React library that will enable users to easily conn
 
 - Connect
 - Disconnect
-- networkInfo
+- NetworkInfo (initialize)
 - Send transaction ( BTC & CBTC )
 - Asset transfer
 - Convert ( BTC to CBTC )
@@ -171,7 +171,7 @@ status: true
 | `result`  | `Object OR null` | result for the networkInfo request |
 | `status`  | `boolean`        | status for the networkInfo request |
 
-### 3. Transfer Asset
+### 4. Transfer Asset
 
 Create Asset transfer in anduro wallet using transfer asset function
 
@@ -219,7 +219,7 @@ const handleTransferFunction = async () => {
 | `result`  | `Object OR null` | result for the asset transfer request |
 | `status`  | `boolean`        | status for the asset transfer request |
 
-### 4. Network and wallet informations
+### 5. Network and wallet informations
 
 We provide network and wallet information
 
@@ -257,7 +257,7 @@ walletState: {"accountPublicKey":"03fb98b76e6fc5225a9e00bd56d2c1bf3949dbf09eef62
 | `address`          | `string` | connected chain account address    |
 | `accountXpubKey`   | `string` | connected chain xpub key address   |
 
-### 5. Send / Convert ( BTC and CBTC )
+### 6. Send / Convert ( BTC and CBTC )
 
 ```bash
 import { useConnector } from 'anduro-wallet-connector';
@@ -305,7 +305,7 @@ const handleSendAction = async () => {
 | `result`  | `Object OR null` | result for the transfer request |
 | `status`  | `boolean`        | status for the transfer request |
 
-### 6. Sign Message
+### 7. Sign Message
 
 Sign Anduro wallet using sign function.
 
@@ -344,7 +344,7 @@ const handleConnectResponse = async () => {
 | `result`  | `string OR null` | result for the sign request |
 | `status`  | `boolean`        | status for the sign request |
 
-### 7. Sign Transactions
+### 8. Sign Transactions
 
 Sign the PSBT raw hex using the signTransaction function.
 
@@ -391,7 +391,7 @@ transactionSize: 209,
 | `result`  | `Object OR null` | result for the sign request |
 | `status`  | `boolean`        | status for the sign request |
 
-### 8. Send Transactions
+### 9. Send Transactions
 
 Send a signed PSBT hex to the connected chain using the sendTransaction function.
 
@@ -434,7 +434,7 @@ const [signedHex, setSignedHex] = React.useState<string>("")
 | `result`  | `string OR null` | transaction ID              |
 | `status`  | `boolean`        | status for the sign request |
 
-### 9. Sign And Send Transactions
+### 10. Sign And Send Transactions
 
 Sign and send a transaction to the connected chain using the signAndSendTransaction function.
 
@@ -482,7 +482,7 @@ const [rawHex, setRawHex] = React.useState<string>("");
 | `result`  | `string OR null` | transaction ID              |
 | `status`  | `boolean`        | status for the sign request |
 
-### 10. Send Alys transaction
+### 11. Send Alys transaction
 
 Send Alys Transaction to be connected chain using the send Alys Transaction function .
 
@@ -497,6 +497,7 @@ const [unsignedHex, setUnsignedHex] = React.useState<string>("")
     })
   }
 ```
+
 #### Request data types
 
 | Parameter | Type     | Description                   |
