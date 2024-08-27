@@ -4,6 +4,7 @@ Anduro Wallet Connector is a React library that will enable users to easily conn
 
 - Connect
 - Disconnect
+- networkInfo
 - Send transaction ( BTC & CBTC )
 - Asset transfer
 - Convert ( BTC to CBTC )
@@ -116,6 +117,39 @@ const { disconnect } = React.useContext<any>(useConnector);
 
 const handleDisConnectResponse = async () => {
   const result = await disconnect()
+}
+```
+
+#### Response
+
+```response
+{
+  error: null,
+  result: "The site has been removed.",
+  status: true
+}
+```
+
+#### Response data types
+
+| Parameter | Type             | Description                       |
+| :-------- | :--------------- | :-------------------------------- |
+| `error`   | `string OR null` | error for the disconnect request  |
+| `result`  | `string OR null` | result for the disconnect request |
+| `status`  | `boolean`        | status for the disconnect request |
+
+### 3. Get Network And Wallet Info
+
+Get Anduro wallet network and wallet info using networkInfo function.
+
+#### Request
+
+```bash
+import React from 'react';
+const { networkInfo } = React.useContext<any>(useConnector);
+
+const handleNetworkInfo = async () => {
+  const result = await networkInfo()
 }
 ```
 
