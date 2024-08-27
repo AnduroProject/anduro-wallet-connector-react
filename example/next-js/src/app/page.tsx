@@ -19,7 +19,7 @@ export default function Home() {
   const [rawHex, setRawHex] = React.useState<string>("")
   const handleConnectionAction = async () => {
     const result = await connect({
-      chainId: 1,
+      chainId: 4,
     })
     console.log("*******Connect Result", result)
     if (result.status === true) {
@@ -107,16 +107,15 @@ export default function Home() {
                 buttonName="Disconnect"
                 handleClickAction={handleDisconnectionAction}
               />
-              <div className="col-sm-12 col-md-12 col-lg-7">
-                <div className="input_padd">
-                  <input
-                    id="name"
-                    type="text"
-                    placeholder="RAW HEX"
-                    value={rawHex}
-                    onChange={(event) => setRawHex(event.target.value)}
-                  />
-                </div>
+              <div className="widset_parent">
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="RAW HEX"
+                  value={rawHex}
+                  onChange={(event) => setRawHex(event.target.value)}
+                  className="hex_input"
+                />
               </div>
               <ConnectorVW
                 title="Sign Transaction"
