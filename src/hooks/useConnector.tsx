@@ -56,6 +56,7 @@ interface TransferAssetParams {
 }
 interface SignTransactionParams {
   hex: string
+  transactionType: string
 }
 enum RequestTypes {
   connect = "connect",
@@ -70,7 +71,7 @@ enum RequestTypes {
   signTransaction = "sign-transaction",
   sendTransaction = "send-transaction",
   signAndSendTransaction = "sign-and-send-transaction",
-  sendAlys = "send-alys"
+  sendAlys = "send-alys",
 }
 
 enum ResponseTypes {
@@ -257,8 +258,9 @@ export const UseConnectorProvider = (props: any) => {
         requestType: requestType,
         chainId: networkState.chainId,
         hex: signTransactionData?.hex,
+        transactionType: signTransactionData?.transactionType,
       })
-    }  else if (requestType === RequestTypes.sendAlys) {
+    } else if (requestType === RequestTypes.sendAlys) {
       sendMessageToChildWindow({
         requestType: requestType,
         chainId: networkState.chainId,
@@ -527,7 +529,7 @@ export const UseConnectorProvider = (props: any) => {
       }
     })
   }
-  
+
   /**
    * The following function used for sign process
    *
@@ -547,13 +549,13 @@ export const UseConnectorProvider = (props: any) => {
     })
   }
 
-   /**
+  /**
    * The following function used for sign process
    *
    * @param hex The raw transaction hex
    *
    */
-   const signAlysTransaction = (params: SignTransactionParams) => {
+  const signAlysTransaction = (params: SignTransactionParams) => {
     console.log("params----------------", params)
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
@@ -575,7 +577,10 @@ export const UseConnectorProvider = (props: any) => {
    */
   const sendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      if (checkWalletConnection(resolve, "")) {
+      if (
+        checkWalletConnection(resolve, "") &&
+        validateTransactionVersion(params.transactionType, resolve)
+      ) {
         const url = `${WALLETURL}?requestType=${RequestTypes.sendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.sendTransaction)
@@ -593,7 +598,10 @@ export const UseConnectorProvider = (props: any) => {
    */
   const signAndSendTransaction = (params: SignTransactionParams) => {
     return new Promise((resolve) => {
-      if (checkWalletConnection(resolve, "")) {
+      if (
+        checkWalletConnection(resolve, "") &&
+        validateTransactionVersion(params.transactionType, resolve)
+      ) {
         const url = `${WALLETURL}?requestType=${RequestTypes.signAndSendTransaction}`
         let childWindow = openWalletWindow(url)
         setRequestType(RequestTypes.signAndSendTransaction)
@@ -602,6 +610,18 @@ export const UseConnectorProvider = (props: any) => {
         resolvePromise = resolve
       }
     })
+  }
+  const validateTransactionVersion = (type: string, resolve: any): boolean => {
+    const transactionTypes: string[] = ["normal", "premium"]
+    if (!transactionTypes.includes(type)) {
+      resolve({
+        status: false,
+        result: null,
+        error: ERROR_MESSAGES.transactionTypeInvalid,
+      })
+      return false
+    }
+    return true
   }
 
   const { children } = props
@@ -620,7 +640,7 @@ export const UseConnectorProvider = (props: any) => {
         signTransaction,
         sendTransaction,
         signAndSendTransaction,
-        signAlysTransaction
+        signAlysTransaction,
       }}
     >
       {children}
