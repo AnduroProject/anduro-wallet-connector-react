@@ -183,6 +183,7 @@ hex: PSBT raw hex
 ```bash
 import React from 'react';
 const { signTransaction } = React.useContext<any>(useConnector);
+const [rawHex, setRawHex] = React.useState<string>("");
 
   const signTransactions = async () => {
     const signResult = await signTransaction({
@@ -207,6 +208,7 @@ type: normal OR premium
 ```bash
 import React from 'react';
 const { sendTransaction } = React.useContext<any>(useConnector);
+const [signedHex, setSignedHex] = React.useState<string>("")
 
   const sendTransactions = async (type: string) => {
     const sendResult = await sendTransaction({
@@ -229,6 +231,7 @@ type: normal OR premium
 ```bash
 import React from 'react';
 const { signAndSendTransaction } = React.useContext<any>(useConnector);
+const [rawHex, setRawHex] = React.useState<string>("");
 
   const signAndSendTransactions = async (type: string) => {
     const transactionResult = await signAndSendTransaction({
@@ -239,7 +242,7 @@ const { signAndSendTransaction } = React.useContext<any>(useConnector);
   }
 ```
 
-### 10. Send Alys transaction 
+### 10. Send Alys transaction
 
 Send Alys Transaction to be connected chain using the send Alys Transaction function .
 
@@ -259,7 +262,7 @@ const {unsignedHex, setUnsignedHex} = React.useState<string>("")
   }
 ```
 
-### 11. Sign Message 
+### 11. Sign Message
 
 Sign Message to get hex .
 
