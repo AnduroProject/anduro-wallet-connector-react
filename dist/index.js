@@ -356,6 +356,7 @@ var UseConnectorProvider = function(props) {
             case "networkinfo-response" /* networkinfoResponse */ :
                 updateNetworkInformation(event.data.result);
                 updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address, event.data.result.xpubKey);
+                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
                 break;
             case "disconnect-response" /* disconnectResponse */ :
                 updateNetworkInformation({

@@ -188,6 +188,7 @@ export const UseConnectorProvider = (props: any) => {
           event.data.result.address,
           event.data.result.xpubKey,
         )
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         break
       case ResponseTypes.disconnectResponse:
         updateNetworkInformation({ chainId: null, networkType: "" })
