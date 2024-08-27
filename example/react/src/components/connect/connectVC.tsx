@@ -18,7 +18,7 @@ export const ConnectorVC = () => {
   const [rawHex, setRawHex] = React.useState<string>("")
   const handleConnectionAction = async () => {
     const result = await connect({
-      chainId: 2,
+      chainId: 4,
     })
     console.log("*******Connect Result", result)
     if (result.status === true) {
@@ -28,7 +28,7 @@ export const ConnectorVC = () => {
   }
   const handleNetworkInfo = async () => {
     const result = await networkInfo()
-    console.log("*******handle NetworkInfo Result", result)
+    console.log("*******INITIALIZE RESULT", result)
 
     if (result.status === true) {
       localStorage.setItem("isWalletConnected", "true")
