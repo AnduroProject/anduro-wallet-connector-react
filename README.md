@@ -12,6 +12,7 @@ Anduro Wallet Connector is a React library that will enable users to easily conn
 - Sign transaction
 - Send transaction
 - Sign and send transaction
+- Send Alys transaction
 
 ## Examples
 
@@ -235,5 +236,45 @@ const { signAndSendTransaction } = React.useContext<any>(useConnector);
       transactionType: type,
     })
     console.log("===== SIGN AND SEND TRANSACTION RESULT EXAMPLE ======", transactionResult)
+  }
+```
+
+### 10. Send Alys transaction 
+
+Send Alys Transaction to be connected chain using the send Alys Transaction function .
+
+**Parameter**
+
+hex: PSBT raw hex
+
+```bash
+import React from 'react';
+const { sendAlys } = React.useContext<any>(useConnector);
+const {unsignedHex, setUnsignedHex} = React.useState<string>("")
+  const sendAlys = async () => {
+    const hex = unsignedHex
+    const transactionResult = await sendAlys({
+      hex,
+    })
+  }
+```
+
+### 11. Sign Message 
+
+Sign Message to get hex .
+
+**Parameter**
+
+message: string
+
+```bash
+import React from 'react';
+const { sign } = React.useContext<any>(useConnector);
+const {message, setMessage} = React.useState<string>("")
+  const sendAlys = async () => {
+    const hex = message
+    const signResult = await sign({
+      hex,
+    })
   }
 ```

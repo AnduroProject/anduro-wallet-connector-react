@@ -96,6 +96,9 @@ export default function Home() {
             <div className="breadcrumb">
               <Link href="/transferasset">Transfer</Link>
             </div>
+            <div className="breadcrumb">
+              <Link href="/sendAlys">Send Alys</Link>
+            </div>
           </div>
           {walletState.accountPublicKey !== "" && (
             <>
