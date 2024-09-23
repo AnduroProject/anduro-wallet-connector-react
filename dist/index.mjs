@@ -223,7 +223,7 @@ var openWalletWindow = function(url) {
     return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
 };
 // src/config/walletApi.ts
-var WALLETURL = "chrome-extension://khebhoaoppjeidmdkpdglmlhghnooijn/index.html";
+var WALLETURL = "http://localhost:3001/";
 // src/hooks/useConnector.tsx
 import { jsx } from "react/jsx-runtime";
 var useConnector = React.createContext(null);
@@ -387,7 +387,7 @@ var UseConnectorProvider = function(props) {
             accountXpubKey: xpubKey
         });
     };
-    var connect = function() {
+    var connect = /*#__PURE__*/ function() {
         var _ref = _async_to_generator(function(params) {
             return _ts_generator(this, function(_state) {
                 return [
@@ -410,7 +410,7 @@ var UseConnectorProvider = function(props) {
             return _ref.apply(this, arguments);
         };
     }();
-    var networkInfo = function() {
+    var networkInfo = /*#__PURE__*/ function() {
         var _ref = _async_to_generator(function() {
             return _ts_generator(this, function(_state) {
                 return [
