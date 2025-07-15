@@ -12,7 +12,7 @@ Purpose : This is the file that is used to handle wallet window.
  * @returns A reference to the opened window
  */
 export const openWalletWindow = (url: any) => {
-  var inputWidth = 370
+  var inputWidth = 357
   var inputHeight = 550
   const viewportwidth = document.documentElement.clientWidth
   const tempW: any = window.top?.outerWidth
