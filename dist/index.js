@@ -319,9 +319,6 @@ var UseConnectorProvider = function(props) {
     var _ref4 = _sliced_to_array((0, import_react.useState)(), 2), signTransactionData = _ref4[0], setSignTransactionData = _ref4[1];
     (0, import_react.useEffect)(function() {
         console.log("====window", window);
-        console.log("====childWindow", childWindow);
-        console.log("====req type", requestType);
-        console.log("------------.");
         if (childWindow === null && requestType != void 0) {
             console.log("child window statuss====");
             console.log("Child window did not open or was blocked");
@@ -337,9 +334,29 @@ var UseConnectorProvider = function(props) {
             };
         }
     }, [
-        childWindow,
-        requestType
+        childWindow
     ]);
+    (0, import_react.useEffect)(function() {
+        console.log("====childWindow", childWindow);
+        if (!childWindow) return;
+        console.log("====req type", requestType);
+        var interval = setInterval(function() {
+            if (childWindow && childWindow.closed) {
+                console.log("Child window was closed by user");
+                clearInterval(interval);
+                setChildWindow(null);
+                handleChildWindowClosed();
+            }
+        }, 500);
+        return function() {
+            return clearInterval(interval);
+        };
+    }, [
+        childWindow
+    ]);
+    var handleChildWindowClosed = function() {
+        console.log("closed notify user");
+    };
     var handleMessage = function(event) {
         if (!event.data.type) return false;
         if (event.data.type == "webpackOk" || event.data.error && event.data.error.type === "webpackInvalid") return false;
