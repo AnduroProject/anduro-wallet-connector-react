@@ -79,7 +79,7 @@ function _unsupported_iterable_to_array(o, minLen) {
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
 }
 function _ts_generator(thisArg, body) {
-    var f, y, t, g, _ = {
+    var f, y, t, _ = {
         label: 0,
         sent: function() {
             if (t[0] & 1) throw t[1];
@@ -87,12 +87,8 @@ function _ts_generator(thisArg, body) {
         },
         trys: [],
         ops: []
-    };
-    return g = {
-        next: verb(0),
-        "throw": verb(1),
-        "return": verb(2)
-    }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+    }, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() {
         return this;
     }), g;
     function verb(n) {
@@ -105,7 +101,7 @@ function _ts_generator(thisArg, body) {
     }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while(_)try {
+        while(g && (g = 0, op[0] && (_ = 0)), _)try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [
                 op[0] & 2,
@@ -232,8 +228,8 @@ var __toCommonJS = function(mod) {
     }), mod);
 };
 // src/index.ts
-var src_exports = {};
-__export(src_exports, {
+var index_exports = {};
+__export(index_exports, {
     UseConnectorProvider: function() {
         return UseConnectorProvider;
     },
@@ -241,7 +237,7 @@ __export(src_exports, {
         return useConnector;
     }
 });
-module.exports = __toCommonJS(src_exports);
+module.exports = __toCommonJS(index_exports);
 // src/hooks/useConnector.tsx
 var import_react = __toESM(require("react"));
 // src/helpers/errorMessages.tsx
@@ -281,7 +277,7 @@ var handleSuccessResponse = function() {
 // src/helpers/handleWalletWindow.tsx
 var openWalletWindow = function(url) {
     var _window_top, _window_top1, _window_top2, _window_top3;
-    var inputWidth = 370;
+    var inputWidth = 357;
     var inputHeight = 550;
     var viewportwidth = document.documentElement.clientWidth;
     var tempW = (_window_top = window.top) === null || _window_top === void 0 ? void 0 : _window_top.outerWidth;
@@ -297,7 +293,7 @@ var openWalletWindow = function(url) {
     return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
 };
 // src/config/walletApi.ts
-var WALLETURL = "chrome-extension://khebhoaoppjeidmdkpdglmlhghnooijn/index.html";
+var WALLETURL = "chrome-extension://boohjgfaemajffnpnmcmoccdgmlaehgb/index.html";
 // src/hooks/useConnector.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var useConnector = import_react.default.createContext(null);
@@ -322,14 +318,27 @@ var UseConnectorProvider = function(props) {
     }), 2), walletState = _import_react_default_useState4[0], setWalletState = _import_react_default_useState4[1];
     var _ref4 = _sliced_to_array((0, import_react.useState)(), 2), signTransactionData = _ref4[0], setSignTransactionData = _ref4[1];
     (0, import_react.useEffect)(function() {
+        console.log("====window", window);
+        console.log("====childWindow", childWindow);
+        console.log("====req type", requestType);
+        console.log("------------.");
+        if (childWindow === null && requestType != void 0) {
+            console.log("child window statuss====");
+            console.log("Child window did not open or was blocked");
+        }
+        if (childWindow && childWindow.closed) {
+            console.log("child window clsoeddd====");
+        }
         if (childWindow != null) {
+            console.log("====test");
             window.addEventListener("message", handleMessage);
             return function() {
                 window.removeEventListener("message", handleMessage);
             };
         }
     }, [
-        childWindow
+        childWindow,
+        requestType
     ]);
     var handleMessage = function(event) {
         if (!event.data.type) return false;
@@ -461,8 +470,8 @@ var UseConnectorProvider = function(props) {
             accountXpubKey: xpubKey
         });
     };
-    var connect = /*#__PURE__*/ function() {
-        var _ref = _async_to_generator(function(params) {
+    var connect = function(params) {
+        return _async_to_generator(function() {
             return _ts_generator(this, function(_state) {
                 return [
                     2,
@@ -479,13 +488,10 @@ var UseConnectorProvider = function(props) {
                     })
                 ];
             });
-        });
-        return function connect(params) {
-            return _ref.apply(this, arguments);
-        };
-    }();
-    var networkInfo = /*#__PURE__*/ function() {
-        var _ref = _async_to_generator(function() {
+        })();
+    };
+    var networkInfo = function() {
+        return _async_to_generator(function() {
             return _ts_generator(this, function(_state) {
                 return [
                     2,
@@ -498,11 +504,8 @@ var UseConnectorProvider = function(props) {
                     })
                 ];
             });
-        });
-        return function networkInfo() {
-            return _ref.apply(this, arguments);
-        };
-    }();
+        })();
+    };
     var disconnect = function() {
         return new Promise(function(resolve) {
             var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ , "&from=").concat(window.location.origin);

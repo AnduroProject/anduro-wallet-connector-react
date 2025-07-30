@@ -130,13 +130,46 @@ export const UseConnectorProvider = (props: any) => {
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
 
   useEffect(() => {
+    console.log("====window", window)
+    if (childWindow === null && requestType != undefined) {
+      console.log("child window statuss====")
+      console.log("Child window did not open or was blocked")
+    }
+    if (childWindow && childWindow.closed) {
+      console.log("child window clsoeddd====")
+    }
+
     if (childWindow != null) {
+      console.log("====test")
+
       window.addEventListener("message", handleMessage)
       return () => {
         window.removeEventListener("message", handleMessage)
       }
     }
   }, [childWindow])
+
+  useEffect(() => {
+    console.log("====childWindow", childWindow)
+
+    if (!childWindow) return
+    console.log("====req type", requestType)
+
+    const interval = setInterval(() => {
+      if (childWindow && childWindow.closed) {
+        console.log("Child window was closed by user")
+        clearInterval(interval)
+        setChildWindow(null)
+        handleChildWindowClosed()
+      }
+    }, 500)
+
+    return () => clearInterval(interval)
+  }, [childWindow])
+
+  const handleChildWindowClosed = () => {
+    console.log("closed notify user")
+  }
 
   /**
    * The following function used for listening messages from anduro wallet extension
