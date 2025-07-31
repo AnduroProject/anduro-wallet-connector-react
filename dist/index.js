@@ -366,6 +366,7 @@ var UseConnectorProvider = function(props) {
     };
     var handleMessage = function(event) {
         console.log("====is child window", childWindow);
+        console.log("====event", event);
         if (!event.data.type) return false;
         if (event.data.type == "webpackOk" || event.data.error && event.data.error.type === "webpackInvalid") return false;
         if (event.data.type === "wallet-loaded" /* walletLoaded */ ) return handlewalletLoadedMessage();

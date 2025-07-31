@@ -185,6 +185,8 @@ export const UseConnectorProvider = (props: any) => {
    */
   const handleMessage = (event: any) => {
     console.log("====is child window", childWindow)
+    console.log("====event", event)
+
     if (!event.data.type) return false
 
     if (
