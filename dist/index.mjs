@@ -165,7 +165,7 @@ function _ts_generator(thisArg, body) {
         };
     }
 }
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 // src/helpers/errorMessages.tsx
 var FAIL_PROCESS = "Can't process your request";
 var ERROR_MESSAGES = {
@@ -243,6 +243,7 @@ var UseConnectorProvider = function(props) {
         accountXpubKey: ""
     }), 2), walletState = _React_useState4[0], setWalletState = _React_useState4[1];
     var _useState4 = _sliced_to_array(useState(), 2), signTransactionData = _useState4[0], setSignTransactionData = _useState4[1];
+    var manuallyClosedRef = useRef(false);
     useEffect(function() {
         console.log("====window", window);
         if (childWindow === null && requestType != void 0) {
@@ -264,14 +265,19 @@ var UseConnectorProvider = function(props) {
     ]);
     useEffect(function() {
         console.log("====childWindow", childWindow);
+        console.log("====manuallyClosedRef.current", manuallyClosedRef.current);
         if (!childWindow) return;
         console.log("====req type", requestType);
         var interval = setInterval(function() {
             if (childWindow && childWindow.closed) {
-                console.log("Child window was closed by user");
                 clearInterval(interval);
                 setChildWindow(null);
-                handleChildWindowClosed();
+                if (manuallyClosedRef.current) {
+                    console.log("Child window closed programmatically");
+                } else {
+                    console.log("Child window closed by user \u2716");
+                    handleChildWindowClosed();
+                }
             }
         }, 500);
         return function() {
@@ -284,6 +290,7 @@ var UseConnectorProvider = function(props) {
         console.log("closed notify user");
     };
     var handleMessage = function(event) {
+        console.log("====is child window", childWindow);
         if (!event.data.type) return false;
         if (event.data.type == "webpackOk" || event.data.error && event.data.error.type === "webpackInvalid") return false;
         if (event.data.type === "wallet-loaded" /* walletLoaded */ ) return handlewalletLoadedMessage();
@@ -300,6 +307,7 @@ var UseConnectorProvider = function(props) {
                 updateNetworkInformation(event.data.result);
                 updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address, event.data.result.xpubKey);
                 resolvePromise(handleSuccessResponse(event.data));
+                manuallyClosedRef.current = true;
                 break;
             case "account-not-created" /* accountNotCreated */ :
                 if (resolvePromise) resolvePromise(handleErrorResponse(event.data));

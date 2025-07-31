@@ -128,6 +128,7 @@ export const UseConnectorProvider = (props: any) => {
     accountXpubKey: "",
   })
   const [signTransactionData, setSignTransactionData] = useState<SignTransactionParams>()
+  const manuallyClosedRef = useRef(false)
 
   useEffect(() => {
     console.log("====window", window)
@@ -138,7 +139,6 @@ export const UseConnectorProvider = (props: any) => {
     if (childWindow && childWindow.closed) {
       console.log("child window clsoeddd====")
     }
-
     if (childWindow != null) {
       console.log("====test")
 
@@ -151,16 +151,22 @@ export const UseConnectorProvider = (props: any) => {
 
   useEffect(() => {
     console.log("====childWindow", childWindow)
+    console.log("====manuallyClosedRef.current", manuallyClosedRef.current)
 
     if (!childWindow) return
     console.log("====req type", requestType)
 
     const interval = setInterval(() => {
       if (childWindow && childWindow.closed) {
-        console.log("Child window was closed by user")
         clearInterval(interval)
         setChildWindow(null)
-        handleChildWindowClosed()
+
+        if (manuallyClosedRef.current) {
+          console.log("Child window closed programmatically")
+        } else {
+          console.log("Child window closed by user ✖")
+          handleChildWindowClosed()
+        }
       }
     }, 500)
 
@@ -178,6 +184,7 @@ export const UseConnectorProvider = (props: any) => {
    *
    */
   const handleMessage = (event: any) => {
+    console.log("====is child window", childWindow)
     if (!event.data.type) return false
 
     if (
@@ -208,6 +215,7 @@ export const UseConnectorProvider = (props: any) => {
           event.data.result.xpubKey,
         )
         resolvePromise(handleSuccessResponse(event.data))
+        manuallyClosedRef.current = true
         break
       case RequestTypes.accountNotCreated:
         if (resolvePromise) resolvePromise(handleErrorResponse(event.data))

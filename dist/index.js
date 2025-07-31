@@ -317,6 +317,7 @@ var UseConnectorProvider = function(props) {
         accountXpubKey: ""
     }), 2), walletState = _import_react_default_useState4[0], setWalletState = _import_react_default_useState4[1];
     var _ref4 = _sliced_to_array((0, import_react.useState)(), 2), signTransactionData = _ref4[0], setSignTransactionData = _ref4[1];
+    var manuallyClosedRef = (0, import_react.useRef)(false);
     (0, import_react.useEffect)(function() {
         console.log("====window", window);
         if (childWindow === null && requestType != void 0) {
@@ -338,14 +339,19 @@ var UseConnectorProvider = function(props) {
     ]);
     (0, import_react.useEffect)(function() {
         console.log("====childWindow", childWindow);
+        console.log("====manuallyClosedRef.current", manuallyClosedRef.current);
         if (!childWindow) return;
         console.log("====req type", requestType);
         var interval = setInterval(function() {
             if (childWindow && childWindow.closed) {
-                console.log("Child window was closed by user");
                 clearInterval(interval);
                 setChildWindow(null);
-                handleChildWindowClosed();
+                if (manuallyClosedRef.current) {
+                    console.log("Child window closed programmatically");
+                } else {
+                    console.log("Child window closed by user \u2716");
+                    handleChildWindowClosed();
+                }
             }
         }, 500);
         return function() {
@@ -358,6 +364,7 @@ var UseConnectorProvider = function(props) {
         console.log("closed notify user");
     };
     var handleMessage = function(event) {
+        console.log("====is child window", childWindow);
         if (!event.data.type) return false;
         if (event.data.type == "webpackOk" || event.data.error && event.data.error.type === "webpackInvalid") return false;
         if (event.data.type === "wallet-loaded" /* walletLoaded */ ) return handlewalletLoadedMessage();
@@ -374,6 +381,7 @@ var UseConnectorProvider = function(props) {
                 updateNetworkInformation(event.data.result);
                 updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address, event.data.result.xpubKey);
                 resolvePromise(handleSuccessResponse(event.data));
+                manuallyClosedRef.current = true;
                 break;
             case "account-not-created" /* accountNotCreated */ :
                 if (resolvePromise) resolvePromise(handleErrorResponse(event.data));
