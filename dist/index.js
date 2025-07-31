@@ -386,11 +386,13 @@ var UseConnectorProvider = function(props) {
                 break;
             case "account-not-created" /* accountNotCreated */ :
                 if (resolvePromise) resolvePromise(handleErrorResponse(event.data));
+                manuallyClosedRef.current = true;
                 break;
             case "networkinfo-response" /* networkinfoResponse */ :
                 updateNetworkInformation(event.data.result);
                 updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address, event.data.result.xpubKey);
                 if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
+                manuallyClosedRef.current = true;
                 break;
             case "disconnect-response" /* disconnectResponse */ :
                 updateNetworkInformation({
@@ -399,9 +401,11 @@ var UseConnectorProvider = function(props) {
                 });
                 updateWalletInformation("disconnected", "", "", "");
                 if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
+                manuallyClosedRef.current = true;
                 break;
             default:
                 if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
+                manuallyClosedRef.current = true;
                 break;
         }
     };
@@ -525,6 +529,7 @@ var UseConnectorProvider = function(props) {
                     new Promise(function(resolve) {
                         var url = "".concat(WALLETURL, "?requestType=", "networkinfo" /* networkinfo */ );
                         var childWindow2 = openWalletWindow(url);
+                        manuallyClosedRef.current = false;
                         setRequestType("networkinfo" /* networkinfo */ );
                         setChildWindow(childWindow2);
                         resolvePromise = resolve;
@@ -537,6 +542,7 @@ var UseConnectorProvider = function(props) {
         return new Promise(function(resolve) {
             var url = "".concat(WALLETURL, "?requestType=", "disconnect" /* disconnected */ , "&from=").concat(window.location.origin);
             var childWindow2 = openWalletWindow(url);
+            manuallyClosedRef.current = false;
             setRequestType("disconnect" /* disconnected */ );
             setChildWindow(childWindow2);
             updateWalletInformation("disconnecting", "", "", "");
@@ -551,6 +557,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "") && params.transactionType) {
                 var url = "".concat(WALLETURL, "?requestType=", "send" /* send */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("send" /* send */ );
                 setChildWindow(childWindow2);
                 setTransactionData(params);
@@ -600,6 +607,7 @@ var UseConnectorProvider = function(props) {
             if (params.transactionType && checkWalletConnection(resolve, params.transactionType)) {
                 var url = "".concat(WALLETURL, "?requestType=", "create-asset" /* createAsset */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("create-asset" /* createAsset */ );
                 setChildWindow(childWindow2);
                 setCreateAssetData(params);
@@ -615,6 +623,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "transfer")) {
                 var url = "".concat(WALLETURL, "?requestType=", "transfer-asset" /* transferAsset */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("transfer-asset" /* transferAsset */ );
                 setChildWindow(childWindow2);
                 setTransferAssetData(params);
@@ -640,6 +649,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(WALLETURL, "?requestType=", "sign-transaction" /* signTransaction */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("sign-transaction" /* signTransaction */ );
                 setChildWindow(childWindow2);
                 setSignTransactionData(params);
@@ -653,6 +663,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-alys" /* sendAlys */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("send-alys" /* sendAlys */ );
                 setChildWindow(childWindow2);
                 console.log("params-------------------- : ", params);
@@ -666,6 +677,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "") && validateTransactionVersion(params.transactionType, resolve)) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-transaction" /* sendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("send-transaction" /* sendTransaction */ );
                 setChildWindow(childWindow2);
                 setSignTransactionData(params);
@@ -678,6 +690,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "") && validateTransactionVersion(params.transactionType, resolve)) {
                 var url = "".concat(WALLETURL, "?requestType=", "sign-and-send-transaction" /* signAndSendTransaction */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("sign-and-send-transaction" /* signAndSendTransaction */ );
                 setChildWindow(childWindow2);
                 setSignTransactionData(params);
