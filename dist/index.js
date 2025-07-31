@@ -268,6 +268,7 @@ var handleErrorResponse = function() {
 };
 var handleSuccessResponse = function() {
     var result = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
+    console.log("====result of success", result);
     return {
         status: true,
         result: result.result ? result.result : result,
