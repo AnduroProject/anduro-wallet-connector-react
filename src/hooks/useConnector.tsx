@@ -372,6 +372,8 @@ export const UseConnectorProvider = (props: any) => {
     return new Promise((resolve) => {
       const url = `${WALLETURL}?requestType=${RequestTypes.connect}`
       let childWindow = openWalletWindow(url)
+      manuallyClosedRef.current = false
+
       setRequestType(RequestTypes.connect)
       setChildWindow(childWindow)
       setRequestData({
@@ -574,6 +576,8 @@ export const UseConnectorProvider = (props: any) => {
       if (checkWalletConnection(resolve, "")) {
         const url = `${WALLETURL}?requestType=${RequestTypes.sign}`
         let childWindow = openWalletWindow(url)
+        manuallyClosedRef.current = false
+
         setRequestType(RequestTypes.sign)
         setChildWindow(childWindow)
         setSignData(params)

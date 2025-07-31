@@ -429,6 +429,7 @@ var UseConnectorProvider = function(props) {
                     new Promise(function(resolve) {
                         var url = "".concat(WALLETURL, "?requestType=", "connect" /* connect */ );
                         var childWindow2 = openWalletWindow(url);
+                        manuallyClosedRef.current = false;
                         setRequestType("connect" /* connect */ );
                         setChildWindow(childWindow2);
                         setRequestData({
@@ -551,6 +552,7 @@ var UseConnectorProvider = function(props) {
             if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(WALLETURL, "?requestType=", "sign" /* sign */ );
                 var childWindow2 = openWalletWindow(url);
+                manuallyClosedRef.current = false;
                 setRequestType("sign" /* sign */ );
                 setChildWindow(childWindow2);
                 setSignData(params);
