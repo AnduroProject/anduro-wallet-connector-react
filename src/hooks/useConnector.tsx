@@ -165,6 +165,8 @@ export const UseConnectorProvider = (props: any) => {
           console.log("Child window closed programmatically")
         } else {
           console.log("Child window closed by user ✖")
+          childWindow.postMessage("CANCELED", "*")
+
           handleChildWindowClosed()
         }
       }

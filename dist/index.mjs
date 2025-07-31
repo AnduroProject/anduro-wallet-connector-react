@@ -277,6 +277,7 @@ var UseConnectorProvider = function(props) {
                     console.log("Child window closed programmatically");
                 } else {
                     console.log("Child window closed by user \u2716");
+                    childWindow.postMessage("CANCELED", "*");
                     handleChildWindowClosed();
                 }
             }
