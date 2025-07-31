@@ -291,7 +291,8 @@ var openWalletWindow = function(url) {
         x = viewportwidth - 300;
         y = 0;
     }
-    return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
+    var popup = window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
+    return popup;
 };
 // src/config/walletApi.ts
 var WALLETURL = "chrome-extension://boohjgfaemajffnpnmcmoccdgmlaehgb/index.html";
@@ -406,7 +407,7 @@ var UseConnectorProvider = function(props) {
                 manuallyClosedRef.current = true;
                 break;
             default:
-                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
+                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data), childWindow);
                 manuallyClosedRef.current = true;
                 break;
         }

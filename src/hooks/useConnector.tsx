@@ -246,7 +246,7 @@ export const UseConnectorProvider = (props: any) => {
 
         break
       default:
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data), childWindow)
         manuallyClosedRef.current = true
 
         break
@@ -384,6 +384,7 @@ export const UseConnectorProvider = (props: any) => {
     return new Promise((resolve) => {
       const url = `${WALLETURL}?requestType=${RequestTypes.connect}`
       let childWindow = openWalletWindow(url)
+
       manuallyClosedRef.current = false
 
       setRequestType(RequestTypes.connect)

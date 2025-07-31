@@ -25,9 +25,15 @@ export const openWalletWindow = (url: any) => {
     x = viewportwidth - 300
     y = 0
   }
-  return window.open(
+  const popup = window.open(
     url,
     "_blank",
     `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${inputWidth}, height=${inputHeight}, right=0, top=${y}, left=${x}`,
   )
+  // return window.open(
+  //   url,
+  //   "_blank",
+  //   `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${inputWidth}, height=${inputHeight}, right=0, top=${y}, left=${x}`,
+  // )
+  return popup
 }
