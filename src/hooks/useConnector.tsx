@@ -218,7 +218,7 @@ export const UseConnectorProvider = (props: any) => {
           event.data.result.address,
           event.data.result.xpubKey,
         )
-        resolvePromise(handleSuccessResponse(event.data))
+        resolvePromise(handleSuccessResponse(event.data, ""))
         manuallyClosedRef.current = true
         break
       case RequestTypes.accountNotCreated:
@@ -234,19 +234,19 @@ export const UseConnectorProvider = (props: any) => {
           event.data.result.address,
           event.data.result.xpubKey,
         )
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, ""))
         manuallyClosedRef.current = true
 
         break
       case ResponseTypes.disconnectResponse:
         updateNetworkInformation({ chainId: null, networkType: "" })
         updateWalletInformation("disconnected", "", "", "")
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, ""))
         manuallyClosedRef.current = true
 
         break
       default:
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data), childWindow)
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, childWindow))
         manuallyClosedRef.current = true
 
         break

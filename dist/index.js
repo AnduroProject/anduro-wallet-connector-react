@@ -267,12 +267,14 @@ var handleErrorResponse = function() {
     };
 };
 var handleSuccessResponse = function() {
-    var result = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
+    var result = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null, window2 = arguments.length > 1 ? arguments[1] : void 0;
     console.log("====result of success", result);
+    console.log("====window in  success", window2);
     return {
         status: true,
         result: result.result ? result.result : result,
-        error: null
+        error: null,
+        window: window2
     };
 };
 // src/helpers/handleWalletWindow.tsx
@@ -384,7 +386,7 @@ var UseConnectorProvider = function(props) {
             case "connection-response" /* connectionResponse */ :
                 updateNetworkInformation(event.data.result);
                 updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address, event.data.result.xpubKey);
-                resolvePromise(handleSuccessResponse(event.data));
+                resolvePromise(handleSuccessResponse(event.data, ""));
                 manuallyClosedRef.current = true;
                 break;
             case "account-not-created" /* accountNotCreated */ :
@@ -394,7 +396,7 @@ var UseConnectorProvider = function(props) {
             case "networkinfo-response" /* networkinfoResponse */ :
                 updateNetworkInformation(event.data.result);
                 updateWalletInformation("connected", event.data.result.accountPublicKey, event.data.result.address, event.data.result.xpubKey);
-                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
+                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, ""));
                 manuallyClosedRef.current = true;
                 break;
             case "disconnect-response" /* disconnectResponse */ :
@@ -403,11 +405,11 @@ var UseConnectorProvider = function(props) {
                     networkType: ""
                 });
                 updateWalletInformation("disconnected", "", "", "");
-                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data));
+                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, ""));
                 manuallyClosedRef.current = true;
                 break;
             default:
-                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data), childWindow);
+                if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, childWindow));
                 manuallyClosedRef.current = true;
                 break;
         }

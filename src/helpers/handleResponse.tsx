@@ -18,7 +18,13 @@ export const handleErrorResponse = (error: any = null) => {
  * The following function used to handle success response structure
  * @param result
  */
-export const handleSuccessResponse = (result: any = null) => {
+export const handleSuccessResponse = (result: any = null, window: any) => {
   console.log("====result of success", result)
-  return { status: true, result: result.result ? result.result : result, error: null }
+  console.log("====window in  success", window)
+  return {
+    status: true,
+    result: result.result ? result.result : result,
+    error: null,
+    window: window,
+  }
 }
