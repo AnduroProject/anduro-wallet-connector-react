@@ -151,7 +151,10 @@ export const UseConnectorProvider = (props: any) => {
 
   useEffect(() => {
     console.log("====childWindow", childWindow)
+    console.log("====childWindow")
+
     console.log("====manuallyClosedRef.current", manuallyClosedRef.current)
+    console.log("====request data 11", requestData)
 
     if (!childWindow) return
     console.log("====req type", requestType)
@@ -200,7 +203,7 @@ export const UseConnectorProvider = (props: any) => {
    */
   const handleMessage = (event: any) => {
     console.log("====is child window", childWindow)
-    console.log("====event", event)
+    console.log("====request data", requestData)
 
     if (!event.data.type) return false
 
