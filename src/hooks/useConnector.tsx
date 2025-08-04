@@ -177,8 +177,10 @@ export const UseConnectorProvider = (props: any) => {
             }
           }
           console.log("*******Disconnect Result in interval", result)
+          console.log("*****requestData chain id", requestData.chainId)
+
           const result2 = await connect({
-            chainId: 4,
+            chainId: requestData.chainId,
           })
           console.log("******CONNECT Result in interval", result2)
           if (typeof result2 === "object" && result2 !== null && "status" in result2) {
@@ -190,7 +192,7 @@ export const UseConnectorProvider = (props: any) => {
           }
         }
       }
-    }, 500)
+    }, 5000)
 
     return () => clearInterval(interval)
   }, [childWindow])
@@ -234,7 +236,7 @@ export const UseConnectorProvider = (props: any) => {
           event.data.result.address,
           event.data.result.xpubKey,
         )
-        resolvePromise(handleSuccessResponse(event.data, ""))
+        resolvePromise(handleSuccessResponse(event.data))
         manuallyClosedRef.current = true
         break
       case RequestTypes.accountNotCreated:
@@ -250,19 +252,19 @@ export const UseConnectorProvider = (props: any) => {
           event.data.result.address,
           event.data.result.xpubKey,
         )
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, ""))
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         manuallyClosedRef.current = true
 
         break
       case ResponseTypes.disconnectResponse:
         updateNetworkInformation({ chainId: null, networkType: "" })
         updateWalletInformation("disconnected", "", "", "")
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, ""))
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         manuallyClosedRef.current = true
 
         break
       default:
-        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data, childWindow))
+        if (resolvePromise) resolvePromise(handleSuccessResponse(event.data))
         manuallyClosedRef.current = true
 
         break
