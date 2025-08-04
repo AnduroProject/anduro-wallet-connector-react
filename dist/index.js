@@ -343,7 +343,9 @@ var UseConnectorProvider = function(props) {
     ]);
     (0, import_react.useEffect)(function() {
         console.log("====childWindow", childWindow);
+        console.log("====childWindow");
         console.log("====manuallyClosedRef.current", manuallyClosedRef.current);
+        console.log("====request data 11", requestData);
         if (!childWindow) return;
         console.log("====req type", requestType);
         var interval = setInterval(function() {
@@ -414,7 +416,7 @@ var UseConnectorProvider = function(props) {
     ]);
     var handleMessage = function(event) {
         console.log("====is child window", childWindow);
-        console.log("====event", event);
+        console.log("====request data", requestData);
         if (!event.data.type) return false;
         if (event.data.type == "webpackOk" || event.data.error && event.data.error.type === "webpackInvalid") return false;
         if (event.data.type === "wallet-loaded" /* walletLoaded */ ) return handlewalletLoadedMessage();
@@ -459,6 +461,7 @@ var UseConnectorProvider = function(props) {
         }
     };
     var handlewalletLoadedMessage = function() {
+        console.log("====req dataaa", requestData);
         if (requestType === "connect" /* connect */  || requestType === "disconnect" /* disconnected */ ) {
             sendMessageToChildWindow({
                 requestType: requestType,
