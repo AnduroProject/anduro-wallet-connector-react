@@ -66,6 +66,10 @@ function _non_iterable_rest() {
 function _sliced_to_array(arr, i) {
     return _array_with_holes(arr) || _iterable_to_array_limit(arr, i) || _unsupported_iterable_to_array(arr, i) || _non_iterable_rest();
 }
+function _type_of(obj) {
+    "@swc/helpers - typeof";
+    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
+}
 function _unsupported_iterable_to_array(o, minLen) {
     if (!o) return;
     if (typeof o === "string") return _array_like_to_array(o, minLen);
@@ -274,13 +278,13 @@ var UseConnectorProvider = function(props) {
         console.log("====req type", requestType);
         var interval = setInterval(function() {
             return _async_to_generator(function() {
-                var result;
+                var result, result2, status;
                 return _ts_generator(this, function(_state) {
                     switch(_state.label){
                         case 0:
                             if (!(childWindow && childWindow.closed)) return [
                                 3,
-                                3
+                                4
                             ];
                             clearInterval(interval);
                             setChildWindow(null);
@@ -291,7 +295,7 @@ var UseConnectorProvider = function(props) {
                             console.log("Child window closed programmatically");
                             return [
                                 3,
-                                3
+                                4
                             ];
                         case 1:
                             console.log("Child window closed by user \u2716");
@@ -302,10 +306,25 @@ var UseConnectorProvider = function(props) {
                         case 2:
                             result = _state.sent();
                             console.log("*******Disconnect Result in interval", result);
+                            return [
+                                4,
+                                connect({
+                                    chainId: 4
+                                })
+                            ];
+                        case 3:
+                            result2 = _state.sent();
+                            console.log("******CONNECT Result in interval", result2);
+                            if ((typeof result2 === "undefined" ? "undefined" : _type_of(result2)) === "object" && result2 !== null && "status" in result2) {
+                                status = result2.status;
+                                if (status === true) {
+                                    localStorage.setItem("isWalletConnected", "true");
+                                }
+                            }
                             childWindow.postMessage("CANCELED", "*");
                             handleChildWindowClosed();
-                            _state.label = 3;
-                        case 3:
+                            _state.label = 4;
+                        case 4:
                             return [
                                 2
                             ];

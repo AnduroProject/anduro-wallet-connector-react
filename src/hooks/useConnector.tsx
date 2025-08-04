@@ -167,6 +167,18 @@ export const UseConnectorProvider = (props: any) => {
           console.log("Child window closed by user ✖")
           const result = await disconnect()
           console.log("*******Disconnect Result in interval", result)
+          const result2 = await connect({
+            chainId: 4,
+          })
+          console.log("******CONNECT Result in interval", result2)
+          if (typeof result2 === "object" && result2 !== null && "status" in result2) {
+            const { status } = result2 as { status: boolean }
+            if (status === true) {
+              localStorage.setItem("isWalletConnected", "true")
+              // setIsWalletConnected("true");
+            }
+          }
+
           // if (result.status === true) {
           //   localStorage.removeItem("isWalletConnected")
           //   setIsWalletConnected("false")
