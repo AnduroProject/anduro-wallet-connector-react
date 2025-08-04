@@ -131,17 +131,7 @@ export const UseConnectorProvider = (props: any) => {
   const manuallyClosedRef = useRef(false)
 
   useEffect(() => {
-    console.log("====window", window)
-    if (childWindow === null && requestType != undefined) {
-      console.log("child window statuss====")
-      console.log("Child window did not open or was blocked")
-    }
-    if (childWindow && childWindow.closed) {
-      console.log("child window clsoeddd====")
-    }
     if (childWindow != null) {
-      console.log("====test")
-
       window.addEventListener("message", handleMessage)
       return () => {
         window.removeEventListener("message", handleMessage)
@@ -150,23 +140,14 @@ export const UseConnectorProvider = (props: any) => {
   }, [childWindow])
 
   useEffect(() => {
-    console.log("====childWindow", childWindow)
-    console.log("====childWindow")
-
-    console.log("====manuallyClosedRef.current", manuallyClosedRef.current)
-    console.log("====request data 11", requestData)
-
     if (!childWindow) return
     console.log("====req type", requestType)
-
     const interval = setInterval(async () => {
       if (childWindow && childWindow.closed) {
         clearInterval(interval)
         setChildWindow(null)
 
-        if (manuallyClosedRef.current) {
-          console.log("Child window closed programmatically")
-        } else {
+        if (!manuallyClosedRef.current) {
           console.log("Child window closed by user ✖")
           const result = await disconnect()
           if (typeof result === "object" && result !== null && "status" in result) {
@@ -192,7 +173,7 @@ export const UseConnectorProvider = (props: any) => {
           }
         }
       }
-    }, 5000)
+    }, 1000)
 
     return () => clearInterval(interval)
   }, [childWindow])
@@ -204,9 +185,6 @@ export const UseConnectorProvider = (props: any) => {
    *
    */
   const handleMessage = (event: any) => {
-    console.log("====is child window", childWindow)
-    console.log("====request data", requestData)
-
     if (!event.data.type) return false
 
     if (
@@ -274,7 +252,6 @@ export const UseConnectorProvider = (props: any) => {
    * The following function used for listening messages from wallet and once wallet loaded, send message to child window
    */
   const handlewalletLoadedMessage = () => {
-    console.log("====req dataaa", requestData)
     if (requestType === RequestTypes.connect || requestType === RequestTypes.disconnected) {
       sendMessageToChildWindow({
         requestType,

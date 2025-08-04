@@ -408,7 +408,7 @@ var UseConnectorProvider = function(props) {
                     }
                 });
             })();
-        }, 500);
+        }, 1e3);
         return function() {
             return clearInterval(interval);
         };
