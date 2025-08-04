@@ -156,7 +156,7 @@ export const UseConnectorProvider = (props: any) => {
     if (!childWindow) return
     console.log("====req type", requestType)
 
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
       if (childWindow && childWindow.closed) {
         clearInterval(interval)
         setChildWindow(null)
@@ -165,6 +165,12 @@ export const UseConnectorProvider = (props: any) => {
           console.log("Child window closed programmatically")
         } else {
           console.log("Child window closed by user ✖")
+          const result = await disconnect()
+          console.log("*******Disconnect Result in interval", result)
+          // if (result.status === true) {
+          //   localStorage.removeItem("isWalletConnected")
+          //   setIsWalletConnected("false")
+          // }
           childWindow.postMessage("CANCELED", "*")
 
           handleChildWindowClosed()

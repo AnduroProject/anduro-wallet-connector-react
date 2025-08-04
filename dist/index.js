@@ -347,17 +347,45 @@ var UseConnectorProvider = function(props) {
         if (!childWindow) return;
         console.log("====req type", requestType);
         var interval = setInterval(function() {
-            if (childWindow && childWindow.closed) {
-                clearInterval(interval);
-                setChildWindow(null);
-                if (manuallyClosedRef.current) {
-                    console.log("Child window closed programmatically");
-                } else {
-                    console.log("Child window closed by user \u2716");
-                    childWindow.postMessage("CANCELED", "*");
-                    handleChildWindowClosed();
-                }
-            }
+            return _async_to_generator(function() {
+                var result;
+                return _ts_generator(this, function(_state) {
+                    switch(_state.label){
+                        case 0:
+                            if (!(childWindow && childWindow.closed)) return [
+                                3,
+                                3
+                            ];
+                            clearInterval(interval);
+                            setChildWindow(null);
+                            if (!manuallyClosedRef.current) return [
+                                3,
+                                1
+                            ];
+                            console.log("Child window closed programmatically");
+                            return [
+                                3,
+                                3
+                            ];
+                        case 1:
+                            console.log("Child window closed by user \u2716");
+                            return [
+                                4,
+                                disconnect()
+                            ];
+                        case 2:
+                            result = _state.sent();
+                            console.log("*******Disconnect Result in interval", result);
+                            childWindow.postMessage("CANCELED", "*");
+                            handleChildWindowClosed();
+                            _state.label = 3;
+                        case 3:
+                            return [
+                                2
+                            ];
+                    }
+                });
+            })();
         }, 500);
         return function() {
             return clearInterval(interval);
