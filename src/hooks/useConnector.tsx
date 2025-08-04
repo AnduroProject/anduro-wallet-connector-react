@@ -272,6 +272,7 @@ export const UseConnectorProvider = (props: any) => {
    * The following function used for listening messages from wallet and once wallet loaded, send message to child window
    */
   const handlewalletLoadedMessage = () => {
+    console.log("====req dataaa", requestData)
     if (requestType === RequestTypes.connect || requestType === RequestTypes.disconnected) {
       sendMessageToChildWindow({
         requestType,
