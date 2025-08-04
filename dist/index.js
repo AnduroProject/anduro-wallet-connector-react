@@ -348,7 +348,7 @@ var UseConnectorProvider = function(props) {
         console.log("====req type", requestType);
         var interval = setInterval(function() {
             return _async_to_generator(function() {
-                var result, result2, status;
+                var result, status, result2, status1;
                 return _ts_generator(this, function(_state) {
                     switch(_state.label){
                         case 0:
@@ -375,6 +375,12 @@ var UseConnectorProvider = function(props) {
                             ];
                         case 2:
                             result = _state.sent();
+                            if ((typeof result === "undefined" ? "undefined" : _type_of(result)) === "object" && result !== null && "status" in result) {
+                                status = result.status;
+                                if (status === true) {
+                                    localStorage.removeItem("isWalletConnected");
+                                }
+                            }
                             console.log("*******Disconnect Result in interval", result);
                             return [
                                 4,
@@ -386,13 +392,11 @@ var UseConnectorProvider = function(props) {
                             result2 = _state.sent();
                             console.log("******CONNECT Result in interval", result2);
                             if ((typeof result2 === "undefined" ? "undefined" : _type_of(result2)) === "object" && result2 !== null && "status" in result2) {
-                                status = result2.status;
-                                if (status === true) {
+                                status1 = result2.status;
+                                if (status1 === true) {
                                     localStorage.setItem("isWalletConnected", "true");
                                 }
                             }
-                            childWindow.postMessage("CANCELED", "*");
-                            handleChildWindowClosed();
                             _state.label = 4;
                         case 4:
                             return [
@@ -408,9 +412,6 @@ var UseConnectorProvider = function(props) {
     }, [
         childWindow
     ]);
-    var handleChildWindowClosed = function() {
-        console.log("closed notify user");
-    };
     var handleMessage = function(event) {
         console.log("====is child window", childWindow);
         console.log("====event", event);

@@ -166,6 +166,13 @@ export const UseConnectorProvider = (props: any) => {
         } else {
           console.log("Child window closed by user ✖")
           const result = await disconnect()
+          if (typeof result === "object" && result !== null && "status" in result) {
+            const { status } = result as { status: boolean }
+            if (status === true) {
+              localStorage.removeItem("isWalletConnected")
+              // setIsWalletConnected("true");
+            }
+          }
           console.log("*******Disconnect Result in interval", result)
           const result2 = await connect({
             chainId: 4,
@@ -178,24 +185,12 @@ export const UseConnectorProvider = (props: any) => {
               // setIsWalletConnected("true");
             }
           }
-
-          // if (result.status === true) {
-          //   localStorage.removeItem("isWalletConnected")
-          //   setIsWalletConnected("false")
-          // }
-          childWindow.postMessage("CANCELED", "*")
-
-          handleChildWindowClosed()
         }
       }
     }, 500)
 
     return () => clearInterval(interval)
   }, [childWindow])
-
-  const handleChildWindowClosed = () => {
-    console.log("closed notify user")
-  }
 
   /**
    * The following function used for listening messages from anduro wallet extension
