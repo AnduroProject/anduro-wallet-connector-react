@@ -141,34 +141,27 @@ export const UseConnectorProvider = (props: any) => {
 
   useEffect(() => {
     if (!childWindow) return
-    console.log("====req type", requestType)
     const interval = setInterval(async () => {
       if (childWindow && childWindow.closed) {
         clearInterval(interval)
         setChildWindow(null)
 
         if (!manuallyClosedRef.current) {
-          console.log("Child window closed by user ✖")
           const result = await disconnect()
           if (typeof result === "object" && result !== null && "status" in result) {
             const { status } = result as { status: boolean }
             if (status === true) {
               localStorage.removeItem("isWalletConnected")
-              // setIsWalletConnected("true");
             }
           }
-          console.log("*******Disconnect Result in interval", result)
-          console.log("*****requestData chain id", requestData.chainId)
 
           const result2 = await connect({
             chainId: requestData.chainId,
           })
-          console.log("******CONNECT Result in interval", result2)
           if (typeof result2 === "object" && result2 !== null && "status" in result2) {
             const { status } = result2 as { status: boolean }
             if (status === true) {
               localStorage.setItem("isWalletConnected", "true")
-              // setIsWalletConnected("true");
             }
           }
         }
@@ -273,7 +266,6 @@ export const UseConnectorProvider = (props: any) => {
         chainId: networkState.chainId,
       })
     } else if (requestType === RequestTypes.createAsset) {
-      console.log("createAssetData", createAssetData)
       const formValues = {
         headline: createAssetData.name,
         imageUrl: createAssetData.imageUrl,
@@ -380,9 +372,7 @@ export const UseConnectorProvider = (props: any) => {
     return new Promise((resolve) => {
       const url = `${WALLETURL}?requestType=${RequestTypes.connect}`
       let childWindow = openWalletWindow(url)
-
       manuallyClosedRef.current = false
-
       setRequestType(RequestTypes.connect)
       setChildWindow(childWindow)
       setRequestData({
@@ -401,7 +391,6 @@ export const UseConnectorProvider = (props: any) => {
       const url = `${WALLETURL}?requestType=${RequestTypes.networkinfo}`
       let childWindow = openWalletWindow(url)
       manuallyClosedRef.current = false
-
       setRequestType(RequestTypes.networkinfo)
       setChildWindow(childWindow)
       resolvePromise = resolve
@@ -633,7 +622,6 @@ export const UseConnectorProvider = (props: any) => {
    *
    */
   const signAlysTransaction = (params: SignTransactionParams) => {
-    console.log("params----------------", params)
     return new Promise((resolve) => {
       if (checkWalletConnection(resolve, "")) {
         const url = `${WALLETURL}?requestType=${RequestTypes.sendAlys}`
@@ -642,7 +630,6 @@ export const UseConnectorProvider = (props: any) => {
 
         setRequestType(RequestTypes.sendAlys)
         setChildWindow(childWindow)
-        console.log("params-------------------- : ", params)
         setSignTransactionData(params)
         resolvePromise = resolve
       }

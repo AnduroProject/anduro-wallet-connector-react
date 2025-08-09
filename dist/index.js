@@ -268,8 +268,6 @@ var handleErrorResponse = function() {
 };
 var handleSuccessResponse = function() {
     var result = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : null;
-    console.log("====result of success", result);
-    console.log("====window in  success", window);
     return {
         status: true,
         result: result.result ? result.result : result,
@@ -293,11 +291,10 @@ var openWalletWindow = function(url) {
         x = viewportwidth - 300;
         y = 0;
     }
-    var popup = window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
-    return popup;
+    return window.open(url, "_blank", "toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=".concat(inputWidth, ", height=").concat(inputHeight, ", right=0, top=").concat(y, ", left=").concat(x));
 };
 // src/config/walletApi.ts
-var WALLETURL = "chrome-extension://boohjgfaemajffnpnmcmoccdgmlaehgb/index.html";
+var WALLETURL = "chrome-extension://khebhoaoppjeidmdkpdglmlhghnooijn/index.html";
 // src/hooks/useConnector.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var useConnector = import_react.default.createContext(null);
@@ -323,16 +320,7 @@ var UseConnectorProvider = function(props) {
     var _ref4 = _sliced_to_array((0, import_react.useState)(), 2), signTransactionData = _ref4[0], setSignTransactionData = _ref4[1];
     var manuallyClosedRef = (0, import_react.useRef)(false);
     (0, import_react.useEffect)(function() {
-        console.log("====window", window);
-        if (childWindow === null && requestType != void 0) {
-            console.log("child window statuss====");
-            console.log("Child window did not open or was blocked");
-        }
-        if (childWindow && childWindow.closed) {
-            console.log("child window clsoeddd====");
-        }
         if (childWindow != null) {
-            console.log("====test");
             window.addEventListener("message", handleMessage);
             return function() {
                 window.removeEventListener("message", handleMessage);
@@ -342,12 +330,7 @@ var UseConnectorProvider = function(props) {
         childWindow
     ]);
     (0, import_react.useEffect)(function() {
-        console.log("====childWindow", childWindow);
-        console.log("====childWindow");
-        console.log("====manuallyClosedRef.current", manuallyClosedRef.current);
-        console.log("====request data 11", requestData);
         if (!childWindow) return;
-        console.log("====req type", requestType);
         var interval = setInterval(function() {
             return _async_to_generator(function() {
                 var result, status, result2, status1;
@@ -356,26 +339,19 @@ var UseConnectorProvider = function(props) {
                         case 0:
                             if (!(childWindow && childWindow.closed)) return [
                                 3,
-                                4
+                                3
                             ];
                             clearInterval(interval);
                             setChildWindow(null);
-                            if (!manuallyClosedRef.current) return [
+                            if (!!manuallyClosedRef.current) return [
                                 3,
-                                1
+                                3
                             ];
-                            console.log("Child window closed programmatically");
-                            return [
-                                3,
-                                4
-                            ];
-                        case 1:
-                            console.log("Child window closed by user \u2716");
                             return [
                                 4,
                                 disconnect()
                             ];
-                        case 2:
+                        case 1:
                             result = _state.sent();
                             if ((typeof result === "undefined" ? "undefined" : _type_of(result)) === "object" && result !== null && "status" in result) {
                                 status = result.status;
@@ -383,25 +359,22 @@ var UseConnectorProvider = function(props) {
                                     localStorage.removeItem("isWalletConnected");
                                 }
                             }
-                            console.log("*******Disconnect Result in interval", result);
-                            console.log("*****requestData chain id", requestData.chainId);
                             return [
                                 4,
                                 connect({
                                     chainId: requestData.chainId
                                 })
                             ];
-                        case 3:
+                        case 2:
                             result2 = _state.sent();
-                            console.log("******CONNECT Result in interval", result2);
                             if ((typeof result2 === "undefined" ? "undefined" : _type_of(result2)) === "object" && result2 !== null && "status" in result2) {
                                 status1 = result2.status;
                                 if (status1 === true) {
                                     localStorage.setItem("isWalletConnected", "true");
                                 }
                             }
-                            _state.label = 4;
-                        case 4:
+                            _state.label = 3;
+                        case 3:
                             return [
                                 2
                             ];
@@ -416,8 +389,6 @@ var UseConnectorProvider = function(props) {
         childWindow
     ]);
     var handleMessage = function(event) {
-        console.log("====is child window", childWindow);
-        console.log("====request data", requestData);
         if (!event.data.type) return false;
         if (event.data.type == "webpackOk" || event.data.error && event.data.error.type === "webpackInvalid") return false;
         if (event.data.type === "wallet-loaded" /* walletLoaded */ ) return handlewalletLoadedMessage();
@@ -462,7 +433,6 @@ var UseConnectorProvider = function(props) {
         }
     };
     var handlewalletLoadedMessage = function() {
-        console.log("====req dataaa", requestData);
         if (requestType === "connect" /* connect */  || requestType === "disconnect" /* disconnected */ ) {
             sendMessageToChildWindow({
                 requestType: requestType,
@@ -484,7 +454,6 @@ var UseConnectorProvider = function(props) {
                 chainId: networkState.chainId
             });
         } else if (requestType === "create-asset" /* createAsset */ ) {
-            console.log("createAssetData", createAssetData);
             var formValues = {
                 headline: createAssetData.name,
                 imageUrl: createAssetData.imageUrl,
@@ -711,7 +680,6 @@ var UseConnectorProvider = function(props) {
         });
     };
     var signAlysTransaction = function(params) {
-        console.log("params----------------", params);
         return new Promise(function(resolve) {
             if (checkWalletConnection(resolve, "")) {
                 var url = "".concat(WALLETURL, "?requestType=", "send-alys" /* sendAlys */ );
@@ -719,7 +687,6 @@ var UseConnectorProvider = function(props) {
                 manuallyClosedRef.current = false;
                 setRequestType("send-alys" /* sendAlys */ );
                 setChildWindow(childWindow2);
-                console.log("params-------------------- : ", params);
                 setSignTransactionData(params);
                 resolvePromise = resolve;
             }

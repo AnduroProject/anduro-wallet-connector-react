@@ -19,8 +19,6 @@ export const handleErrorResponse = (error: any = null) => {
  * @param result
  */
 export const handleSuccessResponse = (result: any = null) => {
-  console.log("====result of success", result)
-  console.log("====window in  success", window)
   return {
     status: true,
     result: result.result ? result.result : result,
